@@ -38,10 +38,12 @@
  * we try to detect these and simply assume they are not gcc - if they have
  * an issue with that they should have done it right in the first place.
  */
-#if defined(__INTEL_COMPILER) || defined(__SUNPRO_C) || defined(__llvm__)
-# define ECB_GCC_VERSION(major,minor) 0
-#else
-# define ECB_GCC_VERSION(major,minor) (__GNUC__ > (major) || (__GNUC__ == (major) && __GNUC_MINOR__ >= (minor)))
+#ifndef ECB_GCC_VERSION
+# if defined(__INTEL_COMPILER) || defined(__SUNPRO_C) || defined(__llvm__)
+#  define ECB_GCC_VERSION(major,minor) 0
+# else
+#  define ECB_GCC_VERSION(major,minor) (__GNUC__ > (major) || (__GNUC__ == (major) && __GNUC_MINOR__ >= (minor)))
+# endif
 #endif
 
 #ifndef __cplusplus
@@ -98,12 +100,14 @@ typedef int ecb_bool;
 #define ecb_assume(cond) do { if (!(cond)) unreachable (); } while (0)
 
 /* count trailing zero bits and count # of one bits */
+ECB_HEADER_INLINE int ecb_ctz32      (uint32_t x) ecb_const;
+ECB_HEADER_INLINE int ecb_popcount32 (uint32_t x) ecb_const;
 #if ECB_GCC_VERSION(3,4)
 ECB_HEADER_INLINE int ecb_ctz32      (uint32_t x) { return __builtin_ctz      (x); }
 ECB_HEADER_INLINE int ecb_popcount32 (uint32_t x) { return __builtin_popcount (x); }
 #else
 ECB_HEADER_INLINE
-ecb_ctz32 (uint32_t x) ecb_const
+ecb_ctz32 (uint32_t x)
 {
   int r = 0;
 
@@ -119,7 +123,7 @@ ecb_ctz32 (uint32_t x) ecb_const
 }
 
 ECB_HEADER_INLINE
-ecb_popcount32 (uint32_t x) ecb_const
+ecb_popcount32 (uint32_t x)
 {
   x -=  (x >> 1) & 0x55555555;
   x  = ((x >> 2) & 0x33333333) + (x & 0x33333333);
@@ -130,10 +134,11 @@ ecb_popcount32 (uint32_t x) ecb_const
 }
 #endif
 
+ECB_HEADER_INLINE uint32_t ecb_bswap32 (uint32_t x) ecb_const;
 #if ECB_GCC_VERSION(4,3)
-ECB_GCC_VERSION uint32_t ecb_bswap32 (uint32_t x) { return __builtin_bswap32 (x); }
+ECB_HEADER_INLINE uint32_t ecb_bswap32 (uint32_t x) { return __builtin_bswap32 (x); }
 #else
-ECB_GCC_VERSION uint32_t
+ECB_HEADER_INLINE uint32_t
 ecb_bswap32 (uint32_t x)
 {
   return (x >> 24)
@@ -143,23 +148,27 @@ ecb_bswap32 (uint32_t x)
 }
 #endif
 
+ECB_HEADER_INLINE void ecb_unreachable (void) ecb_attribute ((noreturn));
 #if ECB_GCC_VERSION(4,5)
-# define ecb_unreachable() __builtin_unreachable ()
+ECB_HEADER_INLINE void ecb_unreachable (void) { __builtin_unreachable (); }
 #else
 /* this seems to work fine, but gcc always emits a warning for it :/ */
-ECB_HEADER_INLINE void ecb_unreachable () ecb_attribute ((noreturn));
-ECB_HEADER_INLINE void ecb_unreachable () { }
+ECB_HEADER_INLINE void ecb_unreachable (void) { }
 #endif
 
+ECB_HEADER_INLINE unsigned char ecb_byteorder_helper () ecb_const;
+
 ECB_HEADER_INLINE unsigned char
-ecb_byteorder_helper () ecb_const
+ecb_byteorder_helper ()
 {
   const uint32_t u = 0x11223344;
   return *(unsigned char *)&u;
 }
 
-ECB_HEADER_INLINE ecb_bool ecb_big_endian    () ecb_const { return ecb_byteorder_helper () == 0x11; };
-ECB_HEADER_INLINE ecb_bool ecb_little_endian () ecb_const { return ecb_byteorder_helper () == 0x44; };
+ECB_HEADER_INLINE ecb_bool ecb_big_endian    () ecb_const;
+ECB_HEADER_INLINE ecb_bool ecb_big_endian    () { return ecb_byteorder_helper () == 0x11; };
+ECB_HEADER_INLINE ecb_bool ecb_little_endian () ecb_const;
+ECB_HEADER_INLINE ecb_bool ecb_little_endian () { return ecb_byteorder_helper () == 0x44; };
 
 #if ecb_cplusplus_does_not_suck
 // does not work for local types (http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2657.htm)
@@ -172,12 +181,14 @@ static inline int ecb_array_length (const T (&arr)[N])
 #define ecb_array_length(name) (sizeof (name) / sizeof (name [0]))
 #endif
 
+ECB_INLINE uint32_t ecb_rotr32 (uint32_t x, unsigned int count) ecb_const;
 ECB_INLINE uint32_t
 ecb_rotr32 (uint32_t x, unsigned int count)
 {
   return (x << (32 - count)) | (x >> count);
 }
 
+ECB_INLINE uint32_t ecb_rotl32 (uint32_t x, unsigned int count) ecb_const;
 ECB_INLINE uint32_t
 ecb_rotl32 (uint32_t x, unsigned int count)
 {
