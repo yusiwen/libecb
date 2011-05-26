@@ -180,6 +180,8 @@ ECB_HEADER_INLINE ecb_bool ecb_big_endian    () { return ecb_byteorder_helper ()
 ECB_HEADER_INLINE ecb_bool ecb_little_endian () ecb_const;
 ECB_HEADER_INLINE ecb_bool ecb_little_endian () { return ecb_byteorder_helper () == 0x44; };
 
+#define ecb_mod(m, n) ((m) < 0 ? ((n) - (-(m) % (n))) : ((m) % (n)))
+
 #if ecb_cplusplus_does_not_suck
 // does not work for local types (http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2657.htm)
 template<typename T, int N>
