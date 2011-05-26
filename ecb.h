@@ -83,13 +83,14 @@ typedef int ecb_bool;
 # define ecb_decltype(x) typeof(x)
 #endif
 
-#define ecb_noinline ecb_attribute ((noinline))
-#define ecb_noreturn ecb_attribute ((noreturn))
-#define ecb_unused   ecb_attribute ((unused))
-#define ecb_const    ecb_attribute ((const))
-#define ecb_pure     ecb_attribute ((pure))
-#define ecb_hot      ecb_attribute ((hot))	/* 4.3 */
-#define ecb_cold     ecb_attribute ((cold))	/* 4.3 */
+#define ecb_artificial ecb_attribute ((__artificial__))
+#define ecb_noinline   ecb_attribute ((__noinline__))
+#define ecb_noreturn   ecb_attribute ((__noreturn__))
+#define ecb_unused     ecb_attribute ((__unused__))
+#define ecb_const      ecb_attribute ((__const__))
+#define ecb_pure       ecb_attribute ((__pure__))
+#define ecb_hot        ecb_attribute ((__hot__))	/* 4.3 */
+#define ecb_cold       ecb_attribute ((__cold__))	/* 4.3 */
 
 /* put into if's if you are very sure that the expression */
 /* is mostly true or mosty false. note that these return */

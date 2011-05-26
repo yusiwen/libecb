@@ -3,16 +3,28 @@
 
 =over 4
 
-=item ecb_attribute(attrlist)
-=item ecb_noinline ecb_attribute ((noinline))
-=item ecb_noreturn ecb_attribute ((noreturn))
-=item ecb_unused   ecb_attribute ((unused))
-=item ecb_const    ecb_attribute ((const))
-=item ecb_pure     ecb_attribute ((pure))
-=item ecb_hot      ecb_attribute ((hot))	/* 4.3 */
-=item ecb_cold     ecb_attribute ((cold))	/* 4.3 */
+=item ecb_attribute ((attrs...))
 
-   =back
+A simple wrapper that expands to C<__attribute__((attrs))> on GCC, and
+to nothing on other compilers, so the effect is that only GCC sees these.
+
+=item ecb_noinline
+
+=item ecb_noreturn
+
+=item ecb_unused
+
+=item ecb_const
+
+=item ecb_pure
+
+=item ecb_hot
+
+=item ecb_cold
+
+=item ecb_artificial
+
+=back
 
 =head2 OPTIMISATION HINTS
 
@@ -32,7 +44,7 @@
 
 =item bool ecb_prefetch(addr,rw,locality)
 
-   =back
+=back
 
 =head2 BIT FIDDLING / BITSTUFFS
 
