@@ -130,5 +130,16 @@ ecb_byteorder_helper () ecb_const
 ECB_HEADER_INLINE ecb_bool ecb_big_endian    () ecb_const { return ecb_byteorder_helper () == 0x11; };
 ECB_HEADER_INLINE ecb_bool ecb_little_endian () ecb_const { return ecb_byteorder_helper () == 0x44; };
 
+#if ecb_cplusplus_does_not_suck
+// does not work for local types (http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2657.htm)
+template<typename T, int N>
+static inline int array_length (const T (&arr)[N])
+{
+  return N;
+}
+#else
+#define ecb_array_length(name) (sizeof (name) / sizeof (name [0]))
+#endif
+
 #endif
 
