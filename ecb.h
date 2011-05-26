@@ -103,7 +103,7 @@ typedef int ecb_bool;
 
 /* count trailing zero bits and count # of one bits */
 #if ECB_GCC_VERSION(3,4)
-#define ecb_ctz32(x) __builtin_ctz      (x)
+#define ecb_ctz32(x)      __builtin_ctz      (x)
 #define ecb_popcount32(x) __builtin_popcount (x)
 #else
 ECB_HEADER_INLINE int ecb_ctz32 (uint32_t x) ecb_const;
