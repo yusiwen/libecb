@@ -83,7 +83,7 @@ typedef int ecb_bool;
 # define ecb_decltype(x) typeof(x)
 #endif
 
-#define ecb_artificial ecb_attribute ((__artificial__))
+#define ecb_artificial ecb_attribute ((__artificial__)) /* 4.3 */
 #define ecb_noinline   ecb_attribute ((__noinline__))
 #define ecb_noreturn   ecb_attribute ((__noreturn__))
 #define ecb_unused     ecb_attribute ((__unused__))
