@@ -41,7 +41,7 @@ declare a variable but do not always use it:
 
 =item ecb_noinline
 
-Prevent a function from being inlined - it might be optimsied away, but
+Prevent a function from being inlined - it might be optimised away, but
 not inlined into other functions. This is useful if you know your function
 is rarely called and large enough for inlining not to be helpful.
 
@@ -116,8 +116,8 @@ However, by using C<ecb_likely>, you tell the compiler that the condition
 is likely to be true (and for C<ecb_unlikel>, that it is unlikely to be
 true).
 
-For example, when you check for a 0-ptr and expect this to be a rare,
-exceptional, case, then use C<ecb_unlikely>:
+For example, when you check for a null pointer and expect this to be a
+rare, exceptional, case, then use C<ecb_unlikely>:
 
   void my_free (void *ptr)
   {
@@ -131,7 +131,7 @@ performance considerably.
 
 A very good example is in a function that reserves more space for some
 memory block (for example, inside an implementation of a string stream) -
-eahc time something is added, you have to check for a buffer overrun, but
+each time something is added, you have to check for a buffer overrun, but
 you expect that most checks will turn out to be false:
 
   /* make sure we have "size" extra room in our buffer */
@@ -175,13 +175,13 @@ call will never be executed.
 =item bool ecb_unreachable ()
 
 This function does nothing itself, except tell the compiler that it will
-never be executed. Apart from supressing a warning in some cases, this
+never be executed. Apart from suppressing a warning in some cases, this
 function can be used to implement C<ecb_assume> or similar functions.
 
 =item bool ecb_prefetch (addr, rw, locality) [MACRO]
 
 Tells the compiler to try to prefetch memory at the given C<addr>ess
-for either reading (c<rw> = 0) or writing (C<rw> = 1). A C<locality> of
+for either reading (C<rw> = 0) or writing (C<rw> = 1). A C<locality> of
 C<0> means that there will only be one access later, C<3> means that
 the data will likely be accessed very often, and values in between mean
 something... in between. The memory pointed to by the address does not
@@ -189,7 +189,7 @@ need to be accessible (it could be a null pointer for example), but C<rw>
 and C<locality> must be compile-time constants.
 
 An obvious way to use this is to prefetch some data far away, in a big
-array you loop over. This prefethces memory some 128 array elements later,
+array you loop over. This prefetches memory some 128 array elements later,
 in the hope that it will be ready when the CPU arrives at that location.
 
   int sum = 0;
