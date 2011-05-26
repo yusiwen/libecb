@@ -88,14 +88,6 @@ typedef int ecb_bool;
 #define ecb_hot      ecb_attribute ((hot))	/* 4.3 */
 #define ecb_cold     ecb_attribute ((cold))	/* 4.3 */
 
-#if ECB_GCC_VERSION(4,5)
-# define ecb_unreachable() __builtin_unreachable ()
-#else
-/* this seems to work fine, but gcc always emits a warning for it :/ */
-ECB_HEADER_INLINE void ecb_unreachable () ecb_attribute ((noreturn));
-ECB_HEADER_INLINE void ecb_unreachable () { }
-#endif
-
 /* put into ifs if you are very sure that the expression */
 /* is mostly true or mosty false. note that these return */
 /* booleans, not the expression. */
@@ -138,6 +130,27 @@ ecb_popcount32 (uint32_t x) ecb_const
 }
 #endif
 
+#if ECB_GCC_VERSION(4,3)
+ECB_GCC_VERSION uint32_t ecb_bswap32 (uint32_t x) { return __builtin_bswap32 (x); }
+#else
+ECB_GCC_VERSION uint32_t
+ecb_bswap32 (uint32_t x)
+{
+  return (x >> 24)
+      | ((x >>  8) & 0x0000ff00)
+      | ((x <<  8) & 0x00ff0000)
+      |  (x << 24);
+}
+#endif
+
+#if ECB_GCC_VERSION(4,5)
+# define ecb_unreachable() __builtin_unreachable ()
+#else
+/* this seems to work fine, but gcc always emits a warning for it :/ */
+ECB_HEADER_INLINE void ecb_unreachable () ecb_attribute ((noreturn));
+ECB_HEADER_INLINE void ecb_unreachable () { }
+#endif
+
 ECB_HEADER_INLINE unsigned char
 ecb_byteorder_helper () ecb_const
 {
@@ -170,19 +183,6 @@ ecb_rotl32 (uint32_t x, unsigned int count)
 {
   return (x >> (32 - count)) | (x << count);
 }
-
-#if ECB_GCC_VERSION(4,3)
-ECB_GCC_VERSION uint32_t ecb_bswap32 (uint32_t x) { return __builtin_bswap32 (x); }
-#else
-ECB_GCC_VERSION uint32_t
-ecb_bswap32 (uint32_t x)
-{
-  return (x >> 24)
-      | ((x >>  8) & 0x0000ff00)
-      | ((x <<  8) & 0x00ff0000)
-      |  (x << 24);
-}
-#endif
 
 #endif
 
