@@ -1,5 +1,5 @@
 /*
- * libecb
+ * libecb - http://software.schmorp.de/pkg/libecb
  *
  * Copyright (©) 2009-2011 Marc Alexander Lehmann
  * Copyright (©) 2011 Emanuele Giaquinta
@@ -152,7 +152,7 @@ ecb_bswap32 (uint32_t x)
 # define ecb_unreachable() __builtin_unreachable ()
 #else
 /* this seems to work fine, but gcc always emits a warning for it :/ */
-ECB_HEADER_INLINE void ecb_unreachable (void) ecb_attribute ((noreturn));
+ECB_HEADER_INLINE void ecb_unreachable (void) ecb_noreturn;
 ECB_HEADER_INLINE void ecb_unreachable (void) { }
 #endif
 
