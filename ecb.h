@@ -66,12 +66,12 @@ typedef int ecb_bool;
 
 #if ECB_GCC_VERSION(3,1)
 # define ecb_attribute(attrlist)        __attribute__(attrlist)
-# define ecb_is_constant(c)             __builtin_constant_p (c)
+# define ecb_is_constant(expr)          __builtin_constant_p (expr)
 # define ecb_expect(expr,value)         __builtin_expect ((expr),(value))
 # define ecb_prefetch(addr,rw,locality) __builtin_prefetch (addr, rw, locality)
 #else
 # define ecb_attribute(attrlist)
-# define ecb_is_constant(c)             0
+# define ecb_is_constant(expr)          0
 # define ecb_expect(expr,value)         (expr)
 # define ecb_prefetch(addr,rw,locality)
 #endif
@@ -91,7 +91,7 @@ typedef int ecb_bool;
 #define ecb_hot      ecb_attribute ((hot))	/* 4.3 */
 #define ecb_cold     ecb_attribute ((cold))	/* 4.3 */
 
-/* put into ifs if you are very sure that the expression */
+/* put into if's if you are very sure that the expression */
 /* is mostly true or mosty false. note that these return */
 /* booleans, not the expression. */
 #define ecb_unlikely(expr) ecb_expect (!!(expr), 0)
