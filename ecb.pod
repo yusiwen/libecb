@@ -5,7 +5,7 @@
 Libecb is currently a simple header file that doesn't require any
 configuration to use or include in your project.
 
-It's part of the e-suite of libraries, other memembers of which include
+It's part of the e-suite of libraries, other members of which include
 libev and libeio.
 
 Its homepage can be found here:
@@ -14,7 +14,7 @@ Its homepage can be found here:
 
 It mainly provides a number of wrappers around GCC built-ins, together
 with replacement functions for other compilers. In addition to this,
-it provides a number of other lowlevel C utilities, such endienness
+it provides a number of other lowlevel C utilities, such as endianness
 detection, byte swapping or bit rotations.
 
 More might come.
@@ -29,7 +29,7 @@ compiler can find it and include it:
 The header should work fine for both C and C++ compilation, and gives you
 all of F<inttypes.h> in addition to the ECB symbols.
 
-There are currently no objetc files to link to - future versions might
+There are currently no object files to link to - future versions might
 come with an (optional) object code library to link against, to reduce
 code size or gain access to additional features.
 
@@ -315,7 +315,7 @@ by C<count> positions to the right or left respectively.
 =item x = ecb_mod (m, n)
 
 Returns the positive remainder of the modulo operation between C<m> and
-C<n>. Unlike the C moduloe operator C<%>, this function ensures that the
+C<n>. Unlike the C modulo operator C<%>, this function ensures that the
 return value is always positive).
 
 C<n> must be strictly positive (i.e. C<< >1 >>), while C<m> must be
