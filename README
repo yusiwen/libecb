@@ -1,4 +1,4 @@
-libecb - e compiler bultins
+libecb - e compiler builtins
 
 This project delivers you many gcc builtins, attributes and a number of
 generally useful low-level functions, such as popcount, expect, prefetch,
