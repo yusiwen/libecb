@@ -31,6 +31,8 @@
 
 #define ECB_GCC_VERSION(major,minor) (__GNUC__ > (major) || (__GNUC__ == (major) && __GNUC_MINOR__ >= (minor)))
 
+#define ECB_HEADER_INLINE static inline
+
 #if ECB_GCC_VERSION(3,1)
 # define ecb_attribute(attrlist)        __attribute__(attrlist)
 # define ecb_is_constant(c)             __builtin_constant_p (c)
@@ -61,26 +63,27 @@
 #if ECB_GCC_VERSION(4,5)
 # define ecb_unreachable() __builtin_unreachable ()
 #else
- // this seems to work fine, but gcc always emits a warning for it :/
- static inline void ecb_unreachable () ecb_attribute ((noreturn));
- static inline void ecb_unreachable () { }
+ /* this seems to work fine, but gcc always emits a warning for it :/ */
+ ECB_HEADER_INLINE void ecb_unreachable () ecb_attribute ((noreturn));
+ ECB_HEADER_INLINE void ecb_unreachable () { }
 #endif
 
-// put into ifs if you are very sure that the expression
-// is mostly true or mosty false. note that these return
-// booleans, not the expression.
+/* put into ifs if you are very sure that the expression */
+/* is mostly true or mosty false. note that these return */
+/* booleans, not the expression. */
 #define ecb_expect_false(expr) ecb_expect ((expr) ? 1 : 0, 0)
 #define ecb_expect_true(expr)  ecb_expect ((expr) ? 1 : 0, 1)
 
-// try to tell the compiler that some condition is definitely true
+/* try to tell the compiler that some condition is definitely true */
 #define ecb_assume(cond) do { if (!(cond)) unreachable (); } while (0)
 
-// count trailing zero bits and count # of one bits
+/* count trailing zero bits and count # of one bits */
 #if ECB_GCC_VERSION(3,4)
-static inline int ecb_ctz      (unsigned int x) { return __builtin_ctz      (x); }
-static inline int ecb_popcount (unsigned int x) { return __builtin_popcount (x); }
+ECB_HEADER_INLINE int ecb_ctz      (unsigned int x) { return __builtin_ctz      (x); }
+ECB_HEADER_INLINE int ecb_popcount (unsigned int x) { return __builtin_popcount (x); }
 #else
-static int ecb_ctz (unsigned int x) ecb_const
+ECB_HEADER_INLINE
+ecb_ctz (unsigned int x) ecb_const
 {
   int r = 0;
 
@@ -95,7 +98,8 @@ static int ecb_ctz (unsigned int x) ecb_const
   return r;
 }
 
-static int ecb_popcount (unsigned int x) ecb_const
+ECB_HEADER_INLINE
+ecb_popcount (unsigned int x) ecb_const
 {
   x -=  (x >> 1) & 0x55555555;
   x  = ((x >> 2) & 0x33333333) + (x & 0x33333333);
@@ -105,6 +109,19 @@ static int ecb_popcount (unsigned int x) ecb_const
   return x >> 24;
 }
 #endif
+
+ECB_HEADER_INLINE unsigned char
+ecb_byteorder_helper () ecb_const
+{
+  const uint32_t u = 0x11223344;
+  return *(unsigned char *)&u;
+}
+
+ECB_HEADER_INLINE bool ecb_big_endian    () ecb_const { return ecb_byteorder_helper () == 0x11; };
+ECB_HEADER_INLINE bool ecb_network       () ecb_const { return big_endian ();                   };
+ECB_HEADER_INLINE bool ecb_little_endian () ecb_const { return ecb_byteorder_helper () == 0x44; };
+ECB_HEADER_INLINE bool ecb_vax           () ecb_const { return little_endian ();                };
+
 
 #endif
 
