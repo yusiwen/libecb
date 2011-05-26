@@ -89,8 +89,6 @@ when the passed number is a constant and also a power of two (C<n & (n -
       : (uint32_t)rndm16 ()) >> 16;
   }
 
-  
-
 =item bool ecb_expect(expr,value)
 
 =item bool ecb_unlikely(bool)
@@ -106,6 +104,8 @@ when the passed number is a constant and also a power of two (C<n & (n -
 =back
 
 =head2 BIT FIDDLING / BITSTUFFS
+
+=over 4
 
 =item bool ecb_big_endian ()
 
