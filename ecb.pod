@@ -113,7 +113,7 @@ other conditional statement, it will not change the program:
   if (ecb_likely (some_condition)) ...;
 
 However, by using C<ecb_likely>, you tell the compiler that the condition
-is likely to be true (and for C<ecb_unlikel>, that it is unlikely to be
+is likely to be true (and for C<ecb_unlikely>, that it is unlikely to be
 true).
 
 For example, when you check for a null pointer and expect this to be a
@@ -224,9 +224,27 @@ cache.
 
 =item bool ecb_little_endian ()
 
+These two functions return true if the byte order is big endian
+(most-significant byte first) or little endian (least-significant byte
+first) respectively.
+
 =item int ecb_ctz32 (uint32_t x)
 
+Returns the index of the least significant bit set in C<x> (or
+equivalently the number of bits set to 0 before the least significant
+bit set), starting from 0. If C<x> is 0 the result is undefined. A
+common use case is to compute the integer binary logarithm, i.e.,
+floor(log2(n)). For example:
+
+  ecb_ctz32(3) = 1
+  ecb_ctz32(6) = 2
+
 =item int ecb_popcount32 (uint32_t x)
+
+Returns the number of bits set to 1 in C<x>. For example:
+
+  ecb_popcount32(7) = 3
+  ecb_popcount32(255) = 8
 
 =item uint32_t ecb_bswap16 (uint32_t x)
 
@@ -236,6 +254,9 @@ cache.
 
 =item uint32_t ecb_rotl32 (uint32_t x, unsigned int count)
 
+These two functions return the value of C<x> after shifting all the bits
+by C<count> positions to the right or left respectively.
+
 =back
 
 =head2 ARITHMETIC
@@ -243,6 +264,9 @@ cache.
 =over 4
 
 =item x = ecb_mod (m, n) [MACRO]
+
+Returns the positive remainder of the modulo operation between C<m>
+and C<n>.
 
 =back
 
