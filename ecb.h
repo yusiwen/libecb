@@ -161,7 +161,7 @@ ecb_rotl32 (uint32_t x, unsigned int count)
   return (x >> (32 - count)) | (x << count);
 }
 
-#if ECB_GCC_VERSION(4,1)
+#if ECB_GCC_VERSION(4,3)
 # define ecb_bswap32(x) __builtin_bswap32 (x)
 #else
 ECB_GCC_VERSION uint32_t
