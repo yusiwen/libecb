@@ -1,7 +1,7 @@
 /*
  * libecb
  *
- * Copyright (c) 2011 Marc Alexander Lehmann
+ * Copyright (©) 2009-2011 Marc Alexander Lehmann
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modifica-
@@ -43,6 +43,7 @@
 # define ecb_prefetch(addr,rw,locality)
 #endif
 
+/* no emulation for ecb_decltype */
 #if ECB_GCC_VERSION(4,5)
 # define ecb_decltype(x) __decltype(x)
 #elif ECB_GCC_VERSION(3,0)
