@@ -250,6 +250,9 @@ Returns the number of bits set to 1 in C<x>. For example:
 
 =item uint32_t ecb_bswap32 (uint32_t x)
 
+These two functions return the value of the 16-bit (32-bit) variable
+C<x> after reversing the order of bytes.
+
 =item uint32_t ecb_rotr32 (uint32_t x, unsigned int count)
 
 =item uint32_t ecb_rotl32 (uint32_t x, unsigned int count)
@@ -275,6 +278,14 @@ and C<n>.
 =over 4
 
 =item element_count = ecb_array_length (name) [MACRO]
+
+Returns the number of elements in the array C<name>. For example:
+
+  int primes[] = { 2, 3, 5, 7, 11 };
+  int sum = 0;
+
+  for (i = 0; i < ecb_array_length (primes); i++)
+    sum += primes [i];
 
 =back
 
