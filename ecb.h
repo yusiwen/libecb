@@ -44,6 +44,11 @@ typedef int ecb_bool;
 # endif
 #endif
 
+#define ECB_CONCAT_(a, b) a ## b
+#define ECB_CONCAT(a, b) ECB_CONCAT_(a, b)
+#define ECB_STRINGIFY_(a) # a
+#define ECB_STRINGIFY(a) ECB_STRINGIFY_(a)
+
 #define ECB_HEADER_INLINE static ECB_INLINE
 
 #if ECB_GCC_VERSION(3,1)
@@ -136,7 +141,7 @@ ECB_HEADER_INLINE ecb_bool ecb_little_endian () ecb_const { return ecb_byteorder
 #if ecb_cplusplus_does_not_suck
 // does not work for local types (http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2657.htm)
 template<typename T, int N>
-static inline int array_length (const T (&arr)[N])
+static inline int ecb_array_length (const T (&arr)[N])
 {
   return N;
 }
@@ -145,13 +150,13 @@ static inline int array_length (const T (&arr)[N])
 #endif
 
 ECB_INLINE uint32_t
-ecb_rotate32_right (uint32_t c, unsigned int count = 1)
+ecb_rotr32 (uint32_t c, unsigned int count)
 {
   return (c << (32 - count)) | (c >> count);
 }
 
 ECB_INLINE uint32_t
-ecb_rotate32_left (uint32_t c, unsigned int count = 1)
+ecb_rotl32 (uint32_t c, unsigned int count)
 {
   return (c >> (32 - count)) | (c << count);
 }
