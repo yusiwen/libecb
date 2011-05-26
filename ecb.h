@@ -32,7 +32,17 @@
 
 #include <inttypes.h>
 
-#define ECB_GCC_VERSION(major,minor) (__GNUC__ > (major) || (__GNUC__ == (major) && __GNUC_MINOR__ >= (minor)))
+/* many compilers define _GNUC_ to some versions but then only implement
+ * what their idiot authors think are the "more important" extensions,
+ * causing enourmous grief for some better fake benchmark numbers or so.
+ * we try to detect these and simply assume they are not gcc - if they have
+ * an issue with that they should have done it right in the first place.
+ */
+#if defined(__INTEL_COMPILER) || defined(__SUNPRO_C) || defined(__llvm__)
+# define ECB_GCC_VERSION(major,minor) 0
+#else
+# define ECB_GCC_VERSION(major,minor) (__GNUC__ > (major) || (__GNUC__ == (major) && __GNUC_MINOR__ >= (minor)))
+#endif
 
 #ifndef __cplusplus
 # if __STDC_VERSION__ >= 199901L
@@ -162,7 +172,7 @@ ecb_rotl32 (uint32_t x, unsigned int count)
 }
 
 #if ECB_GCC_VERSION(4,3)
-# define ecb_bswap32(x) __builtin_bswap32 (x)
+ECB_GCC_VERSION uint32_t ecb_bswap32 (uint32_t x) { return __builtin_bswap32 (x); }
 #else
 ECB_GCC_VERSION uint32_t
 ecb_bswap32 (uint32_t x)
