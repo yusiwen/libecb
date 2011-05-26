@@ -31,7 +31,17 @@
 
 #define ECB_GCC_VERSION(major,minor) (__GNUC__ > (major) || (__GNUC__ == (major) && __GNUC_MINOR__ >= (minor)))
 
-#define ECB_HEADER_INLINE static inline
+#ifndef __cplusplus
+# if __STDC_VERSION__ >= 199901L
+#  define ECB_INLINE inline
+typedef _Bool ecb_bool;
+# else
+#  define ECB_INLINE inline /* yeah! */
+typedef int ecb_bool;
+# endif
+#endif
+
+#define ECB_HEADER_INLINE static ECB_INLINE
 
 #if ECB_GCC_VERSION(3,1)
 # define ecb_attribute(attrlist)        __attribute__(attrlist)
@@ -57,15 +67,15 @@
 #define ecb_unused   ecb_attribute ((unused))
 #define ecb_const    ecb_attribute ((const))
 #define ecb_pure     ecb_attribute ((pure))
-#define ecb_hot      ecb_attribute ((hot))	// 4.3
-#define ecb_cold     ecb_attribute ((cold))	// 4.3
+#define ecb_hot      ecb_attribute ((hot))	/* 4.3 */
+#define ecb_cold     ecb_attribute ((cold))	/* 4.3 */
 
 #if ECB_GCC_VERSION(4,5)
 # define ecb_unreachable() __builtin_unreachable ()
 #else
- /* this seems to work fine, but gcc always emits a warning for it :/ */
- ECB_HEADER_INLINE void ecb_unreachable () ecb_attribute ((noreturn));
- ECB_HEADER_INLINE void ecb_unreachable () { }
+/* this seems to work fine, but gcc always emits a warning for it :/ */
+ECB_HEADER_INLINE void ecb_unreachable () ecb_attribute ((noreturn));
+ECB_HEADER_INLINE void ecb_unreachable () { }
 #endif
 
 /* put into ifs if you are very sure that the expression */
@@ -79,15 +89,15 @@
 
 /* count trailing zero bits and count # of one bits */
 #if ECB_GCC_VERSION(3,4)
-ECB_HEADER_INLINE int ecb_ctz      (unsigned int x) { return __builtin_ctz      (x); }
-ECB_HEADER_INLINE int ecb_popcount (unsigned int x) { return __builtin_popcount (x); }
+ECB_HEADER_INLINE int ecb_ctz32      (unsigned int x) { return __builtin_ctz      (x); }
+ECB_HEADER_INLINE int ecb_popcount32 (unsigned int x) { return __builtin_popcount (x); }
 #else
 ECB_HEADER_INLINE
-ecb_ctz (unsigned int x) ecb_const
+ecb_ctz32 (unsigned int x) ecb_const
 {
   int r = 0;
 
-  x &= -x; // this isolates the lowest bit
+  x &= -x; /* this isolates the lowest bit */
 
   if (x & 0xaaaaaaaa) r +=  1;
   if (x & 0xcccccccc) r +=  2;
@@ -99,7 +109,7 @@ ecb_ctz (unsigned int x) ecb_const
 }
 
 ECB_HEADER_INLINE
-ecb_popcount (unsigned int x) ecb_const
+ecb_popcount32 (unsigned int x) ecb_const
 {
   x -=  (x >> 1) & 0x55555555;
   x  = ((x >> 2) & 0x33333333) + (x & 0x33333333);
@@ -117,11 +127,8 @@ ecb_byteorder_helper () ecb_const
   return *(unsigned char *)&u;
 }
 
-ECB_HEADER_INLINE bool ecb_big_endian    () ecb_const { return ecb_byteorder_helper () == 0x11; };
-ECB_HEADER_INLINE bool ecb_network       () ecb_const { return big_endian ();                   };
-ECB_HEADER_INLINE bool ecb_little_endian () ecb_const { return ecb_byteorder_helper () == 0x44; };
-ECB_HEADER_INLINE bool ecb_vax           () ecb_const { return little_endian ();                };
-
+ECB_HEADER_INLINE ecb_bool ecb_big_endian    () ecb_const { return ecb_byteorder_helper () == 0x11; };
+ECB_HEADER_INLINE ecb_bool ecb_little_endian () ecb_const { return ecb_byteorder_helper () == 0x44; };
 
 #endif
 
