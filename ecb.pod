@@ -236,8 +236,8 @@ bit set), starting from 0. If C<x> is 0 the result is undefined. A
 common use case is to compute the integer binary logarithm, i.e.,
 floor(log2(n)). For example:
 
-  ecb_ctz32(3) = 1
-  ecb_ctz32(6) = 2
+  ecb_ctz32(3) = 0
+  ecb_ctz32(6) = 1
 
 =item int ecb_popcount32 (uint32_t x)
 
