@@ -89,8 +89,8 @@ ECB_HEADER_INLINE void ecb_unreachable () { }
 /* put into ifs if you are very sure that the expression */
 /* is mostly true or mosty false. note that these return */
 /* booleans, not the expression. */
-#define ecb_unlikely(expr) ecb_expect ((expr) ? 1 : 0, 0)
-#define ecb_likely(expr)   ecb_expect ((expr) ? 1 : 0, 1)
+#define ecb_unlikely(expr) ecb_expect (!!(expr), 0)
+#define ecb_likely(expr)   ecb_expect (!!(expr), 1)
 
 /* try to tell the compiler that some condition is definitely true */
 #define ecb_assume(cond) do { if (!(cond)) unreachable (); } while (0)
