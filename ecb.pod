@@ -1,15 +1,56 @@
-=head1 LIBECB
+=head1 LIBECB - e-C-Builtins
 
-You suck, we don't(tm)
+=head2 ABOUT LIBECB
+
+Libecb is currently a simple header file that doesn't require any
+configuration to use or include in your project.
+
+It's part of the e-suite of libraries, other memembers of which include
+libev and libeio.
+
+Its homepage can be found here:
+
+    http://software.schmorp.de/pkg/libecb
+
+It mainly provides a number of wrappers around GCC built-ins, together
+with replacement functions for other compilers. In addition to this,
+it provides a number of other lowlevel C utilities, such endienness
+detection, byte swapping or bit rotations.
+
+More might come.
 
 =head2 ABOUT THE HEADER
 
-- how to include it
-- it includes inttypes.h
-- no .a
-- whats a bool
-- function mean macro or function
-- macro means untyped
+At the moment, all you have to do is copy F<ecb.h> somewhere where your
+compiler can find it and include it:
+
+   #include <ecb.h>
+
+The header should work fine for both C and C++ compilation, and gives you
+all of F<inttypes.h> in addition to the ECB symbols.
+
+There are currently no objetc files to link to - future versions might
+come with an (optional) object code library to link against, to reduce
+code size or gain access to additional features.
+
+It also currently includes everything from F<inttypes.h>.
+
+=head2 ABOUT THIS MANUAL / CONVENTIONS
+
+This manual mainly describes each (public) function available after
+including the F<ecb.h> header. The header might define other symbols than
+these, but these are not part of the public API, and not supported in any
+way.
+
+When the manual mentions a "function" then this could be defined either as
+as inline function, a macro, or an external symbol.
+
+When functions use a concrete standard type, such as C<int> or
+C<uint32_t>, then the corresponding function works only with that type. If
+only a generic name is used (C<expr>, C<cond>, C<value> and so on), then
+the corresponding function relies on C to implement the correct types, and
+is usually implemented as a macro. Specifically, a "bool" in this manual
+refers to any kind of boolean value, not a specific type.
 
 =head2 GCC ATTRIBUTES
 
@@ -63,7 +104,7 @@ is rarely called and large enough for inlining not to be helpful.
 
 =over 4
 
-=item bool ecb_is_constant(expr) [MACRO]
+=item bool ecb_is_constant(expr)
 
 Returns true iff the expression can be deduced to be a compile-time
 constant, and false otherwise.
@@ -91,7 +132,7 @@ when the passed number is a constant and also a power of two (C<n & (n -
       : (n * (uint32_t)rndm16 ()) >> 16;
   }
 
-=item bool ecb_expect (expr, value) [MACRO]
+=item bool ecb_expect (expr, value)
 
 Evaluates C<expr> and returns it. In addition, it tells the compiler that
 the C<expr> evaluates to C<value> a lot, which can be used for static
@@ -100,9 +141,9 @@ branch optimisations.
 Usually, you want to use the more intuitive C<ecb_likely> and
 C<ecb_unlikely> functions instead.
 
-=item bool ecb_likely (bool) [MACRO]
+=item bool ecb_likely (bool)
 
-=item bool ecb_unlikely (bool) [MACRO]
+=item bool ecb_unlikely (bool)
 
 These two functions expect a expression that is true or false and return
 C<1> or C<0>, respectively, so when used in the condition of an C<if> or
@@ -142,7 +183,7 @@ you expect that most checks will turn out to be false:
       real_reserve_method (size); /* presumably noinline */
   }
 
-=item bool ecb_assume (cond) [MACRO]
+=item bool ecb_assume (cond)
 
 Try to tell the compiler that some condition is true, even if it's not
 obvious.
@@ -178,7 +219,7 @@ This function does nothing itself, except tell the compiler that it will
 never be executed. Apart from suppressing a warning in some cases, this
 function can be used to implement C<ecb_assume> or similar functions.
 
-=item bool ecb_prefetch (addr, rw, locality) [MACRO]
+=item bool ecb_prefetch (addr, rw, locality)
 
 Tells the compiler to try to prefetch memory at the given C<addr>ess
 for either reading (C<rw> = 0) or writing (C<rw> = 1). A C<locality> of
@@ -266,10 +307,15 @@ by C<count> positions to the right or left respectively.
 
 =over 4
 
-=item x = ecb_mod (m, n) [MACRO]
+=item x = ecb_mod (m, n)
 
-Returns the positive remainder of the modulo operation between C<m>
-and C<n>.
+Returns the positive remainder of the modulo operation between C<m> and
+C<n>. Unlike the C moduloe operator C<%>, this function ensures that the
+return value is always positive).
+
+C<n> must be strictly positive (i.e. C<< >1 >>), while C<m> must be
+negatable, that is, both C<m> and C<-m> must be representable in its
+type.
 
 =back
 
