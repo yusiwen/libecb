@@ -34,7 +34,8 @@
 
 /* many compilers define _GNUC_ to some versions but then only implement
  * what their idiot authors think are the "more important" extensions,
- * causing enourmous grief for some better fake benchmark numbers or so.
+ * causing enourmous grief in return for some better fake benchmark numbers.
+ * or so.
  * we try to detect these and simply assume they are not gcc - if they have
  * an issue with that they should have done it right in the first place.
  */
