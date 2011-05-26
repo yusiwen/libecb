@@ -148,7 +148,7 @@ ecb_bswap32 (uint32_t x)
 }
 #endif
 
-ECB_HEADER_INLINE void ecb_unreachable (void) ecb_attribute ((noreturn));
+ECB_HEADER_INLINE void ecb_unreachable (void) ecb_noreturn;
 #if ECB_GCC_VERSION(4,5)
 ECB_HEADER_INLINE void ecb_unreachable (void) { __builtin_unreachable (); }
 #else
