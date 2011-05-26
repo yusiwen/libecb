@@ -1,0 +1,56 @@
+
+=head2 GCC ATTRIBUTES
+
+=over 4
+
+=item ecb_attribute(attrlist)
+=item ecb_noinline ecb_attribute ((noinline))
+=item ecb_noreturn ecb_attribute ((noreturn))
+=item ecb_unused   ecb_attribute ((unused))
+=item ecb_const    ecb_attribute ((const))
+=item ecb_pure     ecb_attribute ((pure))
+=item ecb_hot      ecb_attribute ((hot))	/* 4.3 */
+=item ecb_cold     ecb_attribute ((cold))	/* 4.3 */
+
+   =back
+
+=head2 OPTIMISATION HINTS
+
+=over 4
+
+=item bool ecb_is_constant(expr)
+
+=item bool ecb_expect(expr,value)
+
+=item bool ecb_unlikely(bool)
+
+=item bool ecb_likely(bool)
+
+=item bool ecb_assume(cond)
+
+=item bool ecb_unreachable()
+
+=item bool ecb_prefetch(addr,rw,locality)
+
+   =back
+
+=head2 BIT FIDDLING / BITSTUFFS
+
+bool ecb_big_endian ();
+bool ecb_little_endian ();
+int ecb_ctz32 (uint32_t x);
+int ecb_popcount32 (uint32_t x);
+uint32_t ecb_bswap32 (uint32_t x);
+uint32_t ecb_bswap16 (uint32_t x);
+uint32_t ecb_rotr32 (uint32_t x, unsigned int count);
+uint32_t ecb_rotl32 (uint32_t x, unsigned int count);
+
+=head2 ARITHMETIC
+
+x = ecb_mod (m, n)
+
+=head2 UTILITY
+
+ecb_array_length (name)
+
+
