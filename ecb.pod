@@ -68,7 +68,7 @@ constant, and false otherwise.
 
 For example, when you have a C<rndm16> function that returns a 16 bit
 random number, and you have a function that maps this to a range from
-0..n-1, then you could use this inline fucntion in a header file:
+0..n-1, then you could use this inline function in a header file:
 
   ecb_inline uint32_t
   rndm (uint32_t n)
