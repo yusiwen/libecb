@@ -60,8 +60,13 @@ blabla where to put, what others
 
 =item ecb_attribute ((attrs...))
 
-A simple wrapper that expands to C<__attribute__((attrs))> on GCC, and
-to nothing on other compilers, so the effect is that only GCC sees these.
+A simple wrapper that expands to C<__attribute__((attrs))> on GCC, and to
+nothing on other compilers, so the effect is that only GCC sees these.
+
+Example: use the C<deprecated> attribute on a function.
+
+  ecb_attribute((__deprecated__)) void
+  do_not_use_me_anymore (void);
 
 =item ecb_unused
 
@@ -69,16 +74,16 @@ Marks a function or a variable as "unused", which simply suppresses a
 warning by GCC when it detects it as unused. This is useful when you e.g.
 declare a variable but do not always use it:
 
-   {
-     int var ecb_unused;
+  {
+    int var ecb_unused;
 
-     #ifdef SOMECONDITION
-        var = ...;
-        return var;
-     #else
-        return 0;
-     #endif
-   }
+    #ifdef SOMECONDITION
+       var = ...;
+       return var;
+    #else
+       return 0;
+    #endif
+  }
 
 =item ecb_noinline
 
@@ -141,9 +146,9 @@ branch optimisations.
 Usually, you want to use the more intuitive C<ecb_likely> and
 C<ecb_unlikely> functions instead.
 
-=item bool ecb_likely (bool)
+=item bool ecb_likely (cond)
 
-=item bool ecb_unlikely (bool)
+=item bool ecb_unlikely (cond)
 
 These two functions expect a expression that is true or false and return
 C<1> or C<0>, respectively, so when used in the condition of an C<if> or
@@ -277,15 +282,15 @@ bit set), starting from 0. If C<x> is 0 the result is undefined. A
 common use case is to compute the integer binary logarithm, i.e.,
 floor(log2(n)). For example:
 
-  ecb_ctz32(3) = 0
-  ecb_ctz32(6) = 1
+  ecb_ctz32 (3) = 0
+  ecb_ctz32 (6) = 1
 
 =item int ecb_popcount32 (uint32_t x)
 
 Returns the number of bits set to 1 in C<x>. For example:
 
-  ecb_popcount32(7) = 3
-  ecb_popcount32(255) = 8
+  ecb_popcount32 (7) = 3
+  ecb_popcount32 (255) = 8
 
 =item uint32_t ecb_bswap16 (uint32_t x)
 
