@@ -17,6 +17,9 @@ with replacement functions for other compilers. In addition to this,
 it provides a number of other lowlevel C utilities, such as endianness
 detection, byte swapping or bit rotations.
 
+Or in other words, things that should be built-in into any standard C
+system, but isn't.
+
 More might come.
 
 =head2 ABOUT THE HEADER
@@ -93,15 +96,112 @@ is rarely called and large enough for inlining not to be helpful.
 
 =item ecb_noreturn
 
+Marks a function as "not returning, ever". Some typical functions that
+don't return are C<exit> or C<abort> (which really works hard to not
+return), and now you can make your own:
+
+   ecb_noreturn void
+   my_abort (const char *errline)
+   {
+     puts (errline);
+     abort ();
+   }
+
+In this case, the compiler would probbaly be smart enough to decude it on
+it's own, so this is mainly useful for declarations.
+
 =item ecb_const
+
+Declares that the function only depends on the values of it's arguments,
+much like a mathematical function. It specifically does not read or write
+any memory any arguments might point to, global variables, or call any
+non-const functions. It also must not have any side effects.
+
+Such a function can be optimised much more aggressively by the compiler -
+for example, multiple calls with the same arguments can be optimised into
+a single call, which wouldn't be possible if the compiler would have to
+expect any side effects.
+
+It is best suited for functions in the sense of mathematical functions,
+such as a function return the square root of its input argument.
+
+Not suited would be a function that calculates the hash of some memory
+area you pass in, prints some messages or looks at a global variable to
+decide on rounding.
+
+See C<ecb_pure> for a slightly less restrictive class of functions.
 
 =item ecb_pure
 
+Similar to C<ecb_const>, declares a function that has no side
+effects. Unlike C<ecb_const>, the function is allowed to examine global
+variables and any other memory areas (such as the ones passed to it via
+pointers).
+
+While these functions cannot be optimised as aggressively as C<ecb_const>
+functions, they can still be optimised away in many occasions, and the
+compiler has more freedom in moving calls to them around.
+
+Typical examples for such functions would be C<strlen> or C<memcmp>. A
+function that calculates the MD5 sum of some input and updates some MD5
+state passed as argument would I<NOT> be pure, however, as it would modify
+some memory area that is not the return value.
+
 =item ecb_hot
+
+This declares a function as "hot" with regards to the cache - the function
+is used so often, that it is very beneficial to keep it in the cache if
+possible.
+
+The compiler reacts by trying to place hot functions near to each other in
+memory.
+
+Whether a function is hot or not often depend son the whole program,
+and less on the function itself. C<ecb_cold> is likely more useful in
+practise.
 
 =item ecb_cold
 
+The opposite of C<ecb_hot> - declares a function as "cold" with regards to
+the cache, or in other words, this function is not called often, or not at
+speed-critical times, and keeping it in the cache might be a waste of said
+cache.
+
+In addition to placing cold functions together (or at least away from hot
+functions), this knowledge can be used in other ways, for example, the
+function will be optimised for size, as opposed to speed, and codepaths
+leading to calls to those functions can automatically be marked as if
+C<ecb_unlikel> had been used to reach them.
+
+Good examples for such functions would be error reporting functions, or
+functions only called in exceptional or rare cases.
+
 =item ecb_artificial
+
+Declares the function as "artificial", in this case meaning that this
+function is not really mean to be a function, but more like an accessor
+- many methods in C++ classes are mere accessor functions, and having a
+crash reported in such a method, or single-stepping through them, is not
+usually so helpful, especially when it's inlined to just a few instructions.
+
+Marking them as artificial will instruct the debugger about just this,
+leading to happier debugging and thus happier lives.
+
+Example: in some kind of smart-pointer class, mark the pointer accessor as
+artificial, so that the whole class acts more like a pointer and less like
+some C++ abstraction monster.
+
+  template<typename T>
+  struct my_smart_ptr
+  {
+    T *value;
+
+    ecb_artificial
+    operator T *()
+    {
+      return value;
+    }
+  };
 
 =back
 
