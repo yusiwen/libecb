@@ -137,6 +137,7 @@ ecb_popcount32 (uint32_t x)
 
 #if ECB_GCC_VERSION(4,3)
 # define ecb_bswap32(x) __builtin_bswap32 (x)
+# define ecb_bswap16(x) (__builtin_bswap32(x) >> 16)
 #else
 ECB_HEADER_INLINE uint32_t ecb_bswap32 (uint32_t x) ecb_const;
 ECB_HEADER_INLINE uint32_t
@@ -145,6 +146,15 @@ ecb_bswap32 (uint32_t x)
   return (x >> 24)
       | ((x >>  8) & 0x0000ff00)
       | ((x <<  8) & 0x00ff0000)
+      |  (x << 24);
+}
+
+ECB_HEADER_INLINE uint32_t ecb_bswap16 (uint32_t x) ecb_const;
+ECB_HEADER_INLINE uint32_t
+ecb_bswap16 (uint32_t x)
+{
+  return ((x >>  8) & 0xff)
+      |  ((x <<  8) & 0x00ff0000)
       |  (x << 24);
 }
 #endif
