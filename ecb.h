@@ -29,6 +29,8 @@
 #ifndef ECB_H
 #define ECB_H
 
+#include <inttypes.h>
+
 #define ECB_GCC_VERSION(major,minor) (__GNUC__ > (major) || (__GNUC__ == (major) && __GNUC_MINOR__ >= (minor)))
 
 #ifndef __cplusplus
@@ -81,19 +83,19 @@ ECB_HEADER_INLINE void ecb_unreachable () { }
 /* put into ifs if you are very sure that the expression */
 /* is mostly true or mosty false. note that these return */
 /* booleans, not the expression. */
-#define ecb_expect_false(expr) ecb_expect ((expr) ? 1 : 0, 0)
-#define ecb_expect_true(expr)  ecb_expect ((expr) ? 1 : 0, 1)
+#define ecb_unlikely(expr) ecb_expect ((expr) ? 1 : 0, 0)
+#define ecb_likely(expr)   ecb_expect ((expr) ? 1 : 0, 1)
 
 /* try to tell the compiler that some condition is definitely true */
 #define ecb_assume(cond) do { if (!(cond)) unreachable (); } while (0)
 
 /* count trailing zero bits and count # of one bits */
 #if ECB_GCC_VERSION(3,4)
-ECB_HEADER_INLINE int ecb_ctz32      (unsigned int x) { return __builtin_ctz      (x); }
-ECB_HEADER_INLINE int ecb_popcount32 (unsigned int x) { return __builtin_popcount (x); }
+ECB_HEADER_INLINE int ecb_ctz32      (uint32_t x) { return __builtin_ctz      (x); }
+ECB_HEADER_INLINE int ecb_popcount32 (uint32_t x) { return __builtin_popcount (x); }
 #else
 ECB_HEADER_INLINE
-ecb_ctz32 (unsigned int x) ecb_const
+ecb_ctz32 (uint32_t x) ecb_const
 {
   int r = 0;
 
@@ -109,7 +111,7 @@ ecb_ctz32 (unsigned int x) ecb_const
 }
 
 ECB_HEADER_INLINE
-ecb_popcount32 (unsigned int x) ecb_const
+ecb_popcount32 (uint32_t x) ecb_const
 {
   x -=  (x >> 1) & 0x55555555;
   x  = ((x >> 2) & 0x33333333) + (x & 0x33333333);
@@ -140,6 +142,18 @@ static inline int array_length (const T (&arr)[N])
 #else
 #define ecb_array_length(name) (sizeof (name) / sizeof (name [0]))
 #endif
+
+ECB_INLINE uint32_t
+ecb_rotate32_right (uint32_t c, unsigned int count = 1)
+{
+  return (c << (32 - count)) | (c >> count);
+}
+
+ECB_INLINE uint32_t
+ecb_rotate32_left (uint32_t c, unsigned int count = 1)
+{
+  return (c >> (32 - count)) | (c << count);
+}
 
 #endif
 
