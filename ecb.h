@@ -100,12 +100,11 @@ typedef int ecb_bool;
 #define ecb_assume(cond) do { if (!(cond)) unreachable (); } while (0)
 
 /* count trailing zero bits and count # of one bits */
-ECB_HEADER_INLINE int ecb_ctz32      (uint32_t x) ecb_const;
-ECB_HEADER_INLINE int ecb_popcount32 (uint32_t x) ecb_const;
 #if ECB_GCC_VERSION(3,4)
-ECB_HEADER_INLINE int ecb_ctz32      (uint32_t x) { return __builtin_ctz      (x); }
-ECB_HEADER_INLINE int ecb_popcount32 (uint32_t x) { return __builtin_popcount (x); }
+#define ecb_ctz32      (x) __builtin_ctz      (x)
+#define ecb_popcount32 (x) __builtin_popcount (x)
 #else
+ECB_HEADER_INLINE int ecb_ctz32      (uint32_t x) ecb_const;
 ECB_HEADER_INLINE
 ecb_ctz32 (uint32_t x)
 {
@@ -122,6 +121,7 @@ ecb_ctz32 (uint32_t x)
   return r;
 }
 
+ECB_HEADER_INLINE int ecb_popcount32 (uint32_t x) ecb_const;
 ECB_HEADER_INLINE
 ecb_popcount32 (uint32_t x)
 {
@@ -134,10 +134,10 @@ ecb_popcount32 (uint32_t x)
 }
 #endif
 
-ECB_HEADER_INLINE uint32_t ecb_bswap32 (uint32_t x) ecb_const;
 #if ECB_GCC_VERSION(4,3)
-ECB_HEADER_INLINE uint32_t ecb_bswap32 (uint32_t x) { return __builtin_bswap32 (x); }
+# define ecb_bswap32(x) __builtin_bswap32 (x)
 #else
+ECB_HEADER_INLINE uint32_t ecb_bswap32 (uint32_t x) ecb_const;
 ECB_HEADER_INLINE uint32_t
 ecb_bswap32 (uint32_t x)
 {
@@ -148,16 +148,15 @@ ecb_bswap32 (uint32_t x)
 }
 #endif
 
-ECB_HEADER_INLINE void ecb_unreachable (void) ecb_noreturn;
 #if ECB_GCC_VERSION(4,5)
-ECB_HEADER_INLINE void ecb_unreachable (void) { __builtin_unreachable (); }
+# define ecb_unreachable() __builtin_unreachable ()
 #else
 /* this seems to work fine, but gcc always emits a warning for it :/ */
+ECB_HEADER_INLINE void ecb_unreachable (void) ecb_attribute ((noreturn));
 ECB_HEADER_INLINE void ecb_unreachable (void) { }
 #endif
 
 ECB_HEADER_INLINE unsigned char ecb_byteorder_helper () ecb_const;
-
 ECB_HEADER_INLINE unsigned char
 ecb_byteorder_helper ()
 {
