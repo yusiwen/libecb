@@ -73,7 +73,7 @@ random number, and you have a function that maps this to a range from
   ecb_inline uint32_t
   rndm (uint32_t n)
   {
-    return n * (uint32_t)rndm16 ()) >> 16;
+    return (n * (uint32_t)rndm16 ()) >> 16;
   }
 
 However, for powers of two, you could use a normal mask, but that is only
@@ -86,7 +86,7 @@ when the passed number is a constant and also a power of two (C<n & (n -
   {
     return is_constant (n) && !(n & (n - 1))
       ? rndm16 () & (num - 1)
-      : (uint32_t)rndm16 ()) >> 16;
+      : (n * (uint32_t)rndm16 ()) >> 16;
   }
 
 =item bool ecb_expect(expr,value)
