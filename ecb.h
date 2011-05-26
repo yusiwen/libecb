@@ -167,18 +167,18 @@ ECB_HEADER_INLINE void ecb_unreachable (void) ecb_noreturn;
 ECB_HEADER_INLINE void ecb_unreachable (void) { }
 #endif
 
-ECB_HEADER_INLINE unsigned char ecb_byteorder_helper () ecb_const;
+ECB_HEADER_INLINE unsigned char ecb_byteorder_helper (void) ecb_const;
 ECB_HEADER_INLINE unsigned char
-ecb_byteorder_helper ()
+ecb_byteorder_helper (void)
 {
   const uint32_t u = 0x11223344;
   return *(unsigned char *)&u;
 }
 
-ECB_HEADER_INLINE ecb_bool ecb_big_endian    () ecb_const;
-ECB_HEADER_INLINE ecb_bool ecb_big_endian    () { return ecb_byteorder_helper () == 0x11; };
-ECB_HEADER_INLINE ecb_bool ecb_little_endian () ecb_const;
-ECB_HEADER_INLINE ecb_bool ecb_little_endian () { return ecb_byteorder_helper () == 0x44; };
+ECB_HEADER_INLINE ecb_bool ecb_big_endian    (void) ecb_const;
+ECB_HEADER_INLINE ecb_bool ecb_big_endian    (void) { return ecb_byteorder_helper () == 0x11; };
+ECB_HEADER_INLINE ecb_bool ecb_little_endian (void) ecb_const;
+ECB_HEADER_INLINE ecb_bool ecb_little_endian (void) { return ecb_byteorder_helper () == 0x44; };
 
 #define ecb_mod(m, n) ((m) < 0 ? ((n) - (-(m) % (n))) : ((m) % (n)))
 
