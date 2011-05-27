@@ -417,7 +417,7 @@ after reversing the order of bytes (0x11223344 becomes 0x44332211).
 
 =item uint32_t ecb_rotl32 (uint32_t x, unsigned int count)
 
-These two functions return the value of C<x> after shifting all the bits
+These two functions return the value of C<x> after rotating all the bits
 by C<count> positions to the right or left respectively.
 
 Current GCC versions understand these functions and usually compile them
