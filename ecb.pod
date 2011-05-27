@@ -18,7 +18,7 @@ it provides a number of other lowlevel C utilities, such as endianness
 detection, byte swapping or bit rotations.
 
 Or in other words, things that should be built-in into any standard C
-system, but isn't.
+system, but aren't.
 
 More might come.
 
