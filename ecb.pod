@@ -410,8 +410,8 @@ Returns the number of bits set to 1 in C<x>. For example:
 
 =item uint32_t ecb_bswap32 (uint32_t x)
 
-These two functions return the value of the 16-bit (32-bit) variable
-C<x> after reversing the order of bytes.
+These two functions return the value of the 16-bit (32-bit) value C<x>
+after reversing the order of bytes (0x11223344 becomes 0x44332211).
 
 =item uint32_t ecb_rotr32 (uint32_t x, unsigned int count)
 
