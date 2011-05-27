@@ -436,7 +436,7 @@ C<n>. Unlike the C modulo operator C<%>, this function ensures that the
 return value is always positive - ISO C guarantees very little when
 negative numbers are used with C<%>.
 
-C<n> must be strictly positive (i.e. C<< >1 >>), while C<m> must be
+C<n> must be strictly positive (i.e. C<< >= 1 >>), while C<m> must be
 negatable, that is, both C<m> and C<-m> must be representable in its
 type.
 
@@ -446,7 +446,7 @@ type.
 
 =over 4
 
-=item element_count = ecb_array_length (name) [MACRO]
+=item element_count = ecb_array_length (name)
 
 Returns the number of elements in the array C<name>. For example:
 
