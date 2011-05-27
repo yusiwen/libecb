@@ -57,7 +57,21 @@ refers to any kind of boolean value, not a specific type.
 
 =head2 GCC ATTRIBUTES
 
-blabla where to put, what others
+A major part of libecb deals with GCC attributes. These are additional
+attributes that you cna assign to functions, variables and sometimes even
+types - much like C<const> or C<volatile> in C.
+
+While GCC allows declarations to show up in many surprising places,
+but not in many expeted places, the safest way is to put attribute
+declarations before the whole declaration:
+
+   ecb_const int mysqrt (int a);
+   ecb_unused int i;
+
+For variables, it is often nicer to put the attribute after the name, and
+avoid multiple declarations using commas:
+
+   int i ecb_unused;
 
 =over 4
 
@@ -406,6 +420,9 @@ C<x> after reversing the order of bytes.
 These two functions return the value of C<x> after shifting all the bits
 by C<count> positions to the right or left respectively.
 
+Current GCC versions understand these functions and usually compile them
+to "optimal" code (e.g. a single C<roll> on x86).
+
 =back
 
 =head2 ARITHMETIC
@@ -416,7 +433,8 @@ by C<count> positions to the right or left respectively.
 
 Returns the positive remainder of the modulo operation between C<m> and
 C<n>. Unlike the C modulo operator C<%>, this function ensures that the
-return value is always positive).
+return value is always positive - ISO C guarantees very little when
+negative numbers are used with C<%>.
 
 C<n> must be strictly positive (i.e. C<< >1 >>), while C<m> must be
 negatable, that is, both C<m> and C<-m> must be representable in its
