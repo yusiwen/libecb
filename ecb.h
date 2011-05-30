@@ -55,6 +55,9 @@ typedef _Bool ecb_bool;
 #  define ECB_INLINE inline /* yeah! */
 typedef int ecb_bool;
 # endif
+#else
+# define ECB_INLINE inline
+typedef bool ecb_bool;
 #endif
 
 #define ECB_CONCAT_(a, b) a ## b
