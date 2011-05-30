@@ -4,7 +4,7 @@ This project delivers you many gcc builtins, attributes and a number of
 generally useful low-level functions, such as popcount, expect, prefetch,
 noinline, assume, unreachable and so on.
 
-The home of the library is
+The home of the library is:
 
    http://software.schmorp.de/pkg/libecb
 
