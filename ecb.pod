@@ -17,8 +17,9 @@ with replacement functions for other compilers. In addition to this,
 it provides a number of other lowlevel C utilities, such as endianness
 detection, byte swapping or bit rotations.
 
-Or in other words, things that should be built-in into any standard C
-system, but aren't.
+Or in other words, things that should be built into any standard C system,
+but aren't, implemented as efficient as possible with GCC, and still
+correct with other compilers.
 
 More might come.
 
@@ -388,13 +389,15 @@ These two functions return true if the byte order is big endian
 (most-significant byte first) or little endian (least-significant byte
 first) respectively.
 
+On systems that are neither, their return values are unspecified.
+
 =item int ecb_ctz32 (uint32_t x)
 
 Returns the index of the least significant bit set in C<x> (or
-equivalently the number of bits set to 0 before the least significant
-bit set), starting from 0. If C<x> is 0 the result is undefined. A
-common use case is to compute the integer binary logarithm, i.e.,
-floor(log2(n)). For example:
+equivalently the number of bits set to 0 before the least significant bit
+set), starting from 0. If C<x> is 0 the result is undefined. A common use
+case is to compute the integer binary logarithm, i.e.,  C<floor (log2
+(n))>. For example:
 
   ecb_ctz32 (3) = 0
   ecb_ctz32 (6) = 1
@@ -432,13 +435,25 @@ to "optimal" code (e.g. a single C<roll> on x86).
 =item x = ecb_mod (m, n)
 
 Returns the positive remainder of the modulo operation between C<m> and
-C<n>. Unlike the C modulo operator C<%>, this function ensures that the
-return value is always positive - ISO C guarantees very little when
-negative numbers are used with C<%>.
+C<n>, using floored division. Unlike the C modulo operator C<%>, this
+function ensures that the return value is always positive and that the two
+numbers I<m> and I<m' = m + i * n> result in the same value modulo I<n> -
+the C<%> operator usually has a behaviour change at C<m = 0>.
 
 C<n> must be strictly positive (i.e. C<< >= 1 >>), while C<m> must be
 negatable, that is, both C<m> and C<-m> must be representable in its
 type.
+
+Current GCC versions compile this into an efficient branchless sequence on
+many systems.
+
+For example, when you want to rotate forward through the members of an
+array for increasing C<m> (which might be negative), then you should use
+C<ecb_mod>, as the C<%> operator might give either negative results, or
+change direction for negative values:
+
+   for (m = -100; m <= 100; ++m)
+     int elem = myarray [ecb_mod (m, ecb_array_length (myarray))];
 
 =back
 
