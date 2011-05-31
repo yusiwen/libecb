@@ -434,15 +434,18 @@ to "optimal" code (e.g. a single C<roll> on x86).
 
 =item x = ecb_mod (m, n)
 
-Returns the positive remainder of the modulo operation between C<m> and
-C<n>, using floored division. Unlike the C modulo operator C<%>, this
-function ensures that the return value is always positive and that the two
-numbers I<m> and I<m' = m + i * n> result in the same value modulo I<n> -
-the C<%> operator usually has a behaviour change at C<m = 0>.
+Returns C<m> modulo C<n>, which is the same as the positive remainder
+of the division operation between C<m> and C<n>, using floored
+division. Unlike the C remainder operator C<%>, this function ensures that
+the return value is always positive and that the two numbers I<m> and
+I<m' = m + i * n> result in the same value modulo I<n> - in other words,
+C<ecb_mod> implements the mathematical modulo operation, which is missing
+in the language.
 
 C<n> must be strictly positive (i.e. C<< >= 1 >>), while C<m> must be
 negatable, that is, both C<m> and C<-m> must be representable in its
-type.
+type (this typically includes the minimum signed integer value, the same
+limitation as for C</> and C<%> in C).
 
 Current GCC versions compile this into an efficient branchless sequence on
 many systems.
