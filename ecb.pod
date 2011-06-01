@@ -186,7 +186,7 @@ In addition to placing cold functions together (or at least away from hot
 functions), this knowledge can be used in other ways, for example, the
 function will be optimised for size, as opposed to speed, and codepaths
 leading to calls to those functions can automatically be marked as if
-C<ecb_unlikely> had been used to reach them.
+C<ecb_expect_false> had been used to reach them.
 
 Good examples for such functions would be error reporting functions, or
 functions only called in exceptional or rare cases.
@@ -258,12 +258,12 @@ Evaluates C<expr> and returns it. In addition, it tells the compiler that
 the C<expr> evaluates to C<value> a lot, which can be used for static
 branch optimisations.
 
-Usually, you want to use the more intuitive C<ecb_likely> and
-C<ecb_unlikely> functions instead.
+Usually, you want to use the more intuitive C<ecb_expect_true> and
+C<ecb_expect_false> functions instead.
 
-=item bool ecb_likely (cond)
+=item bool ecb_expect_true (cond)
 
-=item bool ecb_unlikely (cond)
+=item bool ecb_expect_false (cond)
 
 These two functions expect a expression that is true or false and return
 C<1> or C<0>, respectively, so when used in the condition of an C<if> or
@@ -271,24 +271,30 @@ other conditional statement, it will not change the program:
 
   /* these two do the same thing */
   if (some_condition) ...;
-  if (ecb_likely (some_condition)) ...;
+  if (ecb_expect_true (some_condition)) ...;
 
-However, by using C<ecb_likely>, you tell the compiler that the condition
-is likely to be true (and for C<ecb_unlikely>, that it is unlikely to be
-true).
+However, by using C<ecb_expect_true>, you tell the compiler that the
+condition is likely to be true (and for C<ecb_expect_false>, that it is
+unlikely to be true).
 
 For example, when you check for a null pointer and expect this to be a
-rare, exceptional, case, then use C<ecb_unlikely>:
+rare, exceptional, case, then use C<ecb_expect_false>:
 
   void my_free (void *ptr)
   {
-    if (ecb_unlikely (ptr == 0))
+    if (ecb_expect_false (ptr == 0))
       return;
   }
 
 Consequent use of these functions to mark away exceptional cases or to
 tell the compiler what the hot path through a function is can increase
 performance considerably.
+
+You might know these functions under the name C<likely> and C<unlikely>
+- while these are common aliases, we find that the expect name is easier
+to understand when quickly skimming code. If you wish, you can use
+C<ecb_likely> instead of C<ecb_expect_true> and C<ecb_unlikely> instead of
+C<ecb_expect_false> - these are simply aliases.
 
 A very good example is in a function that reserves more space for some
 memory block (for example, inside an implementation of a string stream) -
@@ -299,7 +305,7 @@ you expect that most checks will turn out to be false:
   ecb_inline void
   reserve (int size)
   {
-    if (ecb_unlikely (current + size > end))
+    if (ecb_expect_false (current + size > end))
       real_reserve_method (size); /* presumably noinline */
   }
 
@@ -312,13 +318,13 @@ This can be used to teach the compiler about invariants or other
 conditions that might improve code generation, but which are impossible to
 deduce form the code itself.
 
-For example, the example reservation function from the C<ecb_unlikely>
+For example, the example reservation function from the C<ecb_expect_false>
 description could be written thus (only C<ecb_assume> was added):
 
   ecb_inline void
   reserve (int size)
   {
-    if (ecb_unlikely (current + size > end))
+    if (ecb_expect_false (current + size > end))
       real_reserve_method (size); /* presumably noinline */
 
     ecb_assume (current + size <= end);

@@ -96,10 +96,12 @@ typedef bool ecb_bool;
 #define ecb_cold       ecb_attribute ((__cold__))	/* 4.3 */
 
 /* put into if's if you are very sure that the expression */
-/* is mostly true or mosty false. note that these return */
+/* is mostly true or mostly false. note that these return */
 /* booleans, not the expression. */
-#define ecb_unlikely(expr) ecb_expect (!!(expr), 0)
-#define ecb_likely(expr)   ecb_expect (!!(expr), 1)
+#define ecb_expect_false(expr) ecb_expect (!!(expr), 0)
+#define ecb_expect_true(expr)  ecb_expect (!!(expr), 1)
+#define ecb_likely(expr)   ecb_expect_true  (expr)
+#define ecb_unlikely(expr) ecb_expect_false (expr)
 
 /* try to tell the compiler that some condition is definitely true */
 #define ecb_assume(cond) do { if (!(cond)) ecb_unreachable (); } while (0)
