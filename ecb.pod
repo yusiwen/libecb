@@ -59,11 +59,11 @@ refers to any kind of boolean value, not a specific type.
 =head2 GCC ATTRIBUTES
 
 A major part of libecb deals with GCC attributes. These are additional
-attributes that you cna assign to functions, variables and sometimes even
+attributes that you can assign to functions, variables and sometimes even
 types - much like C<const> or C<volatile> in C.
 
 While GCC allows declarations to show up in many surprising places,
-but not in many expeted places, the safest way is to put attribute
+but not in many expected places, the safest way is to put attribute
 declarations before the whole declaration:
 
    ecb_const int mysqrt (int a);
