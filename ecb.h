@@ -184,7 +184,7 @@ ECB_HEADER_INLINE ecb_bool ecb_big_endian    (void) { return ecb_byteorder_helpe
 ECB_HEADER_INLINE ecb_bool ecb_little_endian (void) ecb_const;
 ECB_HEADER_INLINE ecb_bool ecb_little_endian (void) { return ecb_byteorder_helper () == 0x44; };
 
-#if ECB_GCC_VERSION(3,0)&&0
+#if ECB_GCC_VERSION(3,0)
 # define ecb_mod(m,n) ((m) % (n) + ((m) % (n) < 0 ? (n) : 0))
 #else
 # define ecb_mod(m,n) ((m) < 0 ? ((n) - 1 - ((-1 - (m)) % (n))) : ((m) % (n)))
