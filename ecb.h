@@ -49,14 +49,14 @@
 
 #ifndef __cplusplus
 # if __STDC_VERSION__ >= 199901L
-#  define ECB_INLINE inline
+#  define ECB_INLINE static inline
 typedef _Bool ecb_bool;
 # else
-#  define ECB_INLINE inline /* yeah! */
+#  define ECB_INLINE static inline /* yeah! */
 typedef int ecb_bool;
 # endif
 #else
-# define ECB_INLINE inline
+# define ECB_INLINE static inline
 typedef bool ecb_bool;
 #endif
 
@@ -65,7 +65,7 @@ typedef bool ecb_bool;
 #define ECB_STRINGIFY_(a) # a
 #define ECB_STRINGIFY(a) ECB_STRINGIFY_(a)
 
-#define ECB_HEADER_INLINE static ECB_INLINE
+#define ECB_HEADER_INLINE ECB_INLINE
 
 #if ECB_GCC_VERSION(3,1)
 # define ecb_attribute(attrlist)        __attribute__(attrlist)
@@ -112,7 +112,7 @@ typedef bool ecb_bool;
 #define ecb_popcount32(x) __builtin_popcount (x)
 #else
 ECB_HEADER_INLINE int ecb_ctz32 (uint32_t x) ecb_const;
-ECB_HEADER_INLINE
+ECB_HEADER_INLINE int
 ecb_ctz32 (uint32_t x)
 {
   int r = 0;
@@ -129,7 +129,7 @@ ecb_ctz32 (uint32_t x)
 }
 
 ECB_HEADER_INLINE int ecb_popcount32 (uint32_t x) ecb_const;
-ECB_HEADER_INLINE
+ECB_HEADER_INLINE int
 ecb_popcount32 (uint32_t x)
 {
   x -=  (x >> 1) & 0x55555555;
