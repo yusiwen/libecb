@@ -454,7 +454,7 @@ type (this typically includes the minimum signed integer value, the same
 limitation as for C</> and C<%> in C).
 
 Current GCC versions compile this into an efficient branchless sequence on
-many systems.
+almost all CPUs.
 
 For example, when you want to rotate forward through the members of an
 array for increasing C<m> (which might be negative), then you should use
