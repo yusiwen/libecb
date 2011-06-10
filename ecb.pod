@@ -103,6 +103,21 @@ declare a variable but do not always use it:
     #endif
   }
 
+=item ECB_INLINE
+
+This is not actually an attribute, but you use it like one. It expands
+either to C<static inline> or to just C<static>, if inline isn't
+supported. It should be used to declare functions that should be inlined,
+for code size or speed reasons.
+
+Example: inline this function, it surely will reduce codesize.
+
+   ECB_INLINE int
+   negmul (int a, int b)
+   {
+     return - (a * b);
+   }
+
 =item ecb_noinline
 
 Prevent a function from being inlined - it might be optimised away, but
