@@ -47,18 +47,25 @@
   #endif
 #endif
 
-#ifndef __cplusplus
-  #if __STDC_VERSION__ >= 199901L
-    #define ECB_INLINE static inline
-    typedef _Bool ecb_bool;
-  #else
-    #define ECB_INLINE static inline /* we assume the extension is ubiquituous, please tell us when we are wrong, or upgrade to the GCC */
-    typedef int ecb_bool;
-  #endif
-#else
+#ifdef __cplusplus
   #define ECB_INLINE static inline
-  typedef bool ecb_bool;
+#elif ECB_GCC_VERSION(2,5)
+  #define ECB_INLINE static __inline__
+#elif __STDC_VERSION__ >= 199901L
+  #define ECB_INLINE static inline
+#else
+  #define ECB_INLINE static
 #endif
+
+#if ECB_GCC_VERSION(3,3)
+  #define ecb_restrict __restrict__
+#elif __STDC_VERSION__ >= 199901L
+  #define ecb_restrict restrict
+#else
+  #define ecb_restrict
+#endif
+
+typedef int ecb_bool;
 
 #define ECB_CONCAT_(a, b) a ## b
 #define ECB_CONCAT(a, b) ECB_CONCAT_(a, b)
