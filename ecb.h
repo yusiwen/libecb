@@ -40,24 +40,24 @@
  * an issue with that they should have done it right in the first place.
  */
 #ifndef ECB_GCC_VERSION
-# if defined(__INTEL_COMPILER) || defined(__SUNPRO_C) || defined(__llvm__)
-#  define ECB_GCC_VERSION(major,minor) 0
-# else
-#  define ECB_GCC_VERSION(major,minor) (__GNUC__ > (major) || (__GNUC__ == (major) && __GNUC_MINOR__ >= (minor)))
-# endif
+  #if defined(__INTEL_COMPILER) || defined(__SUNPRO_C) || defined(__llvm__)
+    #define ECB_GCC_VERSION(major,minor) 0
+  #else
+    #define ECB_GCC_VERSION(major,minor) (__GNUC__ > (major) || (__GNUC__ == (major) && __GNUC_MINOR__ >= (minor)))
+  #endif
 #endif
 
 #ifndef __cplusplus
-# if __STDC_VERSION__ >= 199901L
-#  define ECB_INLINE static inline
-typedef _Bool ecb_bool;
-# else
-#  define ECB_INLINE static inline /* yeah! */
-typedef int ecb_bool;
-# endif
+  #if __STDC_VERSION__ >= 199901L
+    #define ECB_INLINE static inline
+    typedef _Bool ecb_bool;
+  #else
+    #define ECB_INLINE static inline /* we assume the extension is ubiquituous, please tell us when we are wrong, or upgrade to the GCC */
+    typedef int ecb_bool;
+  #endif
 #else
-# define ECB_INLINE static inline
-typedef bool ecb_bool;
+  #define ECB_INLINE static inline
+  typedef bool ecb_bool;
 #endif
 
 #define ECB_CONCAT_(a, b) a ## b
@@ -68,22 +68,22 @@ typedef bool ecb_bool;
 #define ECB_HEADER_INLINE ECB_INLINE
 
 #if ECB_GCC_VERSION(3,1)
-# define ecb_attribute(attrlist)        __attribute__(attrlist)
-# define ecb_is_constant(expr)          __builtin_constant_p (expr)
-# define ecb_expect(expr,value)         __builtin_expect ((expr),(value))
-# define ecb_prefetch(addr,rw,locality) __builtin_prefetch (addr, rw, locality)
+  #define ecb_attribute(attrlist)        __attribute__(attrlist)
+  #define ecb_is_constant(expr)          __builtin_constant_p (expr)
+  #define ecb_expect(expr,value)         __builtin_expect ((expr),(value))
+  #define ecb_prefetch(addr,rw,locality) __builtin_prefetch (addr, rw, locality)
 #else
-# define ecb_attribute(attrlist)
-# define ecb_is_constant(expr)          0
-# define ecb_expect(expr,value)         (expr)
-# define ecb_prefetch(addr,rw,locality)
+  #define ecb_attribute(attrlist)
+  #define ecb_is_constant(expr)          0
+  #define ecb_expect(expr,value)         (expr)
+  #define ecb_prefetch(addr,rw,locality)
 #endif
 
 /* no emulation for ecb_decltype */
 #if ECB_GCC_VERSION(4,5)
-# define ecb_decltype(x) __decltype(x)
+  #define ecb_decltype(x) __decltype(x)
 #elif ECB_GCC_VERSION(3,0)
-# define ecb_decltype(x) typeof(x)
+  #define ecb_decltype(x) typeof(x)
 #endif
 
 #define ecb_noinline   ecb_attribute ((__noinline__))
