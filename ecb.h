@@ -120,9 +120,6 @@ typedef int ecb_bool;
 #define ecb_likely(expr)   ecb_expect_true  (expr)
 #define ecb_unlikely(expr) ecb_expect_false (expr)
 
-/* try to tell the compiler that some condition is definitely true */
-#define ecb_assume(cond) do { if (!(cond)) ecb_unreachable (); } while (0)
-
 /* count trailing zero bits and count # of one bits */
 #if ECB_GCC_VERSION(3,4)
   #define ecb_ctz32(x)      __builtin_ctz      (x)
@@ -189,6 +186,9 @@ typedef int ecb_bool;
   ecb_function_ void ecb_unreachable (void) ecb_noreturn;
   ecb_function_ void ecb_unreachable (void) { }
 #endif
+
+/* try to tell the compiler that some condition is definitely true */
+#define ecb_assume(cond) do { if (!(cond)) ecb_unreachable (); } while (0)
 
 ecb_function_ unsigned char ecb_byteorder_helper (void) ecb_const;
 ecb_function_ unsigned char
