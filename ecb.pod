@@ -465,7 +465,7 @@ in the language.
 
 C<n> must be strictly positive (i.e. C<< >= 1 >>), while C<m> must be
 negatable, that is, both C<m> and C<-m> must be representable in its
-type (this typically includes the minimum signed integer value, the same
+type (this typically excludes the minimum signed integer value, the same
 limitation as for C</> and C<%> in C).
 
 Current GCC versions compile this into an efficient branchless sequence on
