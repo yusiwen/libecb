@@ -107,6 +107,7 @@ typedef bool ecb_bool;
 /* booleans, not the expression. */
 #define ecb_expect_false(expr) ecb_expect (!!(expr), 0)
 #define ecb_expect_true(expr)  ecb_expect (!!(expr), 1)
+/* for compatibility to the rest of the world */
 #define ecb_likely(expr)   ecb_expect_true  (expr)
 #define ecb_unlikely(expr) ecb_expect_false (expr)
 
