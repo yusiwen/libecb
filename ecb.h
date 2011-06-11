@@ -47,11 +47,13 @@
   #endif
 #endif
 
-#ifdef __cplusplus
+#define ECB_C99 (__STDC_VERSION__ >= 199901L)
+
+#if __cplusplus
   #define ECB_INLINE static inline
 #elif ECB_GCC_VERSION(2,5)
   #define ECB_INLINE static __inline__
-#elif __STDC_VERSION__ >= 199901L
+#elif ECB_C99
   #define ECB_INLINE static inline
 #else
   #define ECB_INLINE static
@@ -59,7 +61,7 @@
 
 #if ECB_GCC_VERSION(3,3)
   #define ecb_restrict __restrict__
-#elif __STDC_VERSION__ >= 199901L
+#elif ECB_C99
   #define ecb_restrict restrict
 #else
   #define ecb_restrict
@@ -72,7 +74,7 @@ typedef int ecb_bool;
 #define ECB_STRINGIFY_(a) # a
 #define ECB_STRINGIFY(a) ECB_STRINGIFY_(a)
 
-#define ECB_HEADER_INLINE ECB_INLINE
+#define ecb_function_ ECB_INLINE
 
 #if ECB_GCC_VERSION(3,1)
   #define ecb_attribute(attrlist)        __attribute__(attrlist)
@@ -90,7 +92,7 @@ typedef int ecb_bool;
 #if ECB_GCC_VERSION(4,5)
   #define ecb_decltype(x) __decltype(x)
 #elif ECB_GCC_VERSION(3,0)
-  #define ecb_decltype(x) typeof(x)
+  #define ecb_decltype(x) __typeof(x)
 #endif
 
 #define ecb_noinline   ecb_attribute ((__noinline__))
@@ -100,18 +102,18 @@ typedef int ecb_bool;
 #define ecb_pure       ecb_attribute ((__pure__))
 
 #if ECB_GCC_VERSION(4,3)
-  #define ecb_artificial ecb_attribute ((__artificial__)) /* 4.3 */
-  #define ecb_hot        ecb_attribute ((__hot__))        /* 4.3 */
-  #define ecb_cold       ecb_attribute ((__cold__))       /* 4.3 */
+  #define ecb_artificial ecb_attribute ((__artificial__))
+  #define ecb_hot        ecb_attribute ((__hot__))
+  #define ecb_cold       ecb_attribute ((__cold__))
 #else
   #define ecb_artificial
   #define ecb_hot
   #define ecb_cold
 #endif
 
-/* put into if's if you are very sure that the expression */
-/* is mostly true or mostly false. note that these return */
-/* booleans, not the expression. */
+/* put around conditional expressions if you are very sure that the  */
+/* expression is mostly true or mostly false. note that these return */
+/* booleans, not the expression.                                     */
 #define ecb_expect_false(expr) ecb_expect (!!(expr), 0)
 #define ecb_expect_true(expr)  ecb_expect (!!(expr), 1)
 /* for compatibility to the rest of the world */
@@ -126,8 +128,8 @@ typedef int ecb_bool;
   #define ecb_ctz32(x)      __builtin_ctz      (x)
   #define ecb_popcount32(x) __builtin_popcount (x)
 #else
-  ECB_HEADER_INLINE int ecb_ctz32 (uint32_t x) ecb_const;
-  ECB_HEADER_INLINE int
+  ecb_function_ int ecb_ctz32 (uint32_t x) ecb_const;
+  ecb_function_ int
   ecb_ctz32 (uint32_t x)
   {
     int r = 0;
@@ -143,8 +145,8 @@ typedef int ecb_bool;
     return r;
   }
 
-  ECB_HEADER_INLINE int ecb_popcount32 (uint32_t x) ecb_const;
-  ECB_HEADER_INLINE int
+  ecb_function_ int ecb_popcount32 (uint32_t x) ecb_const;
+  ecb_function_ int
   ecb_popcount32 (uint32_t x)
   {
     x -=  (x >> 1) & 0x55555555;
@@ -160,8 +162,8 @@ typedef int ecb_bool;
   #define ecb_bswap32(x) __builtin_bswap32 (x)
   #define ecb_bswap16(x) (__builtin_bswap32(x) >> 16)
 #else
-  ECB_HEADER_INLINE uint32_t ecb_bswap32 (uint32_t x) ecb_const;
-  ECB_HEADER_INLINE uint32_t
+  ecb_function_ uint32_t ecb_bswap32 (uint32_t x) ecb_const;
+  ecb_function_ uint32_t
   ecb_bswap32 (uint32_t x)
   {
     return (x >> 24)
@@ -170,8 +172,8 @@ typedef int ecb_bool;
         |  (x << 24);
   }
 
-  ECB_HEADER_INLINE uint32_t ecb_bswap16 (uint32_t x) ecb_const;
-  ECB_HEADER_INLINE uint32_t
+  ecb_function_ uint32_t ecb_bswap16 (uint32_t x) ecb_const;
+  ecb_function_ uint32_t
   ecb_bswap16 (uint32_t x)
   {
     return ((x >>  8) & 0xff)
@@ -184,24 +186,24 @@ typedef int ecb_bool;
   #define ecb_unreachable() __builtin_unreachable ()
 #else
   /* this seems to work fine, but gcc always emits a warning for it :/ */
-  ECB_HEADER_INLINE void ecb_unreachable (void) ecb_noreturn;
-  ECB_HEADER_INLINE void ecb_unreachable (void) { }
+  ecb_function_ void ecb_unreachable (void) ecb_noreturn;
+  ecb_function_ void ecb_unreachable (void) { }
 #endif
 
-ECB_HEADER_INLINE unsigned char ecb_byteorder_helper (void) ecb_const;
-ECB_HEADER_INLINE unsigned char
+ecb_function_ unsigned char ecb_byteorder_helper (void) ecb_const;
+ecb_function_ unsigned char
 ecb_byteorder_helper (void)
 {
   const uint32_t u = 0x11223344;
   return *(unsigned char *)&u;
 }
 
-ECB_HEADER_INLINE ecb_bool ecb_big_endian    (void) ecb_const;
-ECB_HEADER_INLINE ecb_bool ecb_big_endian    (void) { return ecb_byteorder_helper () == 0x11; };
-ECB_HEADER_INLINE ecb_bool ecb_little_endian (void) ecb_const;
-ECB_HEADER_INLINE ecb_bool ecb_little_endian (void) { return ecb_byteorder_helper () == 0x44; };
+ecb_function_ ecb_bool ecb_big_endian    (void) ecb_const;
+ecb_function_ ecb_bool ecb_big_endian    (void) { return ecb_byteorder_helper () == 0x11; };
+ecb_function_ ecb_bool ecb_little_endian (void) ecb_const;
+ecb_function_ ecb_bool ecb_little_endian (void) { return ecb_byteorder_helper () == 0x44; };
 
-#if ECB_GCC_VERSION(3,0)
+#if ECB_GCC_VERSION(3,0) || ECB_C99
   #define ecb_mod(m,n) ((m) % (n) + ((m) % (n) < 0 ? (n) : 0))
 #else
   #define ecb_mod(m,n) ((m) < 0 ? ((n) - 1 - ((-1 - (m)) % (n))) : ((m) % (n)))
