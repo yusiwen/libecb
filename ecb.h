@@ -86,14 +86,21 @@ typedef bool ecb_bool;
 # define ecb_decltype(x) typeof(x)
 #endif
 
-#define ecb_artificial ecb_attribute ((__artificial__)) /* 4.3 */
 #define ecb_noinline   ecb_attribute ((__noinline__))
 #define ecb_noreturn   ecb_attribute ((__noreturn__))
 #define ecb_unused     ecb_attribute ((__unused__))
 #define ecb_const      ecb_attribute ((__const__))
 #define ecb_pure       ecb_attribute ((__pure__))
-#define ecb_hot        ecb_attribute ((__hot__))	/* 4.3 */
-#define ecb_cold       ecb_attribute ((__cold__))	/* 4.3 */
+
+#if ECB_GCC_VERSION(4,3)
+  #define ecb_artificial ecb_attribute ((__artificial__)) /* 4.3 */
+  #define ecb_hot        ecb_attribute ((__hot__))        /* 4.3 */
+  #define ecb_cold       ecb_attribute ((__cold__))       /* 4.3 */
+#else
+  #define ecb_artificial
+  #define ecb_hot
+  #define ecb_cold
+#endif
 
 /* put into if's if you are very sure that the expression */
 /* is mostly true or mostly false. note that these return */
@@ -108,69 +115,69 @@ typedef bool ecb_bool;
 
 /* count trailing zero bits and count # of one bits */
 #if ECB_GCC_VERSION(3,4)
-#define ecb_ctz32(x)      __builtin_ctz      (x)
-#define ecb_popcount32(x) __builtin_popcount (x)
+  #define ecb_ctz32(x)      __builtin_ctz      (x)
+  #define ecb_popcount32(x) __builtin_popcount (x)
 #else
-ECB_HEADER_INLINE int ecb_ctz32 (uint32_t x) ecb_const;
-ECB_HEADER_INLINE int
-ecb_ctz32 (uint32_t x)
-{
-  int r = 0;
+  ECB_HEADER_INLINE int ecb_ctz32 (uint32_t x) ecb_const;
+  ECB_HEADER_INLINE int
+  ecb_ctz32 (uint32_t x)
+  {
+    int r = 0;
 
-  x &= -x; /* this isolates the lowest bit */
+    x &= -x; /* this isolates the lowest bit */
 
-  if (x & 0xaaaaaaaa) r +=  1;
-  if (x & 0xcccccccc) r +=  2;
-  if (x & 0xf0f0f0f0) r +=  4;
-  if (x & 0xff00ff00) r +=  8;
-  if (x & 0xffff0000) r += 16;
+    if (x & 0xaaaaaaaa) r +=  1;
+    if (x & 0xcccccccc) r +=  2;
+    if (x & 0xf0f0f0f0) r +=  4;
+    if (x & 0xff00ff00) r +=  8;
+    if (x & 0xffff0000) r += 16;
 
-  return r;
-}
+    return r;
+  }
 
-ECB_HEADER_INLINE int ecb_popcount32 (uint32_t x) ecb_const;
-ECB_HEADER_INLINE int
-ecb_popcount32 (uint32_t x)
-{
-  x -=  (x >> 1) & 0x55555555;
-  x  = ((x >> 2) & 0x33333333) + (x & 0x33333333);
-  x  = ((x >> 4) + x) & 0x0f0f0f0f;
-  x *= 0x01010101;
+  ECB_HEADER_INLINE int ecb_popcount32 (uint32_t x) ecb_const;
+  ECB_HEADER_INLINE int
+  ecb_popcount32 (uint32_t x)
+  {
+    x -=  (x >> 1) & 0x55555555;
+    x  = ((x >> 2) & 0x33333333) + (x & 0x33333333);
+    x  = ((x >> 4) + x) & 0x0f0f0f0f;
+    x *= 0x01010101;
 
-  return x >> 24;
-}
+    return x >> 24;
+  }
 #endif
 
 #if ECB_GCC_VERSION(4,3)
-# define ecb_bswap32(x) __builtin_bswap32 (x)
-# define ecb_bswap16(x) (__builtin_bswap32(x) >> 16)
+  #define ecb_bswap32(x) __builtin_bswap32 (x)
+  #define ecb_bswap16(x) (__builtin_bswap32(x) >> 16)
 #else
-ECB_HEADER_INLINE uint32_t ecb_bswap32 (uint32_t x) ecb_const;
-ECB_HEADER_INLINE uint32_t
-ecb_bswap32 (uint32_t x)
-{
-  return (x >> 24)
-      | ((x >>  8) & 0x0000ff00)
-      | ((x <<  8) & 0x00ff0000)
-      |  (x << 24);
-}
+  ECB_HEADER_INLINE uint32_t ecb_bswap32 (uint32_t x) ecb_const;
+  ECB_HEADER_INLINE uint32_t
+  ecb_bswap32 (uint32_t x)
+  {
+    return (x >> 24)
+        | ((x >>  8) & 0x0000ff00)
+        | ((x <<  8) & 0x00ff0000)
+        |  (x << 24);
+  }
 
-ECB_HEADER_INLINE uint32_t ecb_bswap16 (uint32_t x) ecb_const;
-ECB_HEADER_INLINE uint32_t
-ecb_bswap16 (uint32_t x)
-{
-  return ((x >>  8) & 0xff)
-      |  ((x <<  8) & 0x00ff0000)
-      |  (x << 24);
-}
+  ECB_HEADER_INLINE uint32_t ecb_bswap16 (uint32_t x) ecb_const;
+  ECB_HEADER_INLINE uint32_t
+  ecb_bswap16 (uint32_t x)
+  {
+    return ((x >>  8) & 0xff)
+        |  ((x <<  8) & 0x00ff0000)
+        |  (x << 24);
+  }
 #endif
 
 #if ECB_GCC_VERSION(4,5)
-# define ecb_unreachable() __builtin_unreachable ()
+  #define ecb_unreachable() __builtin_unreachable ()
 #else
-/* this seems to work fine, but gcc always emits a warning for it :/ */
-ECB_HEADER_INLINE void ecb_unreachable (void) ecb_noreturn;
-ECB_HEADER_INLINE void ecb_unreachable (void) { }
+  /* this seems to work fine, but gcc always emits a warning for it :/ */
+  ECB_HEADER_INLINE void ecb_unreachable (void) ecb_noreturn;
+  ECB_HEADER_INLINE void ecb_unreachable (void) { }
 #endif
 
 ECB_HEADER_INLINE unsigned char ecb_byteorder_helper (void) ecb_const;
@@ -187,20 +194,20 @@ ECB_HEADER_INLINE ecb_bool ecb_little_endian (void) ecb_const;
 ECB_HEADER_INLINE ecb_bool ecb_little_endian (void) { return ecb_byteorder_helper () == 0x44; };
 
 #if ECB_GCC_VERSION(3,0)
-# define ecb_mod(m,n) ((m) % (n) + ((m) % (n) < 0 ? (n) : 0))
+  #define ecb_mod(m,n) ((m) % (n) + ((m) % (n) < 0 ? (n) : 0))
 #else
-# define ecb_mod(m,n) ((m) < 0 ? ((n) - 1 - ((-1 - (m)) % (n))) : ((m) % (n)))
+  #define ecb_mod(m,n) ((m) < 0 ? ((n) - 1 - ((-1 - (m)) % (n))) : ((m) % (n)))
 #endif
 
 #if ecb_cplusplus_does_not_suck
-// does not work for local types (http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2657.htm)
-template<typename T, int N>
-static inline int ecb_array_length (const T (&arr)[N])
-{
-  return N;
-}
+  // does not work for local types (http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2657.htm)
+  template<typename T, int N>
+  static inline int ecb_array_length (const T (&arr)[N])
+  {
+    return N;
+  }
 #else
-#define ecb_array_length(name) (sizeof (name) / sizeof (name [0]))
+  #define ecb_array_length(name) (sizeof (name) / sizeof (name [0]))
 #endif
 
 ECB_INLINE uint32_t ecb_rotr32 (uint32_t x, unsigned int count) ecb_const;
