@@ -210,7 +210,7 @@ ecb_function_ ecb_bool ecb_little_endian (void) { return ecb_byteorder_helper ()
 #endif
 
 #if ecb_cplusplus_does_not_suck
-  // does not work for local types (http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2657.htm)
+  /* does not work for local types (http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2657.htm) */
   template<typename T, int N>
   static inline int ecb_array_length (const T (&arr)[N])
   {
