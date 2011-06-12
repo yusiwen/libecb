@@ -199,9 +199,9 @@ ecb_byteorder_helper (void)
 }
 
 ecb_function_ ecb_bool ecb_big_endian    (void) ecb_const;
-ecb_function_ ecb_bool ecb_big_endian    (void) { return ecb_byteorder_helper () == 0x11; };
+ecb_function_ ecb_bool ecb_big_endian    (void) { return ecb_byteorder_helper () == 0x11; }
 ecb_function_ ecb_bool ecb_little_endian (void) ecb_const;
-ecb_function_ ecb_bool ecb_little_endian (void) { return ecb_byteorder_helper () == 0x44; };
+ecb_function_ ecb_bool ecb_little_endian (void) { return ecb_byteorder_helper () == 0x44; }
 
 #if ECB_GCC_VERSION(3,0) || ECB_C99
   #define ecb_mod(m,n) ((m) % (n) + ((m) % (n) < 0 ? (n) : 0))
