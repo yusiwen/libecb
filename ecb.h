@@ -40,7 +40,7 @@
  * an issue with that they should have done it right in the first place.
  */
 #ifndef ECB_GCC_VERSION
-  #if defined(__INTEL_COMPILER) || defined(__SUNPRO_C) || defined(__llvm__)
+  #if defined(__INTEL_COMPILER) || defined(__SUNPRO_C) || defined(__SUNPRO_CC) || defined(__llvm__) || defined(__clang__)
     #define ECB_GCC_VERSION(major,minor) 0
   #else
     #define ECB_GCC_VERSION(major,minor) (__GNUC__ > (major) || (__GNUC__ == (major) && __GNUC_MINOR__ >= (minor)))
