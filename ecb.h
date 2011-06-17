@@ -147,7 +147,7 @@ typedef int ecb_bool;
   {
     int r = 0;
 
-    x &= (uint32_t)-(int32_t)x; /* this isolates the lowest bit */
+    x &= ~x + 1; /* this isolates the lowest bit */
 
     if (x & 0xaaaaaaaa) r +=  1;
     if (x & 0xcccccccc) r +=  2;
