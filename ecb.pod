@@ -103,7 +103,7 @@ declare a variable but do not always use it:
     #endif
   }
 
-=item ECB_INLINE
+=item ecb_inline
 
 This is not actually an attribute, but you use it like one. It expands
 either to C<static inline> or to just C<static>, if inline isn't
@@ -112,7 +112,7 @@ for code size or speed reasons.
 
 Example: inline this function, it surely will reduce codesize.
 
-   ECB_INLINE int
+   ecb_inline int
    negmul (int a, int b)
    {
      return - (a * b);
