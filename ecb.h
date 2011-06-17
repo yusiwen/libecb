@@ -66,13 +66,13 @@
 #define ECB_C99 (__STDC_VERSION__ >= 199901L)
 
 #if __cplusplus
-  #define ECB_INLINE static inline
+  #define ecb_inline static inline
 #elif ECB_GCC_VERSION(2,5)
-  #define ECB_INLINE static __inline__
+  #define ecb_inline static __inline__
 #elif ECB_C99
-  #define ECB_INLINE static inline
+  #define ecb_inline static inline
 #else
-  #define ECB_INLINE static
+  #define ecb_inline static
 #endif
 
 #if ECB_GCC_VERSION(3,3)
@@ -90,7 +90,7 @@ typedef int ecb_bool;
 #define ECB_STRINGIFY_(a) # a
 #define ECB_STRINGIFY(a) ECB_STRINGIFY_(a)
 
-#define ecb_function_ ECB_INLINE
+#define ecb_function_ ecb_inline
 
 #if ECB_GCC_VERSION(3,1)
   #define ecb_attribute(attrlist)        __attribute__(attrlist)
@@ -236,15 +236,15 @@ ecb_function_ ecb_bool ecb_little_endian (void) { return ecb_byteorder_helper ()
   #define ecb_array_length(name) (sizeof (name) / sizeof (name [0]))
 #endif
 
-ECB_INLINE uint32_t ecb_rotr32 (uint32_t x, unsigned int count) ecb_const;
-ECB_INLINE uint32_t
+ecb_inline uint32_t ecb_rotr32 (uint32_t x, unsigned int count) ecb_const;
+ecb_inline uint32_t
 ecb_rotr32 (uint32_t x, unsigned int count)
 {
   return (x << (32 - count)) | (x >> count);
 }
 
-ECB_INLINE uint32_t ecb_rotl32 (uint32_t x, unsigned int count) ecb_const;
-ECB_INLINE uint32_t
+ecb_inline uint32_t ecb_rotl32 (uint32_t x, unsigned int count) ecb_const;
+ecb_inline uint32_t
 ecb_rotl32 (uint32_t x, unsigned int count)
 {
   return (x >> (32 - count)) | (x << count);
