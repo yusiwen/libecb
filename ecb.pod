@@ -414,14 +414,35 @@ On systems that are neither, their return values are unspecified.
 
 =item int ecb_ctz32 (uint32_t x)
 
+=item int ecb_ctz64 (uint64_t x)
+
 Returns the index of the least significant bit set in C<x> (or
 equivalently the number of bits set to 0 before the least significant bit
-set), starting from 0. If C<x> is 0 the result is undefined. For example:
+set), starting from 0. If C<x> is 0 the result is undefined.
+
+For example:
 
   ecb_ctz32 (3) = 0
   ecb_ctz32 (6) = 1
 
+=item int ecb_ld32 (uint32_t x)
+
+=item int ecb_ld64 (uint64_t x)
+
+Returns the index of the most significant bit set in C<x>, or the number
+of digits the number requires in binary (so that C<< 2**ld <= x <
+2**(ld+1) >>). If C<x> is 0 the result is undefined. A common use case is
+to compute the integer binary logarithm, i.e. C<floor (log2 (n))>, for
+example to see how many bits a certain number requires to be encoded.
+
+This function is similar to the "count leading zero bits" function, except
+that that one returns how many zero bits are "in front" of the number (in
+the given data type), while C<ecb_ld> returns how many bits the number
+itself requires.
+
 =item int ecb_popcount32 (uint32_t x)
+
+=item int ecb_popcount64 (uint64_t x)
 
 Returns the number of bits set to 1 in C<x>. For example:
 
