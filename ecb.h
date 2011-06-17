@@ -154,11 +154,19 @@ typedef int ecb_bool;
 
     x &= ~x + 1; /* this isolates the lowest bit */
 
+#if ECB_branchless_on_i386
+    r += !!(x & 0xaaaaaaaa) << 0;
+    r += !!(x & 0xcccccccc) << 1;
+    r += !!(x & 0xf0f0f0f0) << 2;
+    r += !!(x & 0xff00ff00) << 3;
+    r += !!(x & 0xffff0000) << 4;
+#else
     if (x & 0xaaaaaaaa) r +=  1;
     if (x & 0xcccccccc) r +=  2;
     if (x & 0xf0f0f0f0) r +=  4;
     if (x & 0xff00ff00) r +=  8;
     if (x & 0xffff0000) r += 16;
+#endif
 
     return r;
   }
@@ -168,7 +176,7 @@ typedef int ecb_bool;
   ecb_ctz64 (uint64_t x)
   {
     int shift = x & 0xffffffffU ? 0 : 32;
-    return ecb_ctz (x >> shift) + shift;
+    return ecb_ctz32 (x >> shift) + shift;
   }
 
   ecb_function_ int ecb_popcount32 (uint32_t x) ecb_const;
@@ -189,14 +197,13 @@ typedef int ecb_bool;
   ecb_function_ int ecb_ld32 (uint32_t x) ecb_const;
   ecb_function_ int ecb_ld32 (uint32_t x)
   {
-    int r = -1;
+    int r = 0;
 
-    do
-      {
-        x >>= 1;
-        ++r;
-      }
-    while (x);
+    if (x >> 16) { x >>= 16; r += 16; }
+    if (x >>  8) { x >>=  8; r +=  8; }
+    if (x >>  4) { x >>=  4; r +=  4; }
+    if (x >>  2) { x >>=  2; r +=  2; }
+    if (x >>  1) {           r +=  1; }
 
     return r;
   }
@@ -204,16 +211,11 @@ typedef int ecb_bool;
   ecb_function_ int ecb_ld64 (uint64_t x) ecb_const;
   ecb_function_ int ecb_ld64 (uint64_t x)
   {
-    int r = -1;
+    int r = 0;
 
-    do
-      {
-        x >>= 1;
-        ++r;
-      }
-    while (x);
+    if (x >> 32) { x >>= 32; r += 32; }
 
-    return r;
+    return r + ecb_ld32 (x);
   }
 #endif
 
@@ -226,36 +228,48 @@ ecb_popcount64 (uint64_t x)
   return ecb_popcount32 (x) + ecb_popcount32 (x >> 32);
 }
 
+ecb_inline uint8_t  ecb_rotl8  (uint8_t  x, unsigned int count) ecb_const;
+ecb_inline uint8_t  ecb_rotr8  (uint8_t  x, unsigned int count) ecb_const;
+ecb_inline uint16_t ecb_rotl16 (uint16_t x, unsigned int count) ecb_const;
+ecb_inline uint16_t ecb_rotr16 (uint16_t x, unsigned int count) ecb_const;
+ecb_inline uint32_t ecb_rotl32 (uint32_t x, unsigned int count) ecb_const;
+ecb_inline uint32_t ecb_rotr32 (uint32_t x, unsigned int count) ecb_const;
+ecb_inline uint64_t ecb_rotl64 (uint64_t x, unsigned int count) ecb_const;
+ecb_inline uint64_t ecb_rotr64 (uint64_t x, unsigned int count) ecb_const;
+
+ecb_inline uint8_t  ecb_rotl8  (uint8_t  x, unsigned int count) { return (x >> ( 8 - count)) | (x << count); }
+ecb_inline uint8_t  ecb_rotr8  (uint8_t  x, unsigned int count) { return (x << ( 8 - count)) | (x >> count); }
+ecb_inline uint16_t ecb_rotl16 (uint16_t x, unsigned int count) { return (x >> (16 - count)) | (x << count); }
+ecb_inline uint16_t ecb_rotr16 (uint16_t x, unsigned int count) { return (x << (16 - count)) | (x >> count); }
+ecb_inline uint32_t ecb_rotl32 (uint32_t x, unsigned int count) { return (x >> (32 - count)) | (x << count); }
+ecb_inline uint32_t ecb_rotr32 (uint32_t x, unsigned int count) { return (x << (32 - count)) | (x >> count); }
+ecb_inline uint64_t ecb_rotl64 (uint64_t x, unsigned int count) { return (x >> (64 - count)) | (x << count); }
+ecb_inline uint64_t ecb_rotr64 (uint64_t x, unsigned int count) { return (x << (64 - count)) | (x >> count); }
+
 #if ECB_GCC_VERSION(4,3)
   #define ecb_bswap16(x) (__builtin_bswap32 (x) >> 16)
   #define ecb_bswap32(x)  __builtin_bswap32 (x)
   #define ecb_bswap64(x)  __builtin_bswap64 (x)
 #else
-  ecb_function_ uint32_t ecb_bswap16 (uint32_t x) ecb_const;
-  ecb_function_ uint32_t
-  ecb_bswap16 (uint32_t x)
+  ecb_function_ uint16_t ecb_bswap16 (uint16_t x) ecb_const;
+  ecb_function_ uint16_t
+  ecb_bswap16 (uint16_t x)
   {
-    return ((x >>  8) & 0xff)
-        |  ((x <<  8) & 0x00ff0000)
-        |  (x << 24);
+    return ecb_rotl16 (x, 8);
   }
 
   ecb_function_ uint32_t ecb_bswap32 (uint32_t x) ecb_const;
   ecb_function_ uint32_t
   ecb_bswap32 (uint32_t x)
   {
-    return (x >> 24)
-        | ((x >>  8) & 0x0000ff00)
-        | ((x <<  8) & 0x00ff0000)
-        |  (x << 24);
+    return (((uint32_t)ecb_bswap16 (x)) << 16) | ecb_bswap16 (x >> 16);
   }
 
   ecb_function_ uint64_t ecb_bswap64 (uint64_t x) ecb_const;
   ecb_function_ uint64_t
   ecb_bswap64 (uint64_t x)
   {
-    return (((uint64_t)ecb_bswap32 (x)) << 32)
-         | ecb_bswap32 (x >> 32);
+    return (((uint64_t)ecb_bswap32 (x)) << 32) | ecb_bswap32 (x >> 32);
   }
 #endif
 
@@ -299,34 +313,6 @@ ecb_function_ ecb_bool ecb_little_endian (void) { return ecb_byteorder_helper ()
 #else
   #define ecb_array_length(name) (sizeof (name) / sizeof (name [0]))
 #endif
-
-ecb_inline uint32_t ecb_rotr32 (uint32_t x, unsigned int count) ecb_const;
-ecb_inline uint32_t
-ecb_rotr32 (uint32_t x, unsigned int count)
-{
-  return (x << (32 - count)) | (x >> count);
-}
-
-ecb_inline uint32_t ecb_rotl32 (uint32_t x, unsigned int count) ecb_const;
-ecb_inline uint32_t
-ecb_rotl32 (uint32_t x, unsigned int count)
-{
-  return (x >> (32 - count)) | (x << count);
-}
-
-ecb_inline uint64_t ecb_rotr64 (uint64_t x, unsigned int count) ecb_const;
-ecb_inline uint64_t
-ecb_rotr64 (uint64_t x, unsigned int count)
-{
-  return (x << (64 - count)) | (x >> count);
-}
-
-ecb_inline uint64_t ecb_rotl64 (uint64_t x, unsigned int count) ecb_const;
-ecb_inline uint64_t
-ecb_rotl64 (uint64_t x, unsigned int count)
-{
-  return (x >> (64 - count)) | (x << count);
-}
 
 #endif
 
