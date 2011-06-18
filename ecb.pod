@@ -398,7 +398,7 @@ cache.
 
 =back
 
-=head2 BIT FIDDLING / BITSTUFFS
+=head2 BIT FIDDLING / BIT WIZARDRY
 
 =over 4
 
@@ -420,6 +420,8 @@ Returns the index of the least significant bit set in C<x> (or
 equivalently the number of bits set to 0 before the least significant bit
 set), starting from 0. If C<x> is 0 the result is undefined.
 
+For smaller types than C<uint32_t> you can safely use C<ecb_ctz32>.
+
 For example:
 
   ecb_ctz32 (3) = 0
@@ -440,11 +442,17 @@ that that one returns how many zero bits are "in front" of the number (in
 the given data type), while C<ecb_ld> returns how many bits the number
 itself requires.
 
+For smaller types than C<uint32_t> you can safely use C<ecb_ld32>.
+
 =item int ecb_popcount32 (uint32_t x)
 
 =item int ecb_popcount64 (uint64_t x)
 
-Returns the number of bits set to 1 in C<x>. For example:
+Returns the number of bits set to 1 in C<x>.
+
+For smaller types than C<uint32_t> you can safely use C<ecb_popcount32>.
+
+For example:
 
   ecb_popcount32 (7) = 3
   ecb_popcount32 (255) = 8
