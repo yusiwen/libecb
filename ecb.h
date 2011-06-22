@@ -40,7 +40,7 @@
   #if __GNUC__
     typedef   signed long long int64_t;
     typedef unsigned long long uint64_t;
-  #else
+  #else /* _MSC_VER || __BORLANDC__ */
     typedef   signed __int64   int64_t;
     typedef unsigned __int64   uint64_t;
   #endif
