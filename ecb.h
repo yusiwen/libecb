@@ -70,7 +70,7 @@
     #if __x86
       #define ECB_MEMORY_FENCE         __asm__ __volatile__ ("lock; or.b $0, -1(%%esp)" : : : "memory")
       #define ECB_MEMORY_FENCE_ACQUIRE ECB_MEMORY_FENCE
-      #define ECB_MEMORY_FENCE_RELEASE ECB_MEMORY_FENC /* better be safe than sorry */
+      #define ECB_MEMORY_FENCE_RELEASE ECB_MEMORY_FENCE /* better be safe than sorry */
     #elif __amd64
       #define ECB_MEMORY_FENCE         __asm__ __volatile__ ("mfence" : : : "memory")
       #define ECB_MEMORY_FENCE_ACQUIRE __asm__ __volatile__ ("lfence" : : : "memory")
@@ -95,7 +95,7 @@
   #endif
 #endif
 
-#ifndef ECB_MEMORY_FENCE_ACQ
+#ifndef ECB_MEMORY_FENCE
   #include <pthread.h>
 
   static pthread_mutex_t ecb_mf_lock = PTHREAD_MUTEX_INITIALIZER;
