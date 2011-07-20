@@ -68,7 +68,7 @@
 #ifndef ECB_MEMORY_FENCE
   #if ECB_GCC_VERSION(2,5)
     #if __x86
-      #define ECB_MEMORY_FENCE         __asm__ __volatile__ ("lock; or.b $0, -1(%%esp)" : : : "memory")
+      #define ECB_MEMORY_FENCE         __asm__ __volatile__ ("lock; orb $0, -1(%%esp)" : : : "memory")
       #define ECB_MEMORY_FENCE_ACQUIRE ECB_MEMORY_FENCE
       #define ECB_MEMORY_FENCE_RELEASE ECB_MEMORY_FENCE /* better be safe than sorry */
     #elif __amd64
