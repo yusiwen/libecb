@@ -235,9 +235,6 @@ typedef int ecb_bool;
     return x >> 24;
   }
 
-  /* you have the choice beetween something with a table lookup, */
-  /* something using lots of bit arithmetic and a simple loop */
-  /* we went for the loop */
   ecb_function_ int ecb_ld32 (uint32_t x) ecb_const;
   ecb_function_ int ecb_ld32 (uint32_t x)
   {
