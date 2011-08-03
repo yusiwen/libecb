@@ -65,6 +65,15 @@
 
 /*****************************************************************************/
 
+/* ECB_NO_THREADS - ecb is not used by multiple threads, ever */
+/* ECB_NO_SMP     - ecb might be used in multiple threads, but only on a single cpu */
+
+#if ECB_NO_THREADS || ECB_NO_SMP
+  #define ECB_MEMORY_FENCE         do { } while (0)
+  #define ECB_MEMORY_FENCE_ACQUIRE do { } while (0)
+  #define ECB_MEMORY_FENCE_RELEASE do { } while (0)
+#endif
+
 #ifndef ECB_MEMORY_FENCE
   #if ECB_GCC_VERSION(2,5)
     #if __x86
