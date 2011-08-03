@@ -69,12 +69,12 @@
   #if ECB_GCC_VERSION(2,5)
     #if __x86
       #define ECB_MEMORY_FENCE         __asm__ __volatile__ ("lock; orb $0, -1(%%esp)" : : : "memory")
-      #define ECB_MEMORY_FENCE_ACQUIRE ECB_MEMORY_FENCE
-      #define ECB_MEMORY_FENCE_RELEASE ECB_MEMORY_FENCE /* better be safe than sorry */
+      #define ECB_MEMORY_FENCE_ACQUIRE ECB_MEMORY_FENCE /* non-lock xchg might be enough */
+      #define ECB_MEMORY_FENCE_RELEASE do { } while (0) /* unlikely to change in future cpus */
     #elif __amd64
       #define ECB_MEMORY_FENCE         __asm__ __volatile__ ("mfence" : : : "memory")
       #define ECB_MEMORY_FENCE_ACQUIRE __asm__ __volatile__ ("lfence" : : : "memory")
-      #define ECB_MEMORY_FENCE_RELEASE __asm__ __volatile__ ("sfence")
+      #define ECB_MEMORY_FENCE_RELEASE __asm__ __volatile__ ("sfence") /* play safe - not needed in any current cpu */
     #endif
   #endif
 #endif
@@ -84,19 +84,27 @@
     #define ECB_MEMORY_FENCE         __sync_synchronize ()
     #define ECB_MEMORY_FENCE_ACQUIRE ({ char dummy = 0; __sync_lock_test_and_set (&dummy, 1); })
     #define ECB_MEMORY_FENCE_RELEASE ({ char dummy = 1; __sync_lock_release      (&dummy   ); })
-  #elif _MSC_VER >= 1400 && 0 /* TODO: only true when using volatiles */
-    #define ECB_MEMORY_FENCE         do { } while (0)
-    #define ECB_MEMORY_FENCE_ACQUIRE ECB_MEMORY_FENCE
-    #define ECB_MEMORY_FENCE_RELEASE ECB_MEMORY_FENCE
+  #elif _MSC_VER >= 1400 /* VC++ 2005 */
+    #pragma intrinsic(_ReadBarrier,_WriteBarrier,_ReadWriteBarrier)
+    #define ECB_MEMORY_FENCE         _ReadWriteBarrier ()
+    #define ECB_MEMORY_FENCE_ACQUIRE _ReadWriteBarrier () /* according to msdn, _ReadBarrier is not a load fence */
+    #define ECB_MEMORY_FENCE_RELEASE _WriteBarrier ()
   #elif defined(_WIN32)
     #include <WinNT.h>
-    #define ECB_MEMORY_FENCE         MemoryBarrier ()
+    #define ECB_MEMORY_FENCE         MemoryBarrier () /* actually just xchg on x86... scary */
     #define ECB_MEMORY_FENCE_ACQUIRE ECB_MEMORY_FENCE
     #define ECB_MEMORY_FENCE_RELEASE ECB_MEMORY_FENCE
   #endif
 #endif
 
 #ifndef ECB_MEMORY_FENCE
+  /*
+   * if you get undefined symbol references to pthread_mutex_lock,
+   * or failure to find pthread.h, then you should implement
+   * the ECB_MEMORY_FENCE operations for your cpu/compiler
+   * OR proide pthread.h and link against the posix thread library
+   * of your system.
+   */
   #include <pthread.h>
 
   static pthread_mutex_t ecb_mf_lock = PTHREAD_MUTEX_INITIALIZER;
