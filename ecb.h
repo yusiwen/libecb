@@ -115,6 +115,8 @@
    * of your system.
    */
   #include <pthread.h>
+  #define ECB_NEEDS_PTHREADS 1
+  #define ECB_MEMORY_FENCE_NEEDS_PTHREADS 1
 
   static pthread_mutex_t ecb_mf_lock = PTHREAD_MUTEX_INITIALIZER;
   #define ECB_MEMORY_FENCE do { pthread_mutex_lock (&ecb_mf_lock); pthread_mutex_unlock (&ecb_mf_lock); } while (0)
