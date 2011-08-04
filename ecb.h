@@ -89,10 +89,10 @@
 #endif
 
 #ifndef ECB_MEMORY_FENCE
-  #if ECB_GCC_VERSION(4,4)
+  #if ECB_GCC_VERSION(4,4) || defined(__INTEL_COMPILER)
     #define ECB_MEMORY_FENCE         __sync_synchronize ()
-    #define ECB_MEMORY_FENCE_ACQUIRE ({ char dummy = 0; __sync_lock_test_and_set (&dummy, 1); })
-    #define ECB_MEMORY_FENCE_RELEASE ({ char dummy = 1; __sync_lock_release      (&dummy   ); })
+    #define ECB_MEMORY_FENCE_ACQUIRE __sync_synchronize () /* ({ char dummy = 0; __sync_lock_test_and_set (&dummy, 1); }) */
+    #define ECB_MEMORY_FENCE_RELEASE __sync_synchronize () /* ({ char dummy = 1; __sync_lock_release      (&dummy   ); }) */
   #elif _MSC_VER >= 1400 /* VC++ 2005 */
     #pragma intrinsic(_ReadBarrier,_WriteBarrier,_ReadWriteBarrier)
     #define ECB_MEMORY_FENCE         _ReadWriteBarrier ()
