@@ -50,7 +50,7 @@
 
 /* many compilers define _GNUC_ to some versions but then only implement
  * what their idiot authors think are the "more important" extensions,
- * causing enourmous grief in return for some better fake benchmark numbers.
+ * causing enormous grief in return for some better fake benchmark numbers.
  * or so.
  * we try to detect these and simply assume they are not gcc - if they have
  * an issue with that they should have done it right in the first place.
@@ -111,7 +111,7 @@
    * if you get undefined symbol references to pthread_mutex_lock,
    * or failure to find pthread.h, then you should implement
    * the ECB_MEMORY_FENCE operations for your cpu/compiler
-   * OR proide pthread.h and link against the posix thread library
+   * OR provide pthread.h and link against the posix thread library
    * of your system.
    */
   #include <pthread.h>
