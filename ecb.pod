@@ -523,6 +523,14 @@ change direction for negative values:
    for (m = -100; m <= 100; ++m)
      int elem = myarray [ecb_mod (m, ecb_array_length (myarray))];
 
+=item x = ecb_div_rd (val, div)
+
+=item x = ecb_div_ru (val, div)
+
+Returns C<val> divided by C<div> rounded down or up, respectively.
+C<val> and C<div> must have integer types and C<div> must be strictly
+positive.
+
 =back
 
 =head2 UTILITY
