@@ -529,7 +529,8 @@ change direction for negative values:
 
 Returns C<val> divided by C<div> rounded down or up, respectively.
 C<val> and C<div> must have integer types and C<div> must be strictly
-positive.
+positive. Note that these functions are implemented with macros in C
+and with function templates in C++.
 
 =back
 

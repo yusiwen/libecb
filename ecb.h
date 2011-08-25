@@ -375,8 +375,21 @@ ecb_function_ ecb_bool ecb_little_endian (void) { return ecb_byteorder_helper ()
   #define ecb_mod(m,n) ((m) < 0 ? ((n) - 1 - ((-1 - (m)) % (n))) : ((m) % (n)))
 #endif
 
-#define ecb_div_rd(val,div) ((val) < 0 ? - ((-(val) + (div) - 1) / (div)) : ((val)            ) / (div))
-#define ecb_div_ru(val,div) ((val) < 0 ? - ((-(val)            ) / (div)) : ((val) + (div) - 1) / (div))
+#if __cplusplus
+  template<typename T>
+  static inline T ecb_div_rd (T val, T div)
+  {
+    return val < 0 ? - ((-val + div - 1) / div) : (val          ) / div;
+  }
+  template<typename T>
+  static inline T ecb_div_ru (T val, T div)
+  {
+    return val < 0 ? - ((-val          ) / div) : (val + div - 1) / div;
+  }
+#else
+  #define ecb_div_rd(val,div) ((val) < 0 ? - ((-(val) + (div) - 1) / (div)) : ((val)            ) / (div))
+  #define ecb_div_ru(val,div) ((val) < 0 ? - ((-(val)            ) / (div)) : ((val) + (div) - 1) / (div))
+#endif
 
 #if ecb_cplusplus_does_not_suck
   /* does not work for local types (http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2657.htm) */
