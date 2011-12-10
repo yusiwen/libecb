@@ -291,6 +291,33 @@ typedef int ecb_bool;
   }
 #endif
 
+ecb_function_ uint8_t  ecb_bitrev8  (uint8_t  x)
+{
+  return (  (x * 0x0802U & 0x22110U)
+          | (x * 0x8020U & 0x88440U)) * 0x10101U >> 16; 
+}
+
+ecb_function_ uint16_t ecb_bitrev16 (uint16_t x)
+{
+  x = ((x >>  1) &     0x5555) | ((x &     0x5555) <<  1);
+  x = ((x >>  2) &     0x3333) | ((x &     0x3333) <<  2);
+  x = ((x >>  4) &     0x0f0f) | ((x &     0x0f0f) <<  4);
+  x = ( x >>  8              ) | ( x               <<  8);
+
+  return x;
+}
+
+ecb_function_ uint32_t ecb_bitrev32 (uint32_t x)
+{
+  x = ((x >>  1) & 0x55555555) | ((x & 0x55555555) <<  1);
+  x = ((x >>  2) & 0x33333333) | ((x & 0x33333333) <<  2);
+  x = ((x >>  4) & 0x0f0f0f0f) | ((x & 0x0f0f0f0f) <<  4);
+  x = ((x >>  8) & 0x00ff00ff) | ((x & 0x00ff00ff) <<  8);
+  x = ( x >> 16              ) | ( x               << 16);
+
+  return x;
+}
+
 /* popcount64 is only available on 64 bit cpus as gcc builtin */
 /* so for this version we are lazy */
 ecb_function_ int ecb_popcount64 (uint64_t x) ecb_const;
