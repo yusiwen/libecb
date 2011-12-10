@@ -291,12 +291,14 @@ typedef int ecb_bool;
   }
 #endif
 
+ecb_function_ uint8_t  ecb_bitrev8  (uint8_t  x) ecb_const;
 ecb_function_ uint8_t  ecb_bitrev8  (uint8_t  x)
 {
   return (  (x * 0x0802U & 0x22110U)
           | (x * 0x8020U & 0x88440U)) * 0x10101U >> 16; 
 }
 
+ecb_function_ uint16_t ecb_bitrev16 (uint16_t x) ecb_const;
 ecb_function_ uint16_t ecb_bitrev16 (uint16_t x)
 {
   x = ((x >>  1) &     0x5555) | ((x &     0x5555) <<  1);
@@ -307,6 +309,7 @@ ecb_function_ uint16_t ecb_bitrev16 (uint16_t x)
   return x;
 }
 
+ecb_function_ uint32_t ecb_bitrev32 (uint32_t x) ecb_const;
 ecb_function_ uint32_t ecb_bitrev32 (uint32_t x)
 {
   x = ((x >>  1) & 0x55555555) | ((x & 0x55555555) <<  1);

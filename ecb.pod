@@ -457,6 +457,20 @@ For example:
   ecb_popcount32 (7) = 3
   ecb_popcount32 (255) = 8
 
+=item uint8_t  ecb_bitrev8  (uint8_t  x)
+
+=item uint16_t ecb_bitrev16 (uint16_t x)
+
+=item uint32_t ecb_bitrev32 (uint32_t x)
+
+Reverses the bits in x, i.e. the MSB becomes the LSB, MSB-1 becomes LSB+1
+and so on.
+
+Example:
+
+   ecb_bitrev8 (0xa7) = 0xea
+   ecb_bitrev32 (0xffcc4411) = 0x882233ff
+
 =item uint32_t ecb_bswap16 (uint32_t x)
 
 =item uint32_t ecb_bswap32 (uint32_t x)
