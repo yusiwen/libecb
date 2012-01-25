@@ -395,18 +395,18 @@ ecb_inline uint64_t ecb_rotr64 (uint64_t x, unsigned int count) { return (x << (
 /* try to tell the compiler that some condition is definitely true */
 #define ecb_assume(cond) do { if (!(cond)) ecb_unreachable (); } while (0)
 
-ecb_function_ unsigned char ecb_byteorder_helper (void) ecb_const;
-ecb_function_ unsigned char
+ecb_inline unsigned char ecb_byteorder_helper (void) ecb_const;
+ecb_inline unsigned char
 ecb_byteorder_helper (void)
 {
   const uint32_t u = 0x11223344;
   return *(unsigned char *)&u;
 }
 
-ecb_function_ ecb_bool ecb_big_endian    (void) ecb_const;
-ecb_function_ ecb_bool ecb_big_endian    (void) { return ecb_byteorder_helper () == 0x11; }
-ecb_function_ ecb_bool ecb_little_endian (void) ecb_const;
-ecb_function_ ecb_bool ecb_little_endian (void) { return ecb_byteorder_helper () == 0x44; }
+ecb_inline ecb_bool ecb_big_endian    (void) ecb_const;
+ecb_inline ecb_bool ecb_big_endian    (void) { return ecb_byteorder_helper () == 0x11; }
+ecb_inline ecb_bool ecb_little_endian (void) ecb_const;
+ecb_inline ecb_bool ecb_little_endian (void) { return ecb_byteorder_helper () == 0x44; }
 
 #if ECB_GCC_VERSION(3,0) || ECB_C99
   #define ecb_mod(m,n) ((m) % (n) + ((m) % (n) < 0 ? (n) : 0))
