@@ -92,8 +92,10 @@
       #define ECB_MEMORY_FENCE         __asm__ __volatile__ ("dmb" : : : "memory")
     #elif __sparc || __sparc__
       #define ECB_MEMORY_FENCE         __asm__ __volatile__ ("membar #LoadStore | #LoadLoad | #StoreStore | #StoreLoad | " : : : "memory")
-      #define ECB_MEMORY_FENCE_ACQUIRE __asm__ __volatile__ ("membar #LoadStore | #LoadLoad" : : : "memory")
+      #define ECB_MEMORY_FENCE_ACQUIRE __asm__ __volatile__ ("membar #LoadStore | #LoadLoad"                               : : : "memory")
       #define ECB_MEMORY_FENCE_RELEASE __asm__ __volatile__ ("membar #LoadStore |             #StoreStore")
+    #elif defined(__s390__) || defined(__s390x__)
+      #define ECB_MEMORY_FENCE         __asm__ __volatile__ ("bcr 15,0" : : : "memory")
     #endif
   #endif
 #endif
