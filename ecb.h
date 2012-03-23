@@ -102,8 +102,6 @@
       #define ECB_MEMORY_FENCE         __asm__ __volatile__ ("bcr 15,0" : : : "memory")
     #elif defined(__mips__)
       #define ECB_MEMORY_FENCE         __asm__ __volatile__ ("sync" : : : "memory")
-    #elif __xlC__
-      #define ECB_MEMORY_FENCE         __lwsync ()
     #endif
   #endif
 #endif
@@ -126,6 +124,8 @@
     #define ECB_MEMORY_FENCE         __machine_rw_barrier ()
     #define ECB_MEMORY_FENCE_ACQUIRE __machine_r_barrier  ()
     #define ECB_MEMORY_FENCE_RELEASE __machine_w_barrier  ()
+  #elif __xlC__
+    #define ECB_MEMORY_FENCE         __lwsync ()
   #endif
 #endif
 
