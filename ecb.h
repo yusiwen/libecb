@@ -125,7 +125,7 @@
     #define ECB_MEMORY_FENCE_ACQUIRE __machine_r_barrier  ()
     #define ECB_MEMORY_FENCE_RELEASE __machine_w_barrier  ()
   #elif __xlC__
-    #define ECB_MEMORY_FENCE         __lwsync ()
+    #define ECB_MEMORY_FENCE         __sync ()
   #endif
 #endif
 
