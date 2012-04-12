@@ -102,6 +102,8 @@
       #define ECB_MEMORY_FENCE         __asm__ __volatile__ ("bcr 15,0" : : : "memory")
     #elif defined __mips__
       #define ECB_MEMORY_FENCE         __asm__ __volatile__ ("sync" : : : "memory")
+    #elif defined __alpha__
+      #define ECB_MEMORY_FENCE         __asm__ __volatile__ ("mb" : : : "memory")
     #endif
   #endif
 #endif
