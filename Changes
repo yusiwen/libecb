@@ -4,6 +4,7 @@ TODO: examples from X for clz/ctz
 TODO: arithmetic right shift
 TODO: bit reversal
 TODO: template/generic functions for x32/x64 and so on
+TODO: #define ecb_integer_multiples_of(n,d) ((char (*)[d])(n) - (char (*)[d])0)
 TODO: generalised shift
 unsigned long gensh(unsigned long v, int x) {
 int a, b;
