@@ -56,6 +56,7 @@
     typedef uint32_t uintptr_t;
     typedef  int32_t  intptr_t;
   #endif
+ typedef intptr_t ptrdiff_t;
 #else
   #include <inttypes.h>
   #if UINTMAX_MAX > 0xffffffffU
