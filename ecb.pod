@@ -56,6 +56,17 @@ the corresponding function relies on C to implement the correct types, and
 is usually implemented as a macro. Specifically, a "bool" in this manual
 refers to any kind of boolean value, not a specific type.
 
+=head2 TYPES / TYPE SUPPORT
+
+ecb.h makes sure that the following types are defined (in the expected way):
+
+   int8_t  uint8_t  int16_t uint16_t
+   int32_t uint32_t int64_t uint64_t
+   intptr_t         uintptr_t
+
+The macro C<ECB_PTRSIZE> is defined to the size of a pointer on this
+platform (currently C<4> or C<8>).
+
 =head2 GCC ATTRIBUTES
 
 A major part of libecb deals with GCC attributes. These are additional
