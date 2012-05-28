@@ -1,12 +1,14 @@
+0x00010001
+	- add ecb_is_pot32/64.
+        - add intptr_t/uintptr_t.
+        - add ECB_PTRSIZE.
+
 TODO: ffs/clz
 64 bit variants of everything
 TODO: examples from X for clz/ctz
 TODO: arithmetic right shift
-TODO: bit reversal
 TODO: template/generic functions for x32/x64 and so on
 TODO: #define ecb_integer_multiples_of(n,d) ((char (*)[d])(n) - (char (*)[d])0)
-TODO: is_pot
-TODO: uintptr_t
 TODO: generalised shift
 unsigned long gensh(unsigned long v, int x) {
 int a, b;

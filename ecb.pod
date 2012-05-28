@@ -438,6 +438,14 @@ For example:
   ecb_ctz32 (3) = 0
   ecb_ctz32 (6) = 1
 
+=item bool ecb_is_pot32 (uint32_t x)
+
+=item bool ecb_is_pot64 (uint32_t x)
+
+Return true iff C<x> is a power of two or C<x == 0>.
+
+For smaller types then C<uint32_t> you can safely use C<ecb_is_pot32>.
+
 =item int ecb_ld32 (uint32_t x)
 
 =item int ecb_ld64 (uint64_t x)

@@ -329,6 +329,11 @@ typedef int ecb_bool;
   }
 #endif
 
+ecb_function_ ecb_bool ecb_is_pot32 (uint32_t x) ecb_const;
+ecb_function_ ecb_bool ecb_is_pot32 (uint32_t x) { return !(x & (x - 1)); }
+ecb_function_ ecb_bool ecb_is_pot64 (uint64_t x) ecb_const;
+ecb_function_ ecb_bool ecb_is_pot64 (uint64_t x) { return !(x & (x - 1)); }
+
 ecb_function_ uint8_t  ecb_bitrev8  (uint8_t  x) ecb_const;
 ecb_function_ uint8_t  ecb_bitrev8  (uint8_t  x)
 {
