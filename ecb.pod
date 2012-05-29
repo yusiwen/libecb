@@ -69,17 +69,40 @@ platform (currently C<4> or C<8>).
 
 =head2 LANGUAGE/COMPILER VERSIONS
 
+All the following symbols expand to an expressionb that cna be tested in
+preprocessor instructions as well as treated as a boolean (use C<!!> to
+ensure it's either C<0> or C<1> if you need that).
+
 =over 4
+
+=item ECB_C
+
+True if the implementation defines the C<__STDC__> macro to a true value,
+which is typically true for both C and C++ compilers.
 
 =item ECB_C99
 
-Expands to a true value (suitable for testing in by the preprocessor)
-if the environment claims to be C99 compliant.
+True if the implementation claims to be C99 compliant.
 
 =item ECB_C11
 
-Expands to a true value (suitable for testing in by the preprocessor)
-if the environment claims to be C11 compliant.
+True if the implementation claims to be C11 compliant.
+
+=item ECB_CPP
+
+True if the implementation defines the C<__cplusplus__> macro to a true
+value, which is typically true for C++ compilers.
+
+=item ECB_CPP98
+
+True if the implementation claims to be compliant to ISO/IEC 14882:1998
+(the first C++ ISO standard) or any later vwersion. Typically true for all
+C++ compilers.
+
+=item ECB_CPP11
+
+True if the implementation claims to be compliant to ISO/IEC 14882:2011
+(C++11) or any later vwersion.
 
 =item ECB_GCC_VERSION(major,minor)
 
