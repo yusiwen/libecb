@@ -97,7 +97,7 @@
 # define ECB_NO_SMP 1
 #endif
 
-#if ECB_NO_THREADS || ECB_NO_SMP
+#if ECB_NO_SMP
   #define ECB_MEMORY_FENCE do { } while (0)
 #endif
 
@@ -106,17 +106,15 @@
     /* we assume that these memory fences work on all variables/all memory accesses, */
     /* not just C11 atomics and atomic accesses */
     #include <stdatomic.h>
+    #if 0
     #define ECB_MEMORY_FENCE         atomic_thread_fence (memory_order_acq_rel)
     #define ECB_MEMORY_FENCE_ACQUIRE atomic_thread_fence (memory_order_acquire)
     #define ECB_MEMORY_FENCE_RELEASE atomic_thread_fence (memory_order_release)
-  #endif
-#endif
-
-#ifndef ECB_MEMORY_FENCE_RELEASE
-  #if ECB_GCC_VERSION(4,7)
-    #define ECB_MEMORY_FENCE         __atomic_thread_fence (__ATOMIC_ACQ_REL)
-    #define ECB_MEMORY_FENCE_ACQUIRE __atomic_thread_fence (__ATOMIC_ACQUIRE)
-    #define ECB_MEMORY_FENCE_RELEASE __atomic_thread_fence (__ATOMIC_RELEASE)
+    #else
+    /* the above *should* be enough in my book, but after experiences with gcc-4.7 */
+    /* and clang, better play safe */
+    #define ECB_MEMORY_FENCE         atomic_thread_fence (memory_order_seq_cst)
+    #endif
   #endif
 #endif
 
@@ -153,7 +151,14 @@
 #endif
 
 #ifndef ECB_MEMORY_FENCE
-  #if ECB_GCC_VERSION(4,4) || defined __INTEL_COMPILER || defined __clang__
+  #if ECB_GCC_VERSION(4,7)
+    /* unsolved mystery: ACQ_REL should be enough, but doesn't generate any code */
+    /* which in turn actually breaks libev */
+    #define ECB_MEMORY_FENCE         __atomic_thread_fence (__ATOMIC_SEQ_CST)
+  #elif defined __clang && __has_feature (cxx_atomic)
+    /* see above */
+    #define ECB_MEMORY_FENCE         __c11_atomic_thread_fence (__ATOMIC_SEQ_CST)
+  #elif ECB_GCC_VERSION(4,4) || defined __INTEL_COMPILER || defined __clang__
     #define ECB_MEMORY_FENCE         __sync_synchronize ()
     /*#define ECB_MEMORY_FENCE_ACQUIRE ({ char dummy = 0; __sync_lock_test_and_set (&dummy, 1); }) */
     /*#define ECB_MEMORY_FENCE_RELEASE ({ char dummy = 1; __sync_lock_release      (&dummy   ); }) */
