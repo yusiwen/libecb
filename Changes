@@ -2,6 +2,9 @@
 	- add ecb_is_pot32/64.
         - add intptr_t/uintptr_t.
         - add ECB_PTRSIZE.
+        - more macros for C/C++ version checks.
+        - support C11 atomics for memory fences.
+        - support gcc-4.7 atomics for memory fences.
 
 TODO: ffs/clz
 64 bit variants of everything
