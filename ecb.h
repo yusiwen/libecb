@@ -81,6 +81,9 @@
   #endif
 #endif
 
+#define ECB_C99 (__STDC_VERSION__ >= 199901L)
+#define ECB_C11 (__STDC_VERSION__ >= 201112L)
+
 /*****************************************************************************/
 
 /* ECB_NO_THREADS - ecb is not used by multiple threads, ever */
@@ -92,6 +95,17 @@
 
 #if ECB_NO_THREADS || ECB_NO_SMP
   #define ECB_MEMORY_FENCE do { } while (0)
+#endif
+
+#ifndef ECB_MEMORY_FENCE
+  #if ECB_C11 && !defined __STDC_NO_ATOMICS__
+    /* we assume that these memory fences work on all variables/all memory accesses, */
+    /* not just C11 atomics and atomic accesses */
+    #include <stdatomic.h>
+    #define ECB_MEMORY_FENCE         atomic_thread_fence (memory_order_acq_rel)
+    #define ECB_MEMORY_FENCE_ACQUIRE atomic_thread_fence (memory_order_acquire)
+    #define ECB_MEMORY_FENCE_RELEASE atomic_thread_fence (memory_order_release)
+  #endif
 #endif
 
 #ifndef ECB_MEMORY_FENCE
@@ -177,8 +191,6 @@
 
 /*****************************************************************************/
 
-#define ECB_C99 (__STDC_VERSION__ >= 199901L)
-
 #if __cplusplus
   #define ecb_inline static inline
 #elif ECB_GCC_VERSION(2,5)
@@ -226,10 +238,15 @@ typedef int ecb_bool;
 #endif
 
 #define ecb_noinline   ecb_attribute ((__noinline__))
-#define ecb_noreturn   ecb_attribute ((__noreturn__))
 #define ecb_unused     ecb_attribute ((__unused__))
 #define ecb_const      ecb_attribute ((__const__))
 #define ecb_pure       ecb_attribute ((__pure__))
+
+#if ECB_C11
+  #define ecb_noreturn   _Noreturn
+#else
+  #define ecb_noreturn   ecb_attribute ((__noreturn__))
+#endif
 
 #if ECB_GCC_VERSION(4,3)
   #define ecb_artificial ecb_attribute ((__artificial__))

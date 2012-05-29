@@ -67,6 +67,31 @@ ecb.h makes sure that the following types are defined (in the expected way):
 The macro C<ECB_PTRSIZE> is defined to the size of a pointer on this
 platform (currently C<4> or C<8>).
 
+=head2 LANGUAGE/COMPILER VERSIONS
+
+=over 4
+
+=item ECB_C99
+
+Expands to a true value (suitable for testing in by the preprocessor)
+if the environment claims to be C99 compliant.
+
+=item ECB_C11
+
+Expands to a true value (suitable for testing in by the preprocessor)
+if the environment claims to be C11 compliant.
+
+=item ECB_GCC_VERSION(major,minor)
+
+Expands to a true value (suitable for testing in by the preprocessor)
+if the compiler used is GNU C and the version is the givne version, or
+higher.
+
+This macro tries to return false on compilers that claim to be GCC
+compatible but aren't.
+
+=back
+
 =head2 GCC ATTRIBUTES
 
 A major part of libecb deals with GCC attributes. These are additional
@@ -580,6 +605,30 @@ Returns the number of elements in the array C<name>. For example:
 
   for (i = 0; i < ecb_array_length (primes); i++)
     sum += primes [i];
+
+=back
+
+=head2 SYMBOLS GOVERNING COMPILATION OF ECB.H ITSELF
+
+These symbols need to be defined before including F<ecb.h> the first time.
+
+=over 4
+
+=item ECB_NO_THRADS
+
+If F<ecb.h> is never used from multiple threads, then this symbol can
+be defined, in which case memory fences (and similar constructs) are
+completely removed, leading to more efficient code and fewer dependencies.
+
+Setting this symbol to a true value implies C<ECB_NO_SMP>.
+
+=item ECB_NO_SMP
+
+The weaker version of C<ECB_NO_THREADS> - if F<ecb.h> is used from
+multiple threads, but never concurrently (e.g. if the system the program
+runs on has only a single CPU with a single core, no hyperthreading and so
+on), then this symbol can be defined, leading to more efficient code and
+fewer dependencies.
 
 =back
 
