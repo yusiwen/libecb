@@ -83,11 +83,16 @@ which is typically true for both C and C++ compilers.
 
 =item ECB_C99
 
-True if the implementation claims to be C99 compliant.
+True if the implementation claims to be compliant to C99 (ISO/IEC
+9899:1999) or any later version.
+
+Note that later versions (ECB_C11) remove core features again (for
+example, variable length arrays).
 
 =item ECB_C11
 
-True if the implementation claims to be C11 compliant.
+True if the implementation claims to be compliant to C11 (ISO/IEC
+9899:2011) or any later version.
 
 =item ECB_CPP
 
