@@ -65,7 +65,8 @@ ecb.h makes sure that the following types are defined (in the expected way):
    intptr_t uintptr_t ptrdiff_t
 
 The macro C<ECB_PTRSIZE> is defined to the size of a pointer on this
-platform (currently C<4> or C<8>).
+platform (currently C<4> or C<8>) and can be used in preprocessor
+expressions.
 
 =head2 LANGUAGE/COMPILER VERSIONS
 
