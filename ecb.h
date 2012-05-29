@@ -112,6 +112,14 @@
   #endif
 #endif
 
+#ifndef ECB_MEMORY_FENCE_RELEASE
+  #if ECB_GCC_VERSION(4,7)
+    #define ECB_MEMORY_FENCE         __atomic_thread_fence (__ATOMIC_ACQ_REL)
+    #define ECB_MEMORY_FENCE_ACQUIRE __atomic_thread_fence (__ATOMIC_ACQUIRE)
+    #define ECB_MEMORY_FENCE_RELEASE __atomic_thread_fence (__ATOMIC_RELEASE)
+  #endif
+#endif
+
 #ifndef ECB_MEMORY_FENCE
   #if ECB_GCC_VERSION(2,5) || defined __INTEL_COMPILER || (__llvm__ && __GNUC__) || __SUNPRO_C >= 0x5110 || __SUNPRO_CC >= 0x5110
     #if __i386 || __i386__
