@@ -70,7 +70,7 @@ expressions.
 
 =head2 LANGUAGE/COMPILER VERSIONS
 
-All the following symbols expand to an expressionb that cna be tested in
+All the following symbols expand to an expression that can be tested in
 preprocessor instructions as well as treated as a boolean (use C<!!> to
 ensure it's either C<0> or C<1> if you need that).
 
@@ -97,18 +97,18 @@ value, which is typically true for C++ compilers.
 =item ECB_CPP98
 
 True if the implementation claims to be compliant to ISO/IEC 14882:1998
-(the first C++ ISO standard) or any later vwersion. Typically true for all
+(the first C++ ISO standard) or any later version. Typically true for all
 C++ compilers.
 
 =item ECB_CPP11
 
 True if the implementation claims to be compliant to ISO/IEC 14882:2011
-(C++11) or any later vwersion.
+(C++11) or any later version.
 
 =item ECB_GCC_VERSION(major,minor)
 
 Expands to a true value (suitable for testing in by the preprocessor)
-if the compiler used is GNU C and the version is the givne version, or
+if the compiler used is GNU C and the version is the given version, or
 higher.
 
 This macro tries to return false on compilers that claim to be GCC
