@@ -85,7 +85,6 @@
 #define ECB_C99   (__STDC_VERSION__ >= 199901L)
 #define ECB_C11   (__STDC_VERSION__ >= 201112L)
 #define ECB_CPP   (__cplusplus+0)
-#define ECB_CPP98 (__cplusplus >= 199711L)
 #define ECB_CPP11 (__cplusplus >= 201103L)
 
 /*****************************************************************************/

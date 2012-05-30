@@ -99,12 +99,6 @@ True if the implementation claims to be compliant to C11 (ISO/IEC
 True if the implementation defines the C<__cplusplus__> macro to a true
 value, which is typically true for C++ compilers.
 
-=item ECB_CPP98
-
-True if the implementation claims to be compliant to ISO/IEC 14882:1998
-(the first C++ ISO standard) or any later version. Typically true for all
-C++ compilers.
-
 =item ECB_CPP11
 
 True if the implementation claims to be compliant to ISO/IEC 14882:2011
