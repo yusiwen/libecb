@@ -139,10 +139,10 @@
 
 #ifndef ECB_MEMORY_FENCE
   #if ECB_GCC_VERSION(4,7)
-    /* see comment below about the C11 memory model. in short - avoid */
+    /* see comment below (stdatomic.h) about the C11 memory model. */
     #define ECB_MEMORY_FENCE         __atomic_thread_fence (__ATOMIC_SEQ_CST)
   #elif defined __clang && __has_feature (cxx_atomic)
-    /* see above */
+    /* see comment below (stdatomic.h) about the C11 memory model. */
     #define ECB_MEMORY_FENCE         __c11_atomic_thread_fence (__ATOMIC_SEQ_CST)
   #elif ECB_GCC_VERSION(4,4) || defined __INTEL_COMPILER || defined __clang__
     #define ECB_MEMORY_FENCE         __sync_synchronize ()
@@ -169,8 +169,12 @@
     /* we assume that these memory fences work on all variables/all memory accesses, */
     /* not just C11 atomics and atomic accesses */
     #include <stdatomic.h>
-    /* unfortunately, the C11 memory model seems to be very limited, and unable to express */
-    /* simple barrier semantics. That means we need to take out thor's hammer. */
+    /* Unfortunately, neither gcc 4.7 nor clang 3.1 generate any instructions for */
+    /* any fence other than seq_cst, which isn't very efficient for us. */
+    /* Why that is, we don't know - either the C11 memory model is quite useless */
+    /* for most usages, or gcc and clang have a bug */
+    /* I *currently* lean towards the latter, and inefficiently implement */
+    /* all three of ecb's fences as a seq_cst fence */
     #define ECB_MEMORY_FENCE         atomic_thread_fence (memory_order_seq_cst)
   #endif
 #endif
