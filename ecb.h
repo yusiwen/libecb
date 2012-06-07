@@ -467,8 +467,25 @@ ecb_inline unsigned char ecb_byteorder_helper (void) ecb_const;
 ecb_inline unsigned char
 ecb_byteorder_helper (void)
 {
-  const uint32_t u = 0x11223344;
-  return *(unsigned char *)&u;
+  /* the union code still generates code under pressure in gcc, */
+  /* but less than using pointers, and always seem to */
+  /* successfully return a constant. */
+  /* the reason why we have this horrible preprocessor mess */
+  /* is to avoid it in all cases, at leats on common architectures */
+#if __i386 || __i386__ || _M_X86 || __amd64 || __amd64__ || _M_X64
+  return 0x44;
+#elif __BYTE_ORDER__ && __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+  return 0x44;
+#elif __BYTE_ORDER__ && __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
+  retrurn 0x11;
+#else
+  union
+  {
+    uint32_t i;
+    uint8_t c;
+  } u = { 0x11223344 };
+  return u.c;
+#endif
 }
 
 ecb_inline ecb_bool ecb_big_endian    (void) ecb_const;
