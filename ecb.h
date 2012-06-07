@@ -471,7 +471,8 @@ ecb_byteorder_helper (void)
   /* but less than using pointers, and always seem to */
   /* successfully return a constant. */
   /* the reason why we have this horrible preprocessor mess */
-  /* is to avoid it in all cases, at leats on common architectures */
+  /* is to avoid it in all cases, at least on common architectures */
+  /* and yes, gcc defines __BYTE_ORDER__, g++ does not */
 #if __i386 || __i386__ || _M_X86 || __amd64 || __amd64__ || _M_X64
   return 0x44;
 #elif __BYTE_ORDER__ && __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
