@@ -461,7 +461,7 @@ ecb_inline uint64_t ecb_rotr64 (uint64_t x, unsigned int count) { return (x << (
 #endif
 
 /* try to tell the compiler that some condition is definitely true */
-#define ecb_assume(cond) do { if (!(cond)) ecb_unreachable (); } while (0)
+#define ecb_assume(cond) if (!(cond)) ecb_unreachable (); else 0
 
 ecb_inline unsigned char ecb_byteorder_helper (void) ecb_const;
 ecb_inline unsigned char
