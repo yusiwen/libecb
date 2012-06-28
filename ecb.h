@@ -560,25 +560,6 @@ ecb_inline ecb_bool ecb_little_endian (void) { return ecb_byteorder_helper () ==
 
 #ifndef ECB_NO_LIBM
 
-  #if __STDC_IEC_559__ || ECB_STDFP
-    /* we assume this is defined for most C and many C++ compilers */
-    ecb_inline ecb_bool ecb_float_ieee  (void) ecb_const;
-    ecb_inline ecb_bool ecb_float_ieee  (void) { return 1; }
-    ecb_inline ecb_bool ecb_double_ieee (void) ecb_const;
-    ecb_inline ecb_bool ecb_double_ieee (void) { return 1; }
-  #elif ECB_CPP
-    #include <limits>
-    ecb_inline ecb_bool ecb_float_ieee  (void) ecb_const;
-    ecb_inline ecb_bool ecb_float_ieee  (void) { return std::numeric_limits<float >::is_iec559; }
-    ecb_inline ecb_bool ecb_double_ieee (void) ecb_const;
-    ecb_inline ecb_bool ecb_double_ieee (void) { return std::numeric_limits<double>::is_iec559; }
-  #else
-    ecb_inline ecb_bool ecb_float_ieee  (void) ecb_const;
-    ecb_inline ecb_bool ecb_float_ieee  (void) { return 0; }
-    ecb_inline ecb_bool ecb_double_ieee (void) ecb_const;
-    ecb_inline ecb_bool ecb_double_ieee (void) { return 0; }
-  #endif
-
   /* convert a float to ieee single/binary32 */
   ecb_function_ uint32_t ecb_float_to_binary32 (float x) ecb_const;
   ecb_function_ uint32_t
