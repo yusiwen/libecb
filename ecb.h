@@ -555,68 +555,112 @@ ecb_inline ecb_bool ecb_little_endian (void) { return ecb_byteorder_helper () ==
   ecb_inline ecb_bool ecb_double_ieee (void) { return 0; }
 #endif
 
-// convert a float to ieee single/binary32
-ecb_function_ uint32_t ecb_float_to_binary32 (float x) ecb_const;
-ecb_function_ uint32_t
-ecb_float_to_binary32 (float x)
-{
-  /* slow emulation, works for anything but nan's and -0 */
-  ECB_EXTERN_C float frexpf (float v, int *e);
-  uint32_t r, m;
-  int e;
+/*******************************************************************************/
+/* floating point stuff, can be disabled by defining ECB_NO_FP */
 
-  if (x == 0e0f                    ) return 0;
-  if (x > +3.40282346638528860e+38f) return 0x7f800000U;
-  if (x < -3.40282346638528860e+38f) return 0xff800000U;
+#ifndef ECB_NO_FP
 
-  m = frexpf (x, &e) * 0x1000000U;
+  /* basically, everything uses "ieee pure-endian" floating point numbers */
+  /* the only noteworthy exception is ancient armle, which uses order 43218765 */
+  #if 0 \
+      || __i386 || __i386__ \
+      || __amd64 || __amd64__ || __x86_64 || __x86_64__ \
+      || __powerpc__ || __ppc__ || __powerpc64__ || __ppc64__ \
+      || defined __arm__ && defined __ARM_EABI__ \
+      || defined __s390__ || defined __s390x__ \
+      || defined __mips__ \
+      || defined __alpha__ \
+      || defined __hppa__ \
+      || defined __ia64__ \
+      || defined _M_IX86 || defined _M_AMD64 || defined _M_IA64
+    #define ECB_STDFP 1
+  #else
+    #define ECB_STDFP 0
+  #endif
 
-  r = m & 0x80000000U;
+  // convert a float to ieee single/binary32
+  ecb_function_ uint32_t ecb_float_to_binary32 (float x) ecb_const;
+  ecb_function_ uint32_t
+  ecb_float_to_binary32 (float x)
+  {
+    uint32_t r;
 
-  if (r)
-    m = -m;
+    #if ECB_STDFP
+      ((char *)&r) [0] = ((char *)&x)[0];
+      ((char *)&r) [1] = ((char *)&x)[1];
+      ((char *)&r) [2] = ((char *)&x)[2];
+      ((char *)&r) [3] = ((char *)&x)[3];
+    #else
+      /* slow emulation, works for anything but nan's and -0 */
+      ECB_EXTERN_C float frexpf (float v, int *e);
+      uint32_t m;
+      int e;
 
-  if (e < -125)
-    {
-      m &= 0xffffffU;
-      m >>= (-125 - e);
-      e = -126;
-    }
+      if (x == 0e0f                    ) return 0;
+      if (x > +3.40282346638528860e+38f) return 0x7f800000U;
+      if (x < -3.40282346638528860e+38f) return 0xff800000U;
 
-  r |= (e + 126) << 23;
-  r |= m & 0x7fffffU;
+      m = frexpf (x, &e) * 0x1000000U;
 
-  return r;
-}
+      r = m & 0x80000000U;
 
-// converts a ieee single/binary32 to a float
-ecb_function_ float ecb_binary32_to_float (uint32_t x) ecb_const;
-ecb_function_ float
-ecb_binary32_to_float (uint32_t x)
-{
-  /* emulation, only works for normals and subnormals and +0 */
-  ECB_EXTERN_C float ldexpf (float x, int e);
+      if (r)
+        m = -m;
 
-  int neg = x >> 31;
-  int e = (x >> 23) & 0xffU;
-  float r;
+      if (e < -125)
+        {
+          m &= 0xffffffU;
+          m >>= (-125 - e);
+          e = -126;
+        }
 
-  x &= 0x7fffffU;
+      r |= (e + 126) << 23;
+      r |= m & 0x7fffffU;
+    #endif
 
-  if (e)
-    x |= 0x800000U;
+    return r;
+  }
 
-  /* we distrust ldexpf a bit and do the 2**-24 scaling by an extra multiply */
-  r = ldexpf (x * (1.f / 0x1000000U), e - 126);
+  // converts a ieee single/binary32 to a float
+  ecb_function_ float ecb_binary32_to_float (uint32_t x) ecb_const;
+  ecb_function_ float
+  ecb_binary32_to_float (uint32_t x)
+  {
+    float r;
 
-  return neg ? -r : r;
-}
+    #if ECB_STDFP
+      ((char *)&r) [0] = ((char *)&x)[0];
+      ((char *)&r) [1] = ((char *)&x)[1];
+      ((char *)&r) [2] = ((char *)&x)[2];
+      ((char *)&r) [3] = ((char *)&x)[3];
+    #else
+      /* emulation, only works for normals and subnormals and +0 */
+      ECB_EXTERN_C float ldexpf (float x, int e);
 
-ecb_function_ uint64_t ecb_double_to_binary64 (double x) ecb_const;
-ecb_function_ uint64_t
-ecb_double_to_binary64 (double x)
-{
-}
+      int neg = x >> 31;
+      int e = (x >> 23) & 0xffU;
+
+      x &= 0x7fffffU;
+
+      if (e)
+        x |= 0x800000U;
+
+      /* we distrust ldexpf a bit and do the 2**-24 scaling by an extra multiply */
+      r = ldexpf (x * (1.f / 0x1000000U), e - 126);
+
+      r = neg ? -r : r;
+    #endif
+
+    return r;
+  }
+
+  ecb_function_ uint64_t ecb_double_to_binary64 (double x) ecb_const;
+  ecb_function_ uint64_t
+  ecb_double_to_binary64 (double x)
+  {
+  }
+
+#endif
 
 #endif
 
