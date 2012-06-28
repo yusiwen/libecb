@@ -62,11 +62,13 @@ ecb.h makes sure that the following types are defined (in the expected way):
 
    int8_t   uint8_t   int16_t  uint16_t
    int32_t  uint32_t  int64_t  uint64_t
-   intptr_t uintptr_t ptrdiff_t
+   intptr_t uintptr_t
 
 The macro C<ECB_PTRSIZE> is defined to the size of a pointer on this
 platform (currently C<4> or C<8>) and can be used in preprocessor
 expressions.
+
+For C<ptrdiff_t> and C<size_t> use C<stddef.h>.
 
 =head2 LANGUAGE/COMPILER VERSIONS
 
