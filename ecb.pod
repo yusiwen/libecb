@@ -115,6 +115,43 @@ higher.
 This macro tries to return false on compilers that claim to be GCC
 compatible but aren't.
 
+=item ECB_EXTERN_C
+
+Expands to C<extern "C"> in C++, and a simple C<extern> in C.
+
+This can be used to declare a single external C function:
+
+   ECB_EXTERN_C int printf (const char *format, ...);
+
+=item ECB_EXTERN_C_BEG / ECB_EXTERN_C_END
+
+These two macros can be used to wrap multiple C<extern "C"> definitions -
+they expand to nothing in C.
+
+They are most useful in header files:
+
+   ECB_EXTERN_C_BEG
+
+   int mycfun1 (int x);
+   int mycfun2 (int x);
+
+   ECB_EXTERN_C_END
+
+=item ECB_STDFP
+
+If this evaluates to a true value (suitable for testing in by the
+preprocessor), then C<float> and C<double> use IEEE 754 single/binary32
+and double/binary64 representations internally I<and> the endianness of
+both types match the endianness of C<uint32_t> and C<uint64_t>.
+
+This means you can just copy the bits of a C<float> (or C<double>) to an
+C<uint32_t> (or C<uint64_t>) and get the raw IEEE 754 bit representation
+without having to think about format or endianness.
+
+This is true for basically all modern platforms, although F<ecb.h> might
+not be able to deduce this correctly everywhere and might err on the safe
+side.
+
 =back
 
 =head2 GCC ATTRIBUTES
@@ -576,6 +613,61 @@ x86).
 
 =back
 
+=head2 FLOATING POINT FIDDLING
+
+=over 4
+
+=item uint32_t ecb_float_to_binary32  (float  x) [-UECB_NO_LIBM]
+
+=item uint64_t ecb_double_to_binary64 (double x) [-UECB_NO_LIBM]
+
+These functions each take an argument in the native C<float> or C<double>
+type and return the IEEE 754 bit representation of it.
+
+The bit representation is just as IEEE 754 defines it, i.e. the sign bit
+will be the most significant bit, followed by exponent and mantissa.
+
+This function should work even when the native floating point format isn't
+IEEE compliant, of course at a speed and code size penalty, and of course
+also within reasonable limits (it tries to convert NaNs, infinities and
+denormals, but will likely convert negative zero to positive zero).
+
+On all modern platforms (where C<ECB_STDFP> is true), the compiler should
+be able to optimise away this function completely.
+
+These functions can be helpful when serialising floats to the network - you
+can serialise the return value like a normal uint32_t/uint64_t.
+
+Another use for these functions is to manipulate floating point values
+directly.
+
+Silly example: toggle the sign bit of a float.
+
+   /* On gcc-4.7 on amd64, */
+   /* this results in a single add instruction to toggle the bit, and 4 extra */
+   /* instructions to move the float value to an integer register and back. */
+
+   x = ecb_binary32_to_float (ecb_float_to_binary32 (x) ^ 0x80000000U)
+
+=item float  ecb_binary32_to_float  (uint32_t x) [-UECB_NO_LIBM]
+
+=item double ecb_binary32_to_double (uint64_t x) [-UECB_NO_LIBM]
+
+The reverse operation of the previos function - takes the bit representation
+of an IEEE binary32 or binary64 number and converts it to the native C<float>
+or C<double> format.
+
+This function should work even when the native floating point format isn't
+IEEE compliant, of course at a speed and code size penalty, and of course
+also within reasonable limits (it tries to convert normals and denormals,
+and might be lucky for infinities, and with extraordinary luck, also for
+negative zero).
+
+On all modern platforms (where C<ECB_STDFP> is true), the compiler should
+be able to optimise away this function completely.
+
+=back
+
 =head2 ARITHMETIC
 
 =over 4
@@ -654,6 +746,12 @@ multiple threads, but never concurrently (e.g. if the system the program
 runs on has only a single CPU with a single core, no hyperthreading and so
 on), then this symbol can be defined, leading to more efficient code and
 fewer dependencies.
+
+=item ECB_NO_LIBM
+
+When defined to C<1>, do not export any functions that might introduce
+dependencies on the math library (usually called F<-lm>) - these are
+marked with [-UECB_NO_LIBM].
 
 =back
 
