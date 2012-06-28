@@ -589,7 +589,7 @@ ecb_inline ecb_bool ecb_little_endian (void) { return ecb_byteorder_helper () ==
     #if ECB_STDFP
       memcpy (&r, &x, 4);
     #else
-      /* slow emulation, works for anything but nan's and -0 */
+      /* slow emulation, works for anything but -0 */
       ECB_EXTERN_C float frexpf (float v, int *e);
       uint32_t m;
       int e;
@@ -597,6 +597,7 @@ ecb_inline ecb_bool ecb_little_endian (void) { return ecb_byteorder_helper () ==
       if (x == 0e0f                    ) return 0;
       if (x > +3.40282346638528860e+38f) return 0x7f800000U;
       if (x < -3.40282346638528860e+38f) return 0xff800000U;
+      if (x != x                       ) return 0x7fbfffffU;
 
       m = frexpf (x, &e) * 0x1000000U;
 
@@ -661,7 +662,7 @@ ecb_inline ecb_bool ecb_little_endian (void) { return ecb_byteorder_helper () ==
     #if ECB_STDFP
       memcpy (&r, &x, 8);
     #else
-      /* slow emulation, works for anything but nan's and -0 */
+      /* slow emulation, works for anything but -0 */
       ECB_EXTERN_C double frexp (double v, int *e);
       uint64_t m;
       int e;
@@ -669,6 +670,7 @@ ecb_inline ecb_bool ecb_little_endian (void) { return ecb_byteorder_helper () ==
       if (x == 0e0                     ) return 0;
       if (x > +1.79769313486231470e+308) return 0x7ff0000000000000U;
       if (x < -1.79769313486231470e+308) return 0xfff0000000000000U;
+      if (x != x                       ) return 0X7ff7ffffffffffffU;
 
       m = frexpf (x, &e) * 0x1000000U;
       m = frexp (x, &e) * 0x20000000000000U;
