@@ -86,6 +86,16 @@
 #define ECB_CPP   (__cplusplus+0)
 #define ECB_CPP11 (__cplusplus >= 201103L)
 
+#if ECB_CPP
+  #define ECB_EXTERN_C extern "C"
+  #define ECB_EXTERN_C_BEG ECB_EXTERN_C {
+  #define ECB_EXTERN_C_END }
+#else
+  #define ECB_EXTERN_C extern
+  #define ECB_EXTERN_C_BEG
+  #define ECB_EXTERN_C_END
+#endif
+
 /*****************************************************************************/
 
 /* ECB_NO_THREADS - ecb is not used by multiple threads, ever */
@@ -140,9 +150,9 @@
   #if ECB_GCC_VERSION(4,7)
     /* see comment below (stdatomic.h) about the C11 memory model. */
     #define ECB_MEMORY_FENCE         __atomic_thread_fence (__ATOMIC_SEQ_CST)
-  #elif defined __clang && __has_feature (cxx_atomic)
+  /*#elif defined __clang && __has_feature (cxx_atomic)*/
     /* see comment below (stdatomic.h) about the C11 memory model. */
-    #define ECB_MEMORY_FENCE         __c11_atomic_thread_fence (__ATOMIC_SEQ_CST)
+    /*#define ECB_MEMORY_FENCE         __c11_atomic_thread_fence (__ATOMIC_SEQ_CST)*/
   #elif ECB_GCC_VERSION(4,4) || defined __INTEL_COMPILER || defined __clang__
     #define ECB_MEMORY_FENCE         __sync_synchronize ()
   #elif _MSC_VER >= 1400 /* VC++ 2005 */
@@ -525,6 +535,88 @@ ecb_inline ecb_bool ecb_little_endian (void) { return ecb_byteorder_helper () ==
 #else
   #define ecb_array_length(name) (sizeof (name) / sizeof (name [0]))
 #endif
+
+#if __STDC_IEC_559__
+  // we assume this is defined for most C and many C++ compilers
+  ecb_inline ecb_bool ecb_float_ieee  (void) ecb_const;
+  ecb_inline ecb_bool ecb_float_ieee  (void) { return 1; }
+  ecb_inline ecb_bool ecb_double_ieee (void) ecb_const;
+  ecb_inline ecb_bool ecb_double_ieee (void) { return 1; }
+#elif ECB_CPP
+  #include <limits>
+  ecb_inline ecb_bool ecb_float_ieee  (void) ecb_const;
+  ecb_inline ecb_bool ecb_float_ieee  (void) { return std::numeric_limits<float >::is_iec559; }
+  ecb_inline ecb_bool ecb_double_ieee (void) ecb_const;
+  ecb_inline ecb_bool ecb_double_ieee (void) { return std::numeric_limits<double>::is_iec559; }
+#else
+  ecb_inline ecb_bool ecb_float_ieee  (void) ecb_const;
+  ecb_inline ecb_bool ecb_float_ieee  (void) { return 0; }
+  ecb_inline ecb_bool ecb_double_ieee (void) ecb_const;
+  ecb_inline ecb_bool ecb_double_ieee (void) { return 0; }
+#endif
+
+// convert a float to ieee single/binary32
+ecb_function_ uint32_t ecb_float_to_binary32 (float x) ecb_const;
+ecb_function_ uint32_t
+ecb_float_to_binary32 (float x)
+{
+  /* slow emulation, works for anything but nan's and -0 */
+  ECB_EXTERN_C float frexpf (float v, int *e);
+  uint32_t r, m;
+  int e;
+
+  if (x == 0e0f                    ) return 0;
+  if (x > +3.40282346638528860e+38f) return 0x7f800000U;
+  if (x < -3.40282346638528860e+38f) return 0xff800000U;
+
+  m = frexpf (x, &e) * 0x1000000U;
+
+  r = m & 0x80000000U;
+
+  if (r)
+    m = -m;
+
+  if (e < -125)
+    {
+      m &= 0xffffffU;
+      m >>= (-125 - e);
+      e = -126;
+    }
+
+  r |= (e + 126) << 23;
+  r |= m & 0x7fffffU;
+
+  return r;
+}
+
+// converts a ieee single/binary32 to a float
+ecb_function_ float ecb_binary32_to_float (uint32_t x) ecb_const;
+ecb_function_ float
+ecb_binary32_to_float (uint32_t x)
+{
+  /* emulation, only works for normals and subnormals and +0 */
+  ECB_EXTERN_C float ldexpf (float x, int e);
+
+  int neg = x >> 31;
+  int e = (x >> 23) & 0xffU;
+  float r;
+
+  x &= 0x7fffffU;
+
+  if (e)
+    x |= 0x800000U;
+
+  /* we distrust ldexpf a bit and do the 2**-24 scaling by an extra multiply */
+  r = ldexpf (x * (1.f / 0x1000000U), e - 126);
+
+  return neg ? -r : r;
+}
+
+ecb_function_ uint64_t ecb_double_to_binary64 (double x) ecb_const;
+ecb_function_ uint64_t
+ecb_double_to_binary64 (double x)
+{
+}
 
 #endif
 
