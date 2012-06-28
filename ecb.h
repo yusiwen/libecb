@@ -536,49 +536,50 @@ ecb_inline ecb_bool ecb_little_endian (void) { return ecb_byteorder_helper () ==
   #define ecb_array_length(name) (sizeof (name) / sizeof (name [0]))
 #endif
 
-#if __STDC_IEC_559__
-  // we assume this is defined for most C and many C++ compilers
-  ecb_inline ecb_bool ecb_float_ieee  (void) ecb_const;
-  ecb_inline ecb_bool ecb_float_ieee  (void) { return 1; }
-  ecb_inline ecb_bool ecb_double_ieee (void) ecb_const;
-  ecb_inline ecb_bool ecb_double_ieee (void) { return 1; }
-#elif ECB_CPP
-  #include <limits>
-  ecb_inline ecb_bool ecb_float_ieee  (void) ecb_const;
-  ecb_inline ecb_bool ecb_float_ieee  (void) { return std::numeric_limits<float >::is_iec559; }
-  ecb_inline ecb_bool ecb_double_ieee (void) ecb_const;
-  ecb_inline ecb_bool ecb_double_ieee (void) { return std::numeric_limits<double>::is_iec559; }
+/*******************************************************************************/
+/* floating point stuff, can be disabled by defining ECB_NO_LIBM */
+
+/* basically, everything uses "ieee pure-endian" floating point numbers */
+/* the only noteworthy exception is ancient armle, which uses order 43218765 */
+#if 0 \
+    || __i386 || __i386__ \
+    || __amd64 || __amd64__ || __x86_64 || __x86_64__ \
+    || __powerpc__ || __ppc__ || __powerpc64__ || __ppc64__ \
+    || defined __arm__ && defined __ARM_EABI__ \
+    || defined __s390__ || defined __s390x__ \
+    || defined __mips__ \
+    || defined __alpha__ \
+    || defined __hppa__ \
+    || defined __ia64__ \
+    || defined _M_IX86 || defined _M_AMD64 || defined _M_IA64
+  #define ECB_STDFP 1
+  #include <string.h> /* for memcpy */
 #else
-  ecb_inline ecb_bool ecb_float_ieee  (void) ecb_const;
-  ecb_inline ecb_bool ecb_float_ieee  (void) { return 0; }
-  ecb_inline ecb_bool ecb_double_ieee (void) ecb_const;
-  ecb_inline ecb_bool ecb_double_ieee (void) { return 0; }
+  #define ECB_STDFP 0
 #endif
 
-/*******************************************************************************/
-/* floating point stuff, can be disabled by defining ECB_NO_FP */
+#ifndef ECB_NO_LIBM
 
-#ifndef ECB_NO_FP
-
-  /* basically, everything uses "ieee pure-endian" floating point numbers */
-  /* the only noteworthy exception is ancient armle, which uses order 43218765 */
-  #if 0 \
-      || __i386 || __i386__ \
-      || __amd64 || __amd64__ || __x86_64 || __x86_64__ \
-      || __powerpc__ || __ppc__ || __powerpc64__ || __ppc64__ \
-      || defined __arm__ && defined __ARM_EABI__ \
-      || defined __s390__ || defined __s390x__ \
-      || defined __mips__ \
-      || defined __alpha__ \
-      || defined __hppa__ \
-      || defined __ia64__ \
-      || defined _M_IX86 || defined _M_AMD64 || defined _M_IA64
-    #define ECB_STDFP 1
+  #if __STDC_IEC_559__ || ECB_STDFP
+    /* we assume this is defined for most C and many C++ compilers */
+    ecb_inline ecb_bool ecb_float_ieee  (void) ecb_const;
+    ecb_inline ecb_bool ecb_float_ieee  (void) { return 1; }
+    ecb_inline ecb_bool ecb_double_ieee (void) ecb_const;
+    ecb_inline ecb_bool ecb_double_ieee (void) { return 1; }
+  #elif ECB_CPP
+    #include <limits>
+    ecb_inline ecb_bool ecb_float_ieee  (void) ecb_const;
+    ecb_inline ecb_bool ecb_float_ieee  (void) { return std::numeric_limits<float >::is_iec559; }
+    ecb_inline ecb_bool ecb_double_ieee (void) ecb_const;
+    ecb_inline ecb_bool ecb_double_ieee (void) { return std::numeric_limits<double>::is_iec559; }
   #else
-    #define ECB_STDFP 0
+    ecb_inline ecb_bool ecb_float_ieee  (void) ecb_const;
+    ecb_inline ecb_bool ecb_float_ieee  (void) { return 0; }
+    ecb_inline ecb_bool ecb_double_ieee (void) ecb_const;
+    ecb_inline ecb_bool ecb_double_ieee (void) { return 0; }
   #endif
 
-  // convert a float to ieee single/binary32
+  /* convert a float to ieee single/binary32 */
   ecb_function_ uint32_t ecb_float_to_binary32 (float x) ecb_const;
   ecb_function_ uint32_t
   ecb_float_to_binary32 (float x)
@@ -586,10 +587,7 @@ ecb_inline ecb_bool ecb_little_endian (void) { return ecb_byteorder_helper () ==
     uint32_t r;
 
     #if ECB_STDFP
-      ((char *)&r) [0] = ((char *)&x)[0];
-      ((char *)&r) [1] = ((char *)&x)[1];
-      ((char *)&r) [2] = ((char *)&x)[2];
-      ((char *)&r) [3] = ((char *)&x)[3];
+      memcpy (&r, &x, 4);
     #else
       /* slow emulation, works for anything but nan's and -0 */
       ECB_EXTERN_C float frexpf (float v, int *e);
@@ -621,7 +619,7 @@ ecb_inline ecb_bool ecb_little_endian (void) { return ecb_byteorder_helper () ==
     return r;
   }
 
-  // converts a ieee single/binary32 to a float
+  /* converts an ieee single/binary32 to a float */
   ecb_function_ float ecb_binary32_to_float (uint32_t x) ecb_const;
   ecb_function_ float
   ecb_binary32_to_float (uint32_t x)
@@ -629,10 +627,7 @@ ecb_inline ecb_bool ecb_little_endian (void) { return ecb_byteorder_helper () ==
     float r;
 
     #if ECB_STDFP
-      ((char *)&r) [0] = ((char *)&x)[0];
-      ((char *)&r) [1] = ((char *)&x)[1];
-      ((char *)&r) [2] = ((char *)&x)[2];
-      ((char *)&r) [3] = ((char *)&x)[3];
+      memcpy (&r, &x, 4);
     #else
       /* emulation, only works for normals and subnormals and +0 */
       ECB_EXTERN_C float ldexpf (float x, int e);
@@ -644,6 +639,8 @@ ecb_inline ecb_bool ecb_little_endian (void) { return ecb_byteorder_helper () ==
 
       if (e)
         x |= 0x800000U;
+      else
+        e = 1;
 
       /* we distrust ldexpf a bit and do the 2**-24 scaling by an extra multiply */
       r = ldexpf (x * (1.f / 0x1000000U), e - 126);
@@ -654,10 +651,77 @@ ecb_inline ecb_bool ecb_little_endian (void) { return ecb_byteorder_helper () ==
     return r;
   }
 
+  /* convert a double to ieee double/binary64 */
   ecb_function_ uint64_t ecb_double_to_binary64 (double x) ecb_const;
   ecb_function_ uint64_t
   ecb_double_to_binary64 (double x)
   {
+    uint64_t r;
+
+    #if ECB_STDFP
+      memcpy (&r, &x, 8);
+    #else
+      /* slow emulation, works for anything but nan's and -0 */
+      ECB_EXTERN_C double frexp (double v, int *e);
+      uint64_t m;
+      int e;
+
+      if (x == 0e0                     ) return 0;
+      if (x > +1.79769313486231470e+308) return 0x7ff0000000000000U;
+      if (x < -1.79769313486231470e+308) return 0xfff0000000000000U;
+
+      m = frexpf (x, &e) * 0x1000000U;
+      m = frexp (x, &e) * 0x20000000000000U;
+
+      r = m & 0x8000000000000000;;
+
+      if (r)
+        m = -m;
+
+      if (e < -1021)
+        {
+          m &= 0x1fffffffffffffU;
+          m >>= (-1021 - e);
+          e = -1022;
+        }
+
+      r |= ((uint64_t)(e + 1022)) << 52;
+      r |= m & 0xfffffffffffffU;
+    #endif
+
+    return r;
+  }
+
+  /* converts an ieee double/binary64 to a double */
+  ecb_function_ double ecb_binary64_to_double (uint64_t x) ecb_const;
+  ecb_function_ double
+  ecb_binary64_to_double (uint64_t x)
+  {
+    double r;
+
+    #if ECB_STDFP
+      memcpy (&r, &x, 8);
+    #else
+      /* emulation, only works for normals and subnormals and +0 */
+      ECB_EXTERN_C double ldexp (double x, int e);
+
+      int neg = x >> 63;
+      int e = (x >> 52) & 0x7ffU;
+
+      x &= 0xfffffffffffffU;
+
+      if (e)
+        x |= 0x10000000000000U;
+      else
+        e = 1;
+
+      /* we distrust ldexpf a bit and do the 2**-53 scaling by an extra multiply */
+      r = ldexp (x * (1. / 0x20000000000000U), e - 1022);
+
+      r = neg ? -r : r;
+    #endif
+
+    return r;
   }
 
 #endif
