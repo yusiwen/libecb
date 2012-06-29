@@ -653,7 +653,6 @@ ecb_inline ecb_bool ecb_little_endian (void) { return ecb_byteorder_helper () ==
       if (x < -1.79769313486231470e+308) return 0xfff0000000000000U;
       if (x != x                       ) return 0X7ff7ffffffffffffU;
 
-      m = frexpf (x, &e) * 0x1000000U;
       m = frexp (x, &e) * 0x20000000000000U;
 
       r = m & 0x8000000000000000;;
@@ -698,7 +697,7 @@ ecb_inline ecb_bool ecb_little_endian (void) { return ecb_byteorder_helper () ==
       else
         e = 1;
 
-      /* we distrust ldexpf a bit and do the 2**-53 scaling by an extra multiply */
+      /* we distrust ldexp a bit and do the 2**-53 scaling by an extra multiply */
       r = ldexp (x * (1. / 0x20000000000000U), e - 1022);
 
       r = neg ? -r : r;
