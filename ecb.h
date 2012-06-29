@@ -556,6 +556,7 @@ ecb_inline ecb_bool ecb_little_endian (void) { return ecb_byteorder_helper () ==
   #include <string.h> /* for memcpy */
 #else
   #define ECB_STDFP 0
+  #include <math.h> /* for frexp*, ldexp* */
 #endif
 
 #ifndef ECB_NO_LIBM
@@ -571,7 +572,6 @@ ecb_inline ecb_bool ecb_little_endian (void) { return ecb_byteorder_helper () ==
       memcpy (&r, &x, 4);
     #else
       /* slow emulation, works for anything but -0 */
-      ECB_EXTERN_C float frexpf (float v, int *e);
       uint32_t m;
       int e;
 
@@ -612,8 +612,6 @@ ecb_inline ecb_bool ecb_little_endian (void) { return ecb_byteorder_helper () ==
       memcpy (&r, &x, 4);
     #else
       /* emulation, only works for normals and subnormals and +0 */
-      ECB_EXTERN_C float ldexpf (float x, int e);
-
       int neg = x >> 31;
       int e = (x >> 23) & 0xffU;
 
@@ -644,7 +642,6 @@ ecb_inline ecb_bool ecb_little_endian (void) { return ecb_byteorder_helper () ==
       memcpy (&r, &x, 8);
     #else
       /* slow emulation, works for anything but -0 */
-      ECB_EXTERN_C double frexp (double v, int *e);
       uint64_t m;
       int e;
 
@@ -685,8 +682,6 @@ ecb_inline ecb_bool ecb_little_endian (void) { return ecb_byteorder_helper () ==
       memcpy (&r, &x, 8);
     #else
       /* emulation, only works for normals and subnormals and +0 */
-      ECB_EXTERN_C double ldexp (double x, int e);
-
       int neg = x >> 63;
       int e = (x >> 52) & 0x7ffU;
 
