@@ -575,7 +575,7 @@ ecb_inline ecb_bool ecb_little_endian (void) { return ecb_byteorder_helper () ==
       uint32_t m;
       int e;
 
-      if (x == 0e0f                    ) return 0;
+      if (x == 0e0f                    ) return 0x00000000U;
       if (x > +3.40282346638528860e+38f) return 0x7f800000U;
       if (x < -3.40282346638528860e+38f) return 0xff800000U;
       if (x != x                       ) return 0x7fbfffffU;
@@ -587,7 +587,7 @@ ecb_inline ecb_bool ecb_little_endian (void) { return ecb_byteorder_helper () ==
       if (r)
         m = -m;
 
-      if (e < -125)
+      if (e <= -126)
         {
           m &= 0xffffffU;
           m >>= (-125 - e);
@@ -625,7 +625,7 @@ ecb_inline ecb_bool ecb_little_endian (void) { return ecb_byteorder_helper () ==
         e = 1;
 
       /* we distrust ldexpf a bit and do the 2**-24 scaling by an extra multiply */
-      r = ldexpf (x * (1.f / 0x1000000U), e - 126);
+      r = ldexpf (x * (0.5f / 0x800000U), e - 126);
 
       r = neg ? -r : r;
     #endif
@@ -648,7 +648,7 @@ ecb_inline ecb_bool ecb_little_endian (void) { return ecb_byteorder_helper () ==
       uint64_t m;
       int e;
 
-      if (x == 0e0                     ) return 0;
+      if (x == 0e0                     ) return 0x0000000000000000U;
       if (x > +1.79769313486231470e+308) return 0x7ff0000000000000U;
       if (x < -1.79769313486231470e+308) return 0xfff0000000000000U;
       if (x != x                       ) return 0X7ff7ffffffffffffU;
@@ -660,7 +660,7 @@ ecb_inline ecb_bool ecb_little_endian (void) { return ecb_byteorder_helper () ==
       if (r)
         m = -m;
 
-      if (e < -1021)
+      if (e <= -1022)
         {
           m &= 0x1fffffffffffffU;
           m >>= (-1021 - e);
@@ -698,7 +698,7 @@ ecb_inline ecb_bool ecb_little_endian (void) { return ecb_byteorder_helper () ==
         e = 1;
 
       /* we distrust ldexp a bit and do the 2**-53 scaling by an extra multiply */
-      r = ldexp (x * (1. / 0x20000000000000U), e - 1022);
+      r = ldexp (x * (0.5 / 0x10000000000000U), e - 1022);
 
       r = neg ? -r : r;
     #endif
