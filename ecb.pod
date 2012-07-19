@@ -731,7 +731,7 @@ These symbols need to be defined before including F<ecb.h> the first time.
 
 =over 4
 
-=item ECB_NO_THRADS
+=item ECB_NO_THREADS
 
 If F<ecb.h> is never used from multiple threads, then this symbol can
 be defined, in which case memory fences (and similar constructs) are
