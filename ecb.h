@@ -484,11 +484,11 @@ ecb_inline unsigned char
 ecb_byteorder_helper (void)
 {
   /* the union code still generates code under pressure in gcc, */
-  /* but less than using pointers, and always seem to */
+  /* but less than using pointers, and always seems to */
   /* successfully return a constant. */
   /* the reason why we have this horrible preprocessor mess */
   /* is to avoid it in all cases, at least on common architectures */
-  /* and yes, gcc defines __BYTE_ORDER__, g++ does not */
+  /* or when using a recent enough gcc version (>= 4.6) */
 #if __i386 || __i386__ || _M_X86 || __amd64 || __amd64__ || _M_X64
   return 0x44;
 #elif __BYTE_ORDER__ && __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
