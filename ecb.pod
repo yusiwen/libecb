@@ -307,7 +307,7 @@ functions only called in exceptional or rare cases.
 =item ecb_artificial
 
 Declares the function as "artificial", in this case meaning that this
-function is not really mean to be a function, but more like an accessor
+function is not really meant to be a function, but more like an accessor
 - many methods in C++ classes are mere accessor functions, and having a
 crash reported in such a method, or single-stepping through them, is not
 usually so helpful, especially when it's inlined to just a few instructions.
