@@ -13,6 +13,7 @@ TODO: arithmetic right shift
 TODO: template/generic functions for x32/x64 and so on
 TODO: #define ecb_integer_multiples_of(n,d) ((char (*)[d])(n) - (char (*)[d])0)
 TODO: generalised shift
+TODO: #define ECB_FAST_UNALIGNED_ACCESS
 unsigned long gensh(unsigned long v, int x) {
 int a, b;
     a = (v << x) & -(((unsigned int)x) < 32);

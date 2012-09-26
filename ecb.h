@@ -154,7 +154,7 @@
   /* The __has_feature syntax from clang is so misdesigned that we cannot use it
    * without risking compile time errors with other compilers. We *could*
    * define our own ecb_clang_has_feature, but I just can't be bothered to work
-   * around * this shit time and again.
+   * around this shit time and again.
    * #elif defined __clang && __has_feature (cxx_atomic)
    *   // see comment below (stdatomic.h) about the C11 memory model.
    *   #define ECB_MEMORY_FENCE         __c11_atomic_thread_fence (__ATOMIC_SEQ_CST)
