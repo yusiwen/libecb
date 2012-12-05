@@ -6,6 +6,7 @@
         - support C11 atomics for memory fences.
         - support gcc-4.7 atomics for memory fences.
 
+TODO: ecb_restrict_array etc. http://ue.tst.eu/5093eafd713ec5fda776d8065070aa4c.txt
 TODO: ffs/clz
 64 bit variants of everything
 TODO: examples from X for clz/ctz

@@ -238,6 +238,27 @@ return), and now you can make your own:
 In this case, the compiler would probably be smart enough to deduce it on
 its own, so this is mainly useful for declarations.
 
+=item ecb_restrict
+
+Expands to the C<restrict> keyword or equivalent on compilers that support
+them, and to nothing on others. Must be specified on a pointer type or
+an array index to indicate that the memory doesn't alias with any other
+restricted pointer in the same scope.
+
+Example: multiply a vector, and allow the compiler to parallelise the
+loop, because it knows it doesn't overwrite input values.
+
+   void
+   multiply (float *ecb_restrict src,
+             float *ecb_restrict dst,
+             int len, float factor)
+   {
+     int i;
+
+     for (i = 0; i < len; ++i)
+       dst [i] = src [i] * factor;
+   }
+
 =item ecb_const
 
 Declares that the function only depends on the values of its arguments,
