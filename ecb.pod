@@ -152,6 +152,17 @@ This is true for basically all modern platforms, although F<ecb.h> might
 not be able to deduce this correctly everywhere and might err on the safe
 side.
 
+=item ECB_AMD64, ECB_AMD64_X32
+
+These two macros are defined to C<1> on the x86_64/amd64 ABI and the X32
+ABI, respectively, and undefined elsewhere.
+
+The designers of the new X32 ABI for some inexplicable reason decided to
+make it look exactly like amd64, even though it's completely incompatible
+to that ABI, breaking about every piece of software that assumed that
+C<__x86_64> stands for, well, the x86-64 ABI, making these macros
+necessary.
+
 =back
 
 =head2 GCC ATTRIBUTES
