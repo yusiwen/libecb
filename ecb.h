@@ -67,7 +67,7 @@
 
 /* work around x32 idiocy by defining proper macros */
 #if __x86_64 || _M_AMD64
-  #if __ILP32
+  #if _ILP32
     #define ECB_AMD64_X32 1
   #else
     #define ECB_AMD64 1
