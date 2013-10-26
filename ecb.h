@@ -587,7 +587,13 @@ ecb_inline ecb_bool ecb_little_endian (void) { return ecb_byteorder_helper () ==
 
 #ifndef ECB_NO_LIBM
 
-  #include <math.h> /* for frexp*, ldexp* */
+  #include <math.h> /* for frexp*, ldexp*, INFINITY, NAN */
+
+  #ifdef NEN
+    #define ECB_NAN NAN
+  #else
+    #define ECB_NAN INFINITY
+  #endif
 
   /* converts an ieee half/binary16 to a float */
   ecb_function_ float ecb_binary16_to_float (uint16_t x) ecb_const;
@@ -598,16 +604,10 @@ ecb_inline ecb_bool ecb_little_endian (void) { return ecb_byteorder_helper () ==
     int m = x & 0x3ff;
     float r;
 
-    if (!e)
-      r = ldexpf (m         ,   -24);
-    else if (e != 31)
-      r = ldexpf (m + 0x400, e - 25);
-    else if (m)
-      #ifdef NAN
-        r = NAN;
-      #endif
-    else
-      r = INFINITY;
+    if      (!e     ) r = ldexpf (m        ,    -24);
+    else if (e != 31) r = ldexpf (m + 0x400, e - 25);
+    else if (m      ) r = ECB_NAN;
+    else              r = INFINITY;
 
     return x & 0x8000 ? -r : r;
   }
