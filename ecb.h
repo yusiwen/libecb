@@ -589,10 +589,17 @@ ecb_inline ecb_bool ecb_little_endian (void) { return ecb_byteorder_helper () ==
 
   #include <math.h> /* for frexp*, ldexp*, INFINITY, NAN */
 
-  #ifdef NEN
+  /* only the oldest of old doesn't have this one. solaris. */
+  #ifdef INFINITY
+    #define ECB_INFINITY INFINITY
+  #else
+    #define ECB_INFINITY HUGE_VAL
+  #endif
+
+  #ifdef NAN
     #define ECB_NAN NAN
   #else
-    #define ECB_NAN INFINITY
+    #define ECB_NAN ECB_INFINITY
   #endif
 
   /* converts an ieee half/binary16 to a float */
