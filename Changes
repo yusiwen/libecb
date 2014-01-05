@@ -1,3 +1,4 @@
+implement is_constant for c11: https://gustedt.wordpress.com/2013/08/22/testing-compile-time-constness-and-null-pointers-with-c11s-_generic/
 
 #ifdef _MSC_VER
 
