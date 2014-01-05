@@ -179,6 +179,12 @@
 
   #elif ECB_GCC_VERSION(4,4) || defined __INTEL_COMPILER || defined __clang__
     #define ECB_MEMORY_FENCE         __sync_synchronize ()
+  #elif _MSC_VER >= 1500 /* VC++ 2008 */
+    /* apparently, microsoft broke all the memory barrier stuff in Visual Studio 2008... */
+    #pragma intrinsic(_ReadBarrier,_WriteBarrier,_ReadWriteBarrier)
+    #define ECB_MEMORY_FENCE         _ReadWriteBarrier (); MemoryBarrier()
+    #define ECB_MEMORY_FENCE_ACQUIRE _ReadWriteBarrier (); MemoryBarrier() /* according to msdn, _ReadBarrier is not a load fence */
+    #define ECB_MEMORY_FENCE_RELEASE _WriteBarrier (); MemoryBarrier()
   #elif _MSC_VER >= 1400 /* VC++ 2005 */
     #pragma intrinsic(_ReadBarrier,_WriteBarrier,_ReadWriteBarrier)
     #define ECB_MEMORY_FENCE         _ReadWriteBarrier ()
