@@ -89,11 +89,19 @@
   #endif
 #endif
 
-#define ECB_C     (__STDC__+0) /* this assumes that __STDC__ is either empty or a number */
-#define ECB_C99   (__STDC_VERSION__ >= 199901L)
-#define ECB_C11   (__STDC_VERSION__ >= 201112L)
 #define ECB_CPP   (__cplusplus+0)
 #define ECB_CPP11 (__cplusplus >= 201103L)
+
+#if ECB_CPP
+  #define ECB_C            0
+  #define ECB_STDC_VERSION 0
+#else
+  #define ECB_C            1
+  #define ECB_STDC_VERSION __STDC_VERSION__
+#endif
+
+#define ECB_C99   (ECB_STDC_VERSION >= 199901L)
+#define ECB_C11   (ECB_STDC_VERSION >= 201112L)
 
 #if ECB_CPP
   #define ECB_EXTERN_C extern "C"
@@ -280,6 +288,11 @@ typedef int ecb_bool;
   #define ecb_prefetch(addr,rw,locality) __builtin_prefetch (addr, rw, locality)
 #else
   #define ecb_attribute(attrlist)
+
+  /* possible C11 impl for integral types
+  typedef struct ecb_is_constant_struct ecb_is_constant_struct;
+  #define ecb_is_constant(expr)          _Generic ((1 ? (struct ecb_is_constant_struct *)0 : (void *)((expr) - (expr)), ecb_is_constant_struct *: 0, default: 1)) */
+
   #define ecb_is_constant(expr)          0
   #define ecb_expect(expr,value)         (expr)
   #define ecb_prefetch(addr,rw,locality)
