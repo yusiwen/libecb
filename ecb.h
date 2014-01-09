@@ -175,6 +175,8 @@
   #if ECB_GCC_VERSION(4,7)
     /* see comment below (stdatomic.h) about the C11 memory model. */
     #define ECB_MEMORY_FENCE         __atomic_thread_fence (__ATOMIC_SEQ_CST)
+    #define ECB_MEMORY_FENCE_ACQUIRE __atomic_thread_fence (__ATOMIC_ACQUIRE)
+    #define ECB_MEMORY_FENCE_RELEASE __atomic_thread_fence (__ATOMIC_RELEASE)
 
   /* The __has_feature syntax from clang is so misdesigned that we cannot use it
    * without risking compile time errors with other compilers. We *could*
@@ -183,6 +185,8 @@
    * #elif defined __clang && __has_feature (cxx_atomic)
    *   // see comment below (stdatomic.h) about the C11 memory model.
    *   #define ECB_MEMORY_FENCE         __c11_atomic_thread_fence (__ATOMIC_SEQ_CST)
+   *   #define ECB_MEMORY_FENCE_ACQUIRE __c11_atomic_thread_fence (__ATOMIC_ACQUIRE)
+   *   #define ECB_MEMORY_FENCE_RELEASE __c11_atomic_thread_fence (__ATOMIC_RELEASE)
    */
 
   #elif ECB_GCC_VERSION(4,4) || defined __INTEL_COMPILER || defined __clang__
@@ -222,6 +226,8 @@
     /* for most usages, or gcc and clang have a bug */
     /* I *currently* lean towards the latter, and inefficiently implement */
     /* all three of ecb's fences as a seq_cst fence */
+    /* Update, gcc-4.8 generates mfence for all c++ fences, but nothing */
+    /* for all __atomic_thread_fence's except seq_cst */
     #define ECB_MEMORY_FENCE         atomic_thread_fence (memory_order_seq_cst)
   #endif
 #endif

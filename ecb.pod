@@ -81,12 +81,12 @@ ensure it's either C<0> or C<1> if you need that).
 =item ECB_C
 
 True if the implementation defines the C<__STDC__> macro to a true value,
-which is typically true for both C and C++ compilers.
+while not claiming to be C++.
 
 =item ECB_C99
 
 True if the implementation claims to be compliant to C99 (ISO/IEC
-9899:1999) or any later version.
+9899:1999) or any later version, while not claiming to be C++.
 
 Note that later versions (ECB_C11) remove core features again (for
 example, variable length arrays).
@@ -94,7 +94,7 @@ example, variable length arrays).
 =item ECB_C11
 
 True if the implementation claims to be compliant to C11 (ISO/IEC
-9899:2011) or any later version.
+9899:2011) or any later version, while not claiming to be C++.
 
 =item ECB_CPP
 
