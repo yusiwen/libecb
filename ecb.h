@@ -324,6 +324,7 @@ typedef int ecb_bool;
   #define ecb_decltype(x) __typeof(x)
 #endif
 
+#define ecb_deprecated ecb_attribute ((__deprecated__))
 #define ecb_noinline   ecb_attribute ((__noinline__))
 #define ecb_unused     ecb_attribute ((__unused__))
 #define ecb_const      ecb_attribute ((__const__))
