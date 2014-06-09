@@ -212,6 +212,11 @@ declare a variable but do not always use it:
     #endif
   }
 
+=item ecb_deprecated
+
+Similar to C<ecb_unused>, but marks a function, variable or type as
+deprecated. This makes some compilers warn when the type is used.
+
 =item ecb_inline
 
 This is not actually an attribute, but you use it like one. It expands
