@@ -106,6 +106,12 @@
   #define ECB_CLANG_BUILTIN(x) 0
 #endif
 
+#if __clang__ && defined(__has_extension)
+  #define ECB_CLANG_EXTENSION(x) __has_extension(x)
+#else
+  #define ECB_CLANG_EXTENSION(x) 0
+#endif
+
 #define ECB_CPP   (__cplusplus+0)
 #define ECB_CPP11 (__cplusplus >= 201103L)
 
@@ -197,16 +203,11 @@
     #define ECB_MEMORY_FENCE_ACQUIRE __atomic_thread_fence (__ATOMIC_ACQUIRE)
     #define ECB_MEMORY_FENCE_RELEASE __atomic_thread_fence (__ATOMIC_RELEASE)
 
-  /* The __has_feature syntax from clang is so misdesigned that we cannot use it
-   * without risking compile time errors with other compilers. We *could*
-   * define our own ecb_clang_has_feature, but I just can't be bothered to work
-   * around this shit time and again.
-   * #elif defined __clang && __has_feature (cxx_atomic)
-   *   // see comment below (stdatomic.h) about the C11 memory model.
-   *   #define ECB_MEMORY_FENCE         __c11_atomic_thread_fence (__ATOMIC_SEQ_CST)
-   *   #define ECB_MEMORY_FENCE_ACQUIRE __c11_atomic_thread_fence (__ATOMIC_ACQUIRE)
-   *   #define ECB_MEMORY_FENCE_RELEASE __c11_atomic_thread_fence (__ATOMIC_RELEASE)
-   */
+  #elif ECB_CLANG_EXTENSION(c_atomic)
+    /* see comment below (stdatomic.h) about the C11 memory model. */
+    #define ECB_MEMORY_FENCE         __c11_atomic_thread_fence (__ATOMIC_SEQ_CST)
+    #define ECB_MEMORY_FENCE_ACQUIRE __c11_atomic_thread_fence (__ATOMIC_ACQUIRE)
+    #define ECB_MEMORY_FENCE_RELEASE __c11_atomic_thread_fence (__ATOMIC_RELEASE)
 
   #elif ECB_GCC_VERSION(4,4) || defined __INTEL_COMPILER || defined __clang__
     #define ECB_MEMORY_FENCE         __sync_synchronize ()
