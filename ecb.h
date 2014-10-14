@@ -379,9 +379,10 @@ typedef int ecb_bool;
 #define ecb_unlikely(expr) ecb_expect_false (expr)
 
 /* count trailing zero bits and count # of one bits */
-#if ECB_GCC_VERSION(3,4) || (ECB_CLANG_BUILTIN(__builtin_clz) && ECB_CLANG_BUILTIN(__builtin_clzll) \
-                             && ECB_CLANG_BUILTIN(__builtin_ctz) && ECB_CLANG_BUILTIN(__builtin_ctzll) \
-                             && ECB_CLANG_BUILTIN(__builtin_popcount))
+#if ECB_GCC_VERSION(3,4) \
+    || (ECB_CLANG_BUILTIN(__builtin_clz) && ECB_CLANG_BUILTIN(__builtin_clzll) \
+        && ECB_CLANG_BUILTIN(__builtin_ctz) && ECB_CLANG_BUILTIN(__builtin_ctzll) \
+        && ECB_CLANG_BUILTIN(__builtin_popcount))
   /* we assume int == 32 bit, long == 32 or 64 bit and long long == 64 bit */
   #define ecb_ld32(x)      (__builtin_clz      (x) ^ 31)
   #define ecb_ld64(x)      (__builtin_clzll    (x) ^ 63)
