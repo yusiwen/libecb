@@ -98,6 +98,14 @@
   #define ECB_GCC_VERSION(major,minor) (__GNUC__ > (major) || (__GNUC__ == (major) && __GNUC_MINOR__ >= (minor)))
 #endif
 
+#define ECB_CLANG_VERSION(major,minor) (__clang_major__ > (major) || (__clang_major__ == (major) && __clang_minor__ >= (minor)))
+
+#if __clang__ && defined(__has_builtin)
+  #define ECB_CLANG_BUILTIN(x) __has_builtin(x)
+#else
+  #define ECB_CLANG_BUILTIN(x) 0
+#endif
+
 #define ECB_CPP   (__cplusplus+0)
 #define ECB_CPP11 (__cplusplus >= 201103L)
 
@@ -298,20 +306,31 @@ typedef int ecb_bool;
 
 #define ecb_function_ ecb_inline
 
-#if ECB_GCC_VERSION(3,1)
+#if ECB_GCC_VERSION(3,1) || ECB_CLANG_VERSION(2,8)
   #define ecb_attribute(attrlist)        __attribute__(attrlist)
-  #define ecb_is_constant(expr)          __builtin_constant_p (expr)
-  #define ecb_expect(expr,value)         __builtin_expect ((expr),(value))
-  #define ecb_prefetch(addr,rw,locality) __builtin_prefetch (addr, rw, locality)
 #else
   #define ecb_attribute(attrlist)
+#endif
 
+#if ECB_GCC_VERSION(3,1) || ECB_CLANG_BUILTIN(__builtin_constant_p)
+  #define ecb_is_constant(expr)          __builtin_constant_p (expr)
+#else
   /* possible C11 impl for integral types
   typedef struct ecb_is_constant_struct ecb_is_constant_struct;
   #define ecb_is_constant(expr)          _Generic ((1 ? (struct ecb_is_constant_struct *)0 : (void *)((expr) - (expr)), ecb_is_constant_struct *: 0, default: 1)) */
 
   #define ecb_is_constant(expr)          0
+#endif
+
+#if ECB_GCC_VERSION(3,1) || ECB_CLANG_BUILTIN(__builtin_expect)
+  #define ecb_expect(expr,value)         __builtin_expect ((expr),(value))
+#else
   #define ecb_expect(expr,value)         (expr)
+#endif
+
+#if ECB_GCC_VERSION(3,1) || ECB_CLANG_BUILTIN(__builtin_prefetch)
+  #define ecb_prefetch(addr,rw,locality) __builtin_prefetch (addr, rw, locality)
+#else
   #define ecb_prefetch(addr,rw,locality)
 #endif
 
@@ -360,7 +379,9 @@ typedef int ecb_bool;
 #define ecb_unlikely(expr) ecb_expect_false (expr)
 
 /* count trailing zero bits and count # of one bits */
-#if ECB_GCC_VERSION(3,4)
+#if ECB_GCC_VERSION(3,4) || (ECB_CLANG_BUILTIN(__builtin_clz) && ECB_CLANG_BUILTIN(__builtin_clzll) \
+                             && ECB_CLANG_BUILTIN(__builtin_ctz) && ECB_CLANG_BUILTIN(__builtin_ctzll) \
+                             && ECB_CLANG_BUILTIN(__builtin_popcount))
   /* we assume int == 32 bit, long == 32 or 64 bit and long long == 64 bit */
   #define ecb_ld32(x)      (__builtin_clz      (x) ^ 31)
   #define ecb_ld64(x)      (__builtin_clzll    (x) ^ 63)
@@ -501,7 +522,7 @@ ecb_inline uint32_t ecb_rotr32 (uint32_t x, unsigned int count) { return (x << (
 ecb_inline uint64_t ecb_rotl64 (uint64_t x, unsigned int count) { return (x >> (64 - count)) | (x << count); }
 ecb_inline uint64_t ecb_rotr64 (uint64_t x, unsigned int count) { return (x << (64 - count)) | (x >> count); }
 
-#if ECB_GCC_VERSION(4,3)
+#if ECB_GCC_VERSION(4,3) || (ECB_CLANG_BUILTIN(__builtin_bswap32) && ECB_CLANG_BUILTIN(__builtin_bswap64))
   #define ecb_bswap16(x) (__builtin_bswap32 (x) >> 16)
   #define ecb_bswap32(x)  __builtin_bswap32 (x)
   #define ecb_bswap64(x)  __builtin_bswap64 (x)
@@ -528,7 +549,7 @@ ecb_inline uint64_t ecb_rotr64 (uint64_t x, unsigned int count) { return (x << (
   }
 #endif
 
-#if ECB_GCC_VERSION(4,5)
+#if ECB_GCC_VERSION(4,5) || ECB_CLANG_BUILTIN(__builtin_unreachable)
   #define ecb_unreachable() __builtin_unreachable ()
 #else
   /* this seems to work fine, but gcc always emits a warning for it :/ */
