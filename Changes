@@ -72,3 +72,12 @@ int a, b;
     b = (v >> x) & -(((unsigned int)x) < 32);
     return a|b;
 }
+
+TODO: read/write unaligned macros
+TODO: htonl and friends
+TODO: macro to convetr from unsigned to signed "the natural way"
+TODO: ecb_deprecated with message
+TODO: ecb_static_assert, with message (just like boost), or somesuch, using array-declaration
+TODO: alignof
+
+

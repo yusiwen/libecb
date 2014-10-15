@@ -42,7 +42,7 @@
 #define ECB_H
 
 /* 16 bits major, 16 bits minor */
-#define ECB_VERSION 0x00010003
+#define ECB_VERSION 0x00010004
 
 #ifdef _WIN32
   typedef   signed char   int8_t;
