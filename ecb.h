@@ -308,7 +308,7 @@ typedef int ecb_bool;
 #define ecb_function_ ecb_inline
 
 #if ECB_GCC_VERSION(3,1) || ECB_CLANG_VERSION(2,8)
-  #define ecb_attribute(attrlist)        __attribute__(attrlist)
+  #define ecb_attribute(attrlist)        __attribute__ (attrlist)
 #else
   #define ecb_attribute(attrlist)
 #endif
@@ -337,9 +337,11 @@ typedef int ecb_bool;
 
 /* no emulation for ecb_decltype */
 #if ECB_GCC_VERSION(4,5)
-  #define ecb_decltype(x) __decltype(x)
+  #define ecb_decltype(x) __decltype (x)
 #elif ECB_GCC_VERSION(3,0)
-  #define ecb_decltype(x) __typeof(x)
+  #define ecb_decltype(x) __typeof (x)
+#elif ECB_CPP11
+  #define ecb_decltype(x) decltype (x)
 #endif
 
 #if _MSC_VER >= 1300
