@@ -106,7 +106,7 @@ value, which is typically true for C++ compilers.
 True if the implementation claims to be compliant to ISO/IEC 14882:2011
 (C++11) or any later version.
 
-=item ECB_GCC_VERSION(major,minor)
+=item ECB_GCC_VERSION (major, minor)
 
 Expands to a true value (suitable for testing in by the preprocessor)
 if the compiler used is GNU C and the version is the given version, or
@@ -187,8 +187,9 @@ avoid multiple declarations using commas:
 
 =item ecb_attribute ((attrs...))
 
-A simple wrapper that expands to C<__attribute__((attrs))> on GCC, and to
-nothing on other compilers, so the effect is that only GCC sees these.
+A simple wrapper that expands to C<__attribute__((attrs))> on GCC 3.1+ and
+Clang 2.8+, and to nothing on other compilers, so the effect is that only
+GCC and Clang see these.
 
 Example: use the C<deprecated> attribute on a function.
 
