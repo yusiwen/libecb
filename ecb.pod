@@ -375,7 +375,7 @@ some C++ abstraction monster.
 
 =over 4
 
-=item bool ecb_is_constant(expr)
+=item bool ecb_is_constant (expr)
 
 Returns true iff the expression can be deduced to be a compile-time
 constant, and false otherwise.
@@ -687,13 +687,15 @@ Silly example: toggle the sign bit of a float.
 
    x = ecb_binary32_to_float (ecb_float_to_binary32 (x) ^ 0x80000000U)
 
+=item float  ecb_binary16_to_float  (uint16_t x) [-UECB_NO_LIBM]
+
 =item float  ecb_binary32_to_float  (uint32_t x) [-UECB_NO_LIBM]
 
 =item double ecb_binary32_to_double (uint64_t x) [-UECB_NO_LIBM]
 
-The reverse operation of the previos function - takes the bit representation
-of an IEEE binary32 or binary64 number and converts it to the native C<float>
-or C<double> format.
+The reverse operation of the previos function - takes the bit
+representation of an IEEE binary16, binary32 or binary64 number and
+converts it to the native C<float> or C<double> format.
 
 This function should work even when the native floating point format isn't
 IEEE compliant, of course at a speed and code size penalty, and of course
