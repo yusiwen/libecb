@@ -355,8 +355,9 @@ typedef int ecb_bool;
 #define ecb_const      ecb_attribute ((__const__))
 #define ecb_pure       ecb_attribute ((__pure__))
 
-/* http://msdn.microsoft.com/en-us/library/k6ktzx3s.aspx __declspec(noreturn) */
-#if ECB_C11
+/* TODO http://msdn.microsoft.com/en-us/library/k6ktzx3s.aspx __declspec(noreturn) */
+#if ECB_C11 || __IBMC_NORETURN
+  /* http://pic.dhe.ibm.com/infocenter/compbg/v121v141/topic/com.ibm.xlcpp121.bg.doc/language_ref/noreturn.html */
   #define ecb_noreturn   _Noreturn
 #else
   #define ecb_noreturn   ecb_attribute ((__noreturn__))
