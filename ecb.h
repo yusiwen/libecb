@@ -100,14 +100,14 @@
 
 #define ECB_CLANG_VERSION(major,minor) (__clang_major__ > (major) || (__clang_major__ == (major) && __clang_minor__ >= (minor)))
 
-#if __clang__ && defined(__has_builtin)
-  #define ECB_CLANG_BUILTIN(x) __has_builtin(x)
+#if __clang__ && defined __has_builtin
+  #define ECB_CLANG_BUILTIN(x) __has_builtin (x)
 #else
   #define ECB_CLANG_BUILTIN(x) 0
 #endif
 
-#if __clang__ && defined(__has_extension)
-  #define ECB_CLANG_EXTENSION(x) __has_extension(x)
+#if __clang__ && defined __has_extension
+  #define ECB_CLANG_EXTENSION(x) __has_extension (x)
 #else
   #define ECB_CLANG_EXTENSION(x) 0
 #endif
