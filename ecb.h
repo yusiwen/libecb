@@ -336,12 +336,10 @@ typedef int ecb_bool;
 #endif
 
 /* no emulation for ecb_decltype */
-#if ECB_GCC_VERSION(4,5)
-  #define ecb_decltype(x) __decltype (x)
-#elif ECB_GCC_VERSION(3,0)
-  #define ecb_decltype(x) __typeof (x)
-#elif ECB_CPP11
+#if ECB_CPP11
   #define ecb_decltype(x) decltype (x)
+#elif ECB_GCC_VERSION(3,0) || ECB_CLANG_VERSION(2,8)
+  #define ecb_decltype(x) __typeof__ (x)
 #endif
 
 #if _MSC_VER >= 1300
