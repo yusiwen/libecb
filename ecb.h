@@ -337,7 +337,9 @@ typedef int ecb_bool;
 
 /* no emulation for ecb_decltype */
 #if ECB_CPP11
-  #define ecb_decltype(x) decltype (x)
+  // older implementations might have problems with decltype(x)::type, work around it
+  struct ecb_decltype_t { typedef T type; };
+  #define ecb_decltype(x) ecb_decltype_t<decltype(x)>::type
 #elif ECB_GCC_VERSION(3,0) || ECB_CLANG_VERSION(2,8)
   #define ecb_decltype(x) __typeof__ (x)
 #endif
