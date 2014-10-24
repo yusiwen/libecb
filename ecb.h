@@ -672,6 +672,12 @@ ecb_inline ecb_bool ecb_little_endian (void) { return ecb_byteorder_helper () ==
     #define ECB_NAN ECB_INFINITY
   #endif
 
+  #if ECB_C99 || _XOPEN_VERSION >= 600 || _POSIX_VERSION >= 200112L
+    #define ecb_ldexpf(x,e) ldexpf ((x), (e))
+  #else
+    #define ecb_ldexpf(x,e) (float) ldexp ((double)(x), (e))
+  #endif
+
   /* converts an ieee half/binary16 to a float */
   ecb_function_ float ecb_binary16_to_float (uint16_t x) ecb_const;
   ecb_function_ float
@@ -681,8 +687,8 @@ ecb_inline ecb_bool ecb_little_endian (void) { return ecb_byteorder_helper () ==
     int m = x & 0x3ff;
     float r;
 
-    if      (!e     ) r = ldexpf (m        ,    -24);
-    else if (e != 31) r = ldexpf (m + 0x400, e - 25);
+    if      (!e     ) r = ecb_ldexpf (m        ,    -24);
+    else if (e != 31) r = ecb_ldexpf (m + 0x400, e - 25);
     else if (m      ) r = ECB_NAN;
     else              r = ECB_INFINITY;
 
@@ -751,7 +757,7 @@ ecb_inline ecb_bool ecb_little_endian (void) { return ecb_byteorder_helper () ==
         e = 1;
 
       /* we distrust ldexpf a bit and do the 2**-24 scaling by an extra multiply */
-      r = ldexpf (x * (0.5f / 0x800000U), e - 126);
+      r = ecb_ldexpf (x * (0.5f / 0x800000U), e - 126);
 
       r = neg ? -r : r;
     #endif
