@@ -280,7 +280,7 @@
 
 /*****************************************************************************/
 
-#if __cplusplus
+#if ECB_CPP
   #define ecb_inline static inline
 #elif ECB_GCC_VERSION(2,5)
   #define ecb_inline static __inline__
@@ -345,7 +345,7 @@ typedef int ecb_bool;
 #endif
 
 #if _MSC_VER >= 1300
-  #define ecb_deprecated __declspec(deprecated)
+  #define ecb_deprecated __declspec (deprecated)
 #else
   #define ecb_deprecated ecb_attribute ((__deprecated__))
 #endif
@@ -602,7 +602,7 @@ ecb_inline ecb_bool ecb_little_endian (void) { return ecb_byteorder_helper () ==
   #define ecb_mod(m,n) ((m) < 0 ? ((n) - 1 - ((-1 - (m)) % (n))) : ((m) % (n)))
 #endif
 
-#if __cplusplus
+#if ECB_CPP
   template<typename T>
   static inline T ecb_div_rd (T val, T div)
   {
@@ -673,9 +673,9 @@ ecb_inline ecb_bool ecb_little_endian (void) { return ecb_byteorder_helper () ==
   #endif
 
   #if ECB_C99 || _XOPEN_VERSION >= 600 || _POSIX_VERSION >= 200112L
-    #define ecb_ldexpf(x,e) ldexpf ((x), (e))
+    #define ecb_ldexpf(x,e) ldexpf (x, e)
   #else
-    #define ecb_ldexpf(x,e) (float) ldexp ((double)(x), (e))
+    #define ecb_ldexpf(x,e) (float) ldexp ((double)(x), e)
   #endif
 
   /* converts an ieee half/binary16 to a float */
