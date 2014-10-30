@@ -673,9 +673,9 @@ ecb_inline ecb_bool ecb_little_endian (void) { return ecb_byteorder_helper () ==
   #endif
 
   #if ECB_C99 || _XOPEN_VERSION >= 600 || _POSIX_VERSION >= 200112L
-    #define ecb_ldexpf(x,e) ldexpf (x, e)
+    #define ecb_ldexpf(x,e) ldexpf ((x), (e))
   #else
-    #define ecb_ldexpf(x,e) (float) ldexp ((double)(x), e)
+    #define ecb_ldexpf(x,e) (float) ldexp ((x), (e))
   #endif
 
   /* converts an ieee half/binary16 to a float */
