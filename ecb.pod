@@ -693,7 +693,7 @@ Silly example: toggle the sign bit of a float.
 
 =item double ecb_binary32_to_double (uint64_t x) [-UECB_NO_LIBM]
 
-The reverse operation of the previos function - takes the bit
+The reverse operation of the previous function - takes the bit
 representation of an IEEE binary16, binary32 or binary64 number and
 converts it to the native C<float> or C<double> format.
 
