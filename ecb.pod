@@ -165,36 +165,18 @@ necessary.
 
 =back
 
-=head2 GCC ATTRIBUTES
+=head2 ATTRIBUTES
 
-A major part of libecb deals with GCC attributes. These are additional
-attributes that you can assign to functions, variables and sometimes even
-types - much like C<const> or C<volatile> in C.
-
-While GCC allows declarations to show up in many surprising places,
-but not in many expected places, the safest way is to put attribute
-declarations before the whole declaration:
+A major part of libecb deals with additional attributes that can be
+assigned to functions, variables and sometimes even types - much like
+C<const> or C<volatile> in C. They are implemented using either GCC
+attributes or other compiler/language specific features. Attributes
+declarations must be put before the whole declaration:
 
    ecb_const int mysqrt (int a);
    ecb_unused int i;
 
-For variables, it is often nicer to put the attribute after the name, and
-avoid multiple declarations using commas:
-
-   int i ecb_unused;
-
 =over 4
-
-=item ecb_attribute ((attrs...))
-
-A simple wrapper that expands to C<__attribute__((attrs))> on GCC 3.1+ and
-Clang 2.8+, and to nothing on other compilers, so the effect is that only
-GCC and Clang see these.
-
-Example: use the C<deprecated> attribute on a function.
-
-  ecb_attribute((__deprecated__)) void
-  do_not_use_me_anymore (void);
 
 =item ecb_unused
 
@@ -220,10 +202,9 @@ deprecated. This makes some compilers warn when the type is used.
 
 =item ecb_inline
 
-This is not actually an attribute, but you use it like one. It expands
-either to C<static inline> or to just C<static>, if inline isn't
-supported. It should be used to declare functions that should be inlined,
-for code size or speed reasons.
+Expands either to C<static inline> or to just C<static>, if inline
+isn't supported. It should be used to declare functions that should be
+inlined, for code size or speed reasons.
 
 Example: inline this function, it surely will reduce codesize.
 
