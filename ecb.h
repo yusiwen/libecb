@@ -1,7 +1,7 @@
 /*
  * libecb - http://software.schmorp.de/pkg/libecb
  *
- * Copyright (©) 2009-2014 Marc Alexander Lehmann <libecb@schmorp.de>
+ * Copyright (©) 2009-2015 Marc Alexander Lehmann <libecb@schmorp.de>
  * Copyright (©) 2011 Emanuele Giaquinta
  * All rights reserved.
  *
