@@ -1,3 +1,22 @@
+TODO: 
+08:30:06 <b_jonas> I think it could be worth to add a macro that works like alignof or _Alignof on sane 
+                   compilers, and like __alignof on MS compilers that support it, see 
+                   http://msdn.microsoft.com/en-us/library/45t0s5f4.aspx
+08:30:24 <b_jonas> even if you can't support it on all the old compilers
+08:31:17 <b_jonas> I'd also like a macro for alignas, but sadly, that seems impossible in general, because 
+                   the MS compiler only has some half-attempt to do something similar but with different and 
+                   more broken semantics, see http://msdn.microsoft.com/en-us/library/83ythb65.aspx
+08:31:35 <b_jonas> but I wonder if some special case could still be worth to support
+08:32:23 <b_jonas> probably not, because it would just account to making a union with a highly aligned type, 
+                   which is something I can do on any compiler portably
+
+TODO: #define ECB_IS_INTEGRAL(x) !((1 ? 1 : (x)) / 2)
+      #define ECB_IS_INTEGRAL(x) (sizeof ((x) + 1.0f) != sizeof((x) + 1ULL))
+
+TODO:   define ECB_STDFP if __STDC_IEC_559__?
+
+TODO: https://gustedt.wordpress.com/2010/06/08/detect-empty-macro-arguments/
+
 implement is_constant for c11: https://gustedt.wordpress.com/2013/08/22/testing-compile-time-constness-and-null-pointers-with-c11s-_generic/
 
 #ifdef _MSC_VER
