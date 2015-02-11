@@ -92,6 +92,11 @@ int a, b;
     return a|b;
 }
 
+TODO: export(=dllexport) & hidden
+TODO: flatten
+TODO: warning(msg)
+TODO: error(msg)
+
 TODO: read/write unaligned macros
 TODO: htonl and friends
 TODO: macro to convetr from unsigned to signed "the natural way"
