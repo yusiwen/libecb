@@ -185,7 +185,7 @@ warning by GCC when it detects it as unused. This is useful when you e.g.
 declare a variable but do not always use it:
 
   {
-    int var ecb_unused;
+    ecb_unused int var;
 
     #ifdef SOMECONDITION
        var = ...;
@@ -247,8 +247,8 @@ Example: multiply a vector, and allow the compiler to parallelise the
 loop, because it knows it doesn't overwrite input values.
 
    void
-   multiply (float *ecb_restrict src,
-             float *ecb_restrict dst,
+   multiply (ecb_restrict float *src,
+             ecb_restrict float *dst,
              int len, float factor)
    {
      int i;
