@@ -673,7 +673,7 @@ x86).
 Evaluates to positive infinity if supported by the platform, otherwise to
 a truly huge number.
 
-=item ECB_NON
+=item ECB_NAN
 
 Evaluates to a quiet NAN if supported by the platform, otherwise to
 C<ECB_INFINITY>.
