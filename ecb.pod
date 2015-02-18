@@ -70,7 +70,7 @@ expressions.
 
 For C<ptrdiff_t> and C<size_t> use C<stddef.h>.
 
-=head2 LANGUAGE/COMPILER VERSIONS
+=head2 LANGUAGE/ENVIRONMENT/COMPILER VERSIONS
 
 All the following symbols expand to an expression that can be tested in
 preprocessor instructions as well as treated as a boolean (use C<!!> to
@@ -165,6 +165,32 @@ necessary.
 
 =back
 
+=head2 MACRO TRICKERY
+
+=over 4
+
+=item ECB_CONCAT (a, b)
+
+Expands any macros in C<a> and C<b>, then concatenates the result to form
+a single token. This is mainly useful to form identifiers from components,
+e.g.:
+
+   #define S1 str
+   #define S2 cpy
+
+   ECB_CONCAT (S1, S2)(dst, src); // == strcpy (dst, src);
+
+=item ECB_STRINGIFY (arg)
+
+Expands any macros in C<arg> and returns the stringified version of
+it. This is mainly useful to get the contents of a macro in string form,
+e.g.:
+
+   #define SQL_LIMIT 100
+   sql_exec ("select * from table limit " ECB_STRINGIFY (SQL_LIMIT));
+
+=back
+
 =head2 ATTRIBUTES
 
 A major part of libecb deals with additional attributes that can be
@@ -199,6 +225,12 @@ declare a variable but do not always use it:
 
 Similar to C<ecb_unused>, but marks a function, variable or type as
 deprecated. This makes some compilers warn when the type is used.
+
+=item ecb_deprecated_message (message)
+
+Same as C<ecb_deprecated>, but if possible, supply a diagnostic that is
+used instead of a generic depreciation message when the object is being
+used.
 
 =item ecb_inline
 
@@ -384,7 +416,7 @@ when the passed number is a constant and also a power of two (C<n & (n -
       : (n * (uint32_t)rndm16 ()) >> 16;
   }
 
-=item bool ecb_expect (expr, value)
+=item ecb_expect (expr, value)
 
 Evaluates C<expr> and returns it. In addition, it tells the compiler that
 the C<expr> evaluates to C<value> a lot, which can be used for static
@@ -441,7 +473,7 @@ you expect that most checks will turn out to be false:
       real_reserve_method (size); /* presumably noinline */
   }
 
-=item bool ecb_assume (cond)
+=item ecb_assume (cond)
 
 Try to tell the compiler that some condition is true, even if it's not
 obvious.
@@ -471,13 +503,13 @@ Then the compiler I<might> be able to optimise out the second call
 completely, as it knows that C<< current + 1 > end >> is false and the
 call will never be executed.
 
-=item bool ecb_unreachable ()
+=item ecb_unreachable ()
 
 This function does nothing itself, except tell the compiler that it will
 never be executed. Apart from suppressing a warning in some cases, this
 function can be used to implement C<ecb_assume> or similar functions.
 
-=item bool ecb_prefetch (addr, rw, locality)
+=item ecb_prefetch (addr, rw, locality)
 
 Tells the compiler to try to prefetch memory at the given C<addr>ess
 for either reading (C<rw> = 0) or writing (C<rw> = 1). A C<locality> of
@@ -635,6 +667,20 @@ x86).
 =head2 FLOATING POINT FIDDLING
 
 =over 4
+
+=item ECB_INFINITY
+
+Evaluates to positive infinity if supported by the platform, otherwise to
+a truly huge number.
+
+=item ECB_NON
+
+Evaluates to a quiet NAN if supported by the platform, otherwise to
+C<ECB_INFINITY>.
+
+=item float ecb_ldexpf (float x, int exp)
+
+Same as C<ldexpf>, but always available.
 
 =item uint32_t ecb_float_to_binary32  (float  x) [-UECB_NO_LIBM]
 
