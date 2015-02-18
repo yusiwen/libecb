@@ -96,6 +96,12 @@ TODO: export(=dllexport) & hidden
 TODO: flatten
 TODO: warning(msg)
 TODO: error(msg)
+TODO: leaf (uh), noclone (hmmm)
+TODO: nonnull, returns_nonnull
+TODO: nothrow
+TODO: used
+TODO: trap
+TODO: http://llvm.org/docs/doxygen/html/Compiler_8h_source.html
 
 TODO: read/write unaligned macros
 TODO: htonl and friends
