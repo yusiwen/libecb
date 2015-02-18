@@ -189,6 +189,22 @@ e.g.:
    #define SQL_LIMIT 100
    sql_exec ("select * from table limit " ECB_STRINGIFY (SQL_LIMIT));
 
+=item ECB_STRINGIFY_EXPR (expr)
+
+Like C<ECB_STRINGIFY>, but additionally evaluates C<expr> to make sure it
+is a valid expression. This is useful to catch typos or cases where the
+macro isn't available:
+
+   #include <errno.h>
+
+   ECB_STRINGIFY      (EDOM); // "33" (on my system at least)
+   ECB_STRINGIFY_EXPR (EDOM); // "33"
+
+   // now imagine we had a typo:
+
+   ECB_STRINGIFY      (EDAM); // "EDAM"
+   ECB_STRINGIFY_EXPR (EDAM); // error: EDAM undefined
+
 =back
 
 =head2 ATTRIBUTES
