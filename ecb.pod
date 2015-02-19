@@ -492,7 +492,8 @@ you expect that most checks will turn out to be false:
 =item ecb_assume (cond)
 
 Try to tell the compiler that some condition is true, even if it's not
-obvious.
+obvious. This is not a function, but a statement: it cannot be used in
+another expression.
 
 This can be used to teach the compiler about invariants or other
 conditions that might improve code generation, but which are impossible to
@@ -523,7 +524,7 @@ call will never be executed.
 
 This function does nothing itself, except tell the compiler that it will
 never be executed. Apart from suppressing a warning in some cases, this
-function can be used to implement C<ecb_assume> or similar functions.
+function can be used to implement C<ecb_assume> or similar functionality.
 
 =item ecb_prefetch (addr, rw, locality)
 
@@ -534,6 +535,9 @@ the data will likely be accessed very often, and values in between mean
 something... in between. The memory pointed to by the address does not
 need to be accessible (it could be a null pointer for example), but C<rw>
 and C<locality> must be compile-time constants.
+
+This is a statement, not a function: you cannot use it as part of an
+expression.
 
 An obvious way to use this is to prefetch some data far away, in a big
 array you loop over. This prefetches memory some 128 array elements later,
