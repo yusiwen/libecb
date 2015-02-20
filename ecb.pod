@@ -840,6 +840,25 @@ When defined to C<1>, do not export any functions that might introduce
 dependencies on the math library (usually called F<-lm>) - these are
 marked with [-UECB_NO_LIBM].
 
+=head1 UNDOCUMENTED FUNCTIONALITY
+
+F<ecb.h> is full of undocumented functionality as well, some of which is
+intended to be internal-use only, some of which we forgot to document, and
+some of which we hide because we are not sure we will keep the interface
+stable.
+
+While you are welcome to rummage around and use whatever you find useful
+(we can't stop you), keep in mind that we will change undocumented
+functionality in incompatible ways without thinking twice, while we are
+considerably more conservative with documented things.
+
+=head1 AUTHORS
+
+C<libecb> is designed and maintained by:
+
+   Emanuele Giaquinta <e.giaquinta@glauco.it>
+   Marc Alexander Lehmann <schmorp@schmorp.de>
+
 =back
 
 
