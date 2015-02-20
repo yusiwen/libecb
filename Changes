@@ -76,7 +76,7 @@ implement is_constant for c11: https://gustedt.wordpress.com/2013/08/22/testing-
         - add ecb_binary16_to_float.
 
 TODO: ecb_restrict_array etc. http://ue.tst.eu/5093eafd713ec5fda776d8065070aa4c.txt
-TODO: ffs/clz
+TODO: ffs
 64 bit variants of everything
 TODO: examples from X for clz/ctz
 TODO: arithmetic right shift
@@ -105,8 +105,7 @@ TODO: http://llvm.org/docs/doxygen/html/Compiler_8h_source.html
 
 TODO: read/write unaligned macros
 TODO: htonl and friends
-TODO: macro to convetr from unsigned to signed "the natural way"
-TODO: ecb_deprecated with message
+TODO: macro to convert from unsigned to signed "the natural way"
 TODO: ecb_static_assert, with message (just like boost), or somesuch, using array-declaration
 TODO: alignof
 
