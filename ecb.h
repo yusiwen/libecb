@@ -593,7 +593,7 @@ ecb_byteorder_helper (void)
   /* the reason why we have this horrible preprocessor mess */
   /* is to avoid it in all cases, at least on common architectures */
   /* or when using a recent enough gcc version (>= 4.6) */
-#if ((__i386 || __i386__) && !__VOS__) || _M_X86 || __amd64 || __amd64__ || _M_X64
+#if ((__i386 || __i386__) && !__VOS__) || _M_IX86 || __amd64 || __amd64__ || _M_X64
   return 0x44;
 #elif __BYTE_ORDER__ && __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
   return 0x44;
