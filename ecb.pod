@@ -244,7 +244,7 @@ deprecated. This makes some compilers warn when the type is used.
 
 =item ecb_deprecated_message (message)
 
-Same as C<ecb_deprecated>, but if possible, supplies a diagnostic that is
+Same as C<ecb_deprecated>, but if possible, the specified diagnostic is
 used instead of a generic depreciation message when the object is being
 used.
 

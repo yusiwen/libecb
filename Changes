@@ -13,8 +13,6 @@ TODO:
 TODO: #define ECB_IS_INTEGRAL(x) !((1 ? 1 : (x)) / 2)
       #define ECB_IS_INTEGRAL(x) (sizeof ((x) + 1.0f) != sizeof((x) + 1ULL))
 
-TODO:   define ECB_STDFP if __STDC_IEC_559__?
-
 TODO: https://gustedt.wordpress.com/2010/06/08/detect-empty-macro-arguments/
 
 implement is_constant for c11: https://gustedt.wordpress.com/2013/08/22/testing-compile-time-constness-and-null-pointers-with-c11s-_generic/
