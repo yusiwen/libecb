@@ -244,7 +244,7 @@ deprecated. This makes some compilers warn when the type is used.
 
 =item ecb_deprecated_message (message)
 
-Same as C<ecb_deprecated>, but if possible, supply a diagnostic that is
+Same as C<ecb_deprecated>, but if possible, supplies a diagnostic that is
 used instead of a generic depreciation message when the object is being
 used.
 
@@ -264,7 +264,7 @@ Example: inline this function, it surely will reduce codesize.
 
 =item ecb_noinline
 
-Prevent a function from being inlined - it might be optimised away, but
+Prevents a function from being inlined - it might be optimised away, but
 not inlined into other functions. This is useful if you know your function
 is rarely called and large enough for inlining not to be helpful.
 
@@ -491,7 +491,7 @@ you expect that most checks will turn out to be false:
 
 =item ecb_assume (cond)
 
-Try to tell the compiler that some condition is true, even if it's not
+Tries to tell the compiler that some condition is true, even if it's not
 obvious. This is not a function, but a statement: it cannot be used in
 another expression.
 
@@ -600,9 +600,9 @@ For example:
 
 =item bool ecb_is_pot64 (uint32_t x)
 
-Return true iff C<x> is a power of two or C<x == 0>.
+Returns true iff C<x> is a power of two or C<x == 0>.
 
-For smaller types then C<uint32_t> you can safely use C<ecb_is_pot32>.
+For smaller types than C<uint32_t> you can safely use C<ecb_is_pot32>.
 
 =item int ecb_ld32 (uint32_t x)
 
