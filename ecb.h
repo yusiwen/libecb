@@ -76,8 +76,11 @@
   #endif
 #endif
 
+#define ECB_GCC_AMD64 (__amd64 || __amd64__ || __x86_64 || __x86_64__)
+#define ECB_MSVC_AMD64 (_M_AMD64 || _M_X64)
+
 /* work around x32 idiocy by defining proper macros */
-#if __amd64 || __x86_64 || _M_AMD64 || _M_X64
+#if ECB_GCC_AMD64 || ECB_MSVC_AMD64
   #if _ILP32
     #define ECB_AMD64_X32 1
   #else
@@ -155,7 +158,7 @@
       #define ECB_MEMORY_FENCE         __asm__ __volatile__ ("lock; orb $0, -1(%%esp)" : : : "memory")
       #define ECB_MEMORY_FENCE_ACQUIRE __asm__ __volatile__ (""                        : : : "memory")
       #define ECB_MEMORY_FENCE_RELEASE __asm__ __volatile__ ("")
-    #elif __amd64 || __amd64__ || __x86_64 || __x86_64__
+    #elif ECB_GCC_AMD64
       #define ECB_MEMORY_FENCE         __asm__ __volatile__ ("mfence"   : : : "memory")
       #define ECB_MEMORY_FENCE_ACQUIRE __asm__ __volatile__ (""         : : : "memory")
       #define ECB_MEMORY_FENCE_RELEASE __asm__ __volatile__ ("")
@@ -593,7 +596,7 @@ ecb_byteorder_helper (void)
   /* the reason why we have this horrible preprocessor mess */
   /* is to avoid it in all cases, at least on common architectures */
   /* or when using a recent enough gcc version (>= 4.6) */
-#if ((__i386 || __i386__) && !__VOS__) || _M_IX86 || __amd64 || __amd64__ || _M_X64
+#if ((__i386 || __i386__) && !__VOS__) || _M_IX86 || ECB_GCC_AMD64 || ECB_MSVC_AMD64
   return 0x44;
 #elif __BYTE_ORDER__ && __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
   return 0x44;
@@ -654,7 +657,7 @@ ecb_inline ecb_const ecb_bool ecb_little_endian (void) { return ecb_byteorder_he
 /* the only noteworthy exception is ancient armle, which uses order 43218765 */
 #if 0 \
     || __i386 || __i386__ \
-    || __amd64 || __amd64__ || __x86_64 || __x86_64__ \
+    || ECB_GCC_AMD64 \
     || __powerpc__ || __ppc__ || __powerpc64__ || __ppc64__ \
     || defined __s390__ || defined __s390x__ \
     || defined __mips__ \
@@ -664,7 +667,7 @@ ecb_inline ecb_const ecb_bool ecb_little_endian (void) { return ecb_byteorder_he
     || defined __m68k__ \
     || defined __m88k__ \
     || defined __sh__ \
-    || defined _M_IX86 || defined _M_AMD64 || defined _M_IA64 \
+    || defined _M_IX86 || defined ECB_MSVC_AMD64 || defined _M_IA64 \
     || (defined __arm__ && (defined __ARM_EABI__ || defined __EABI__ || defined __VFP_FP__ || defined _WIN32_WCE || defined __ANDROID__)) \
     || defined __aarch64__
   #define ECB_STDFP 1
