@@ -840,6 +840,8 @@ When defined to C<1>, do not export any functions that might introduce
 dependencies on the math library (usually called F<-lm>) - these are
 marked with [-UECB_NO_LIBM].
 
+=back
+
 =head1 UNDOCUMENTED FUNCTIONALITY
 
 F<ecb.h> is full of undocumented functionality as well, some of which is
@@ -858,7 +860,5 @@ C<libecb> is designed and maintained by:
 
    Emanuele Giaquinta <e.giaquinta@glauco.it>
    Marc Alexander Lehmann <schmorp@schmorp.de>
-
-=back
 
 
