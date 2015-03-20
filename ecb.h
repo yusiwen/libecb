@@ -354,7 +354,7 @@ typedef int ecb_bool;
   #define ecb_deprecated ecb_attribute ((__deprecated__))
 #endif
 
-#if __MSC_VER >= 1500
+#if _MSC_VER >= 1500
   #define ecb_deprecated_message(msg) __declspec (deprecated (msg))
 #elif ECB_GCC_VERSION(4,5)
   #define ecb_deprecated_message(msg) ecb_attribute ((__deprecated__ (msg))
