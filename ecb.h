@@ -549,9 +549,18 @@ ecb_inline ecb_const uint64_t ecb_rotl64 (uint64_t x, unsigned int count) { retu
 ecb_inline ecb_const uint64_t ecb_rotr64 (uint64_t x, unsigned int count) { return (x << (64 - count)) | (x >> count); }
 
 #if ECB_GCC_VERSION(4,3) || (ECB_CLANG_BUILTIN(__builtin_bswap32) && ECB_CLANG_BUILTIN(__builtin_bswap64))
+  #if ECB_GCC_VERSION(4,8) || ECB_CLANG_BUILTIN(__builtin_bswap16)
+  #define ecb_bswap16(x)  __builtin_bswap16 (x)
+  #else
   #define ecb_bswap16(x) (__builtin_bswap32 (x) >> 16)
+  #endif
   #define ecb_bswap32(x)  __builtin_bswap32 (x)
   #define ecb_bswap64(x)  __builtin_bswap64 (x)
+#elif _MSC_VER
+  #include <stdlib.h>
+  #define ecb_bswap16(x) ((uint16_t)_byteswap_ushort ((uint16_t)(x)))
+  #define ecb_bswap32(x) ((uint32_t)_byteswap_ulong  ((uint32_t)(x)))
+  #define ecb_bswap64(x) ((uint64_t)_byteswap_uint64 ((uint64_t)(x)))
 #else
   ecb_function_ ecb_const uint16_t ecb_bswap16 (uint16_t x);
   ecb_function_ ecb_const uint16_t
