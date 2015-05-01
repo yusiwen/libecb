@@ -152,6 +152,11 @@
   #define ECB_MEMORY_FENCE do { } while (0)
 #endif
 
+/* http://www-01.ibm.com/support/knowledgecenter/SSGH3R_13.1.0/com.ibm.xlcpp131.aix.doc/compiler_ref/compiler_builtins.html */
+#if __xlC__ && ECB_CPP
+  #include <builtins.h>
+#endif
+
 #ifndef ECB_MEMORY_FENCE
   #if ECB_GCC_VERSION(2,5) || defined __INTEL_COMPILER || (__llvm__ && __GNUC__) || __SUNPRO_C >= 0x5110 || __SUNPRO_CC >= 0x5110
     #if __i386 || __i386__
@@ -373,7 +378,7 @@ typedef int ecb_bool;
 #define ecb_pure       ecb_attribute ((__pure__))
 
 #if ECB_C11 || __IBMC_NORETURN
-  /* http://pic.dhe.ibm.com/infocenter/compbg/v121v141/topic/com.ibm.xlcpp121.bg.doc/language_ref/noreturn.html */
+  /* http://www-01.ibm.com/support/knowledgecenter/SSGH3R_13.1.0/com.ibm.xlcpp131.aix.doc/language_ref/noreturn.html */
   #define ecb_noreturn   _Noreturn
 #elif ECB_CPP11
   #define ecb_noreturn   [[noreturn]]
