@@ -726,7 +726,7 @@ ecb_binary32_to_binary16 (uint32_t x)
   if (ecb_expect_true (0x477fefff < x && x <= 0x7f800000))
     return s | 0x7c00;
 
-  /* handle zero and subnormals */
+  /* handle zero, subnormals and small numbers */
   if (ecb_expect_true (x < 0x38800000))
     {
       /* zero */
@@ -734,6 +734,10 @@ ecb_binary32_to_binary16 (uint32_t x)
         return s;
 
       /* handle subnormals */
+
+      /* too small, will be zero */
+      if (e < (14 - 24)) /* might not be sharp, but is good enough */
+        return s;
 
       m |= 0x00800000; /* make implicit bit explicit */
 
