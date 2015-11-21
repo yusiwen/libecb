@@ -762,8 +762,8 @@ be able to optimise away this function completely.
 =item uint32_t ecb_binary16_to_binary32 (uint16_t x)
 
 Convert a IEEE binary32/single precision to binary16/half format, and vice
-versa, handling all details (round-to-even, subnormals, infinity and NaNs)
-correctly.
+versa, handling all details (round-to-nearest-even, subnormals, infinity
+and NaNs) correctly.
 
 These are functions are available under C<-DECB_NO_LIBM>, since
 they do not rely on the platform floating point format. The
