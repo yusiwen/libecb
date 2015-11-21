@@ -450,7 +450,7 @@ typedef int ecb_bool;
   ecb_function_ ecb_const int
   ecb_ctz64 (uint64_t x)
   {
-    int shift = x & 0xffffffffU ? 0 : 32;
+    int shift = x & 0xffffffff ? 0 : 32;
     return ecb_ctz32 (x >> shift) + shift;
   }
 
