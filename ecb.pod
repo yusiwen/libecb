@@ -688,26 +688,29 @@ x86).
 
 =over 4
 
-=item ECB_INFINITY
+=item ECB_INFINITY [-UECB_NO_LIBM]
 
 Evaluates to positive infinity if supported by the platform, otherwise to
 a truly huge number.
 
-=item ECB_NAN
+=item ECB_NAN [-UECB_NO_LIBM]
 
 Evaluates to a quiet NAN if supported by the platform, otherwise to
 C<ECB_INFINITY>.
 
-=item float ecb_ldexpf (float x, int exp)
+=item float ecb_ldexpf (float x, int exp) [-UECB_NO_LIBM]
 
 Same as C<ldexpf>, but always available.
+
+=item uint32_t ecb_float_to_binary16  (float  x) [-UECB_NO_LIBM]
 
 =item uint32_t ecb_float_to_binary32  (float  x) [-UECB_NO_LIBM]
 
 =item uint64_t ecb_double_to_binary64 (double x) [-UECB_NO_LIBM]
 
 These functions each take an argument in the native C<float> or C<double>
-type and return the IEEE 754 bit representation of it.
+type and return the IEEE 754 bit representation of it (binary16/half,
+binary32/single or binary64/double precision).
 
 The bit representation is just as IEEE 754 defines it, i.e. the sign bit
 will be the most significant bit, followed by exponent and mantissa.
@@ -721,7 +724,7 @@ On all modern platforms (where C<ECB_STDFP> is true), the compiler should
 be able to optimise away this function completely.
 
 These functions can be helpful when serialising floats to the network - you
-can serialise the return value like a normal uint32_t/uint64_t.
+can serialise the return value like a normal uint16_t/uint32_t/uint64_t.
 
 Another use for these functions is to manipulate floating point values
 directly.
@@ -741,8 +744,9 @@ Silly example: toggle the sign bit of a float.
 =item double ecb_binary64_to_double (uint64_t x) [-UECB_NO_LIBM]
 
 The reverse operation of the previous function - takes the bit
-representation of an IEEE binary16, binary32 or binary64 number and
-converts it to the native C<float> or C<double> format.
+representation of an IEEE binary16, binary32 or binary64 number (half,
+single or double precision) and converts it to the native C<float> or
+C<double> format.
 
 This function should work even when the native floating point format isn't
 IEEE compliant, of course at a speed and code size penalty, and of course
@@ -752,6 +756,19 @@ negative zero).
 
 On all modern platforms (where C<ECB_STDFP> is true), the compiler should
 be able to optimise away this function completely.
+
+=item uint16_t ecb_binary32_to_binary16 (uint32_t x)
+
+=item uint32_t ecb_binary16_to_binary32 (uint16_t x)
+
+Convert a IEEE binary32/single precision to binary16/half format, and vice
+versa, handling all details (round-to-even, subnormals, infinity and NaNs)
+correctly.
+
+These are functions are available under C<-DECB_NO_LIBM>, since
+they do not rely on the platform floating point format. The
+C<ecb_float_to_binary16> and C<ecb_binary16_to_float> functions are
+usually what you want.
 
 =back
 

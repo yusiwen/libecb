@@ -63,6 +63,11 @@ implement is_constant for c11: https://gustedt.wordpress.com/2013/08/22/testing-
 
 #endif
 
+0x00010005
+	- improve ecb_binary16_to_float.
+        - add ecb_float_to_binary16.
+        - add ecb_binary16_to_binary32 and ecb_binary32_to_binary16 pair.
+
 0x00010001
 	- add ecb_is_pot32/64.
         - add intptr_t/uintptr_t.
