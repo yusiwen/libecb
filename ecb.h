@@ -664,9 +664,9 @@ ecb_inline ecb_const ecb_bool ecb_little_endian (void) { return ecb_byteorder_he
   #define ecb_array_length(name) (sizeof (name) / sizeof (name [0]))
 #endif
 
-ecb_function_ ecb_const uint32_t ecb_binary16_to_binary32 (uint16_t x);
+ecb_function_ ecb_const uint32_t ecb_binary16_to_binary32 (uint32_t x);
 ecb_function_ ecb_const uint32_t
-ecb_binary16_to_binary32 (uint16_t x)
+ecb_binary16_to_binary32 (uint32_t x)
 {
   unsigned int s = (x & 0x8000) << (31 - 15);
   int          e = (x >> 10) & 0x001f;
