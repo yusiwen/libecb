@@ -42,7 +42,7 @@
 #define ECB_H
 
 /* 16 bits major, 16 bits minor */
-#define ECB_VERSION 0x00010004
+#define ECB_VERSION 0x00010005
 
 #ifdef _WIN32
   typedef   signed char   int8_t;
@@ -664,6 +664,98 @@ ecb_inline ecb_const ecb_bool ecb_little_endian (void) { return ecb_byteorder_he
   #define ecb_array_length(name) (sizeof (name) / sizeof (name [0]))
 #endif
 
+ecb_function_ ecb_const uint32_t ecb_binary16_to_binary32 (uint16_t x);
+ecb_function_ ecb_const uint32_t
+ecb_binary16_to_binary32 (uint16_t x)
+{
+  unsigned int s = (x & 0x8000) << (31 - 15);
+  int          e = (x >> 10) & 0x001f;
+  unsigned int m =  x        & 0x03ff;
+
+  if (ecb_expect_false (e == 31))
+    /* infinity or NaN */
+    e = 255 - (127 - 15);
+  else if (ecb_expect_false (!e))
+    {
+      if (ecb_expect_true (!m))
+        /* zero, handled by code below by forcing e to 0 */
+        e = 0 - (127 - 15);
+      else
+        {
+          /* subnormal, renormalise */
+          unsigned int s = 10 - ecb_ld32 (m);
+
+          m = (m << s) & 0x3ff; /* mask implicit bit */
+          e -= s - 1;
+        }
+    }
+
+  /* e and m now are normalised, or zero, (or inf or nan) */
+  e += 127 - 15;
+
+  return s | (e << 23) | (m << (23 - 10));
+}
+
+ecb_function_ ecb_const uint16_t ecb_binary32_to_binary16 (uint32_t x);
+ecb_function_ ecb_const uint16_t
+ecb_binary32_to_binary16 (uint32_t x)
+{
+  unsigned int s =  (x >> 16) & 0x00008000; /* sign bit, the easy part */
+  unsigned int e = ((x >> 23) & 0x000000ff) - (127 - 15); /* the desired exponent */
+  unsigned int m =   x        & 0x007fffff;
+
+  x &= 0x7fffffff;
+
+  /* if it's within range of binary16 normals, use fast path */
+  if (ecb_expect_true (0x38800000 <= x && x <= 0x477fefff))
+    {
+      /* mantissa round-to-even */
+      m += 0x00000fff + ((m >> (23 - 10)) & 1);
+
+      /* handle overflow */
+      if (ecb_expect_false (m >= 0x00800000))
+        {
+          m >>= 1;
+          e +=  1;
+        }
+
+      return s | (e << 10) | (m >> (23 - 10));
+    }
+
+  /* handle large numbers and infinity */
+  if (ecb_expect_true (0x477fefff < x && x <= 0x7f800000))
+    return s | 0x7c00;
+
+  /* handle zero and subnormals */
+  if (ecb_expect_true (x < 0x38800000))
+    {
+      /* zero */
+      if (ecb_expect_true (!x))
+        return s;
+
+      /* handle subnormals */
+
+      m |= 0x00800000; /* make implicit bit explicit */
+
+      /* very tricky - we need to round to the nearest e (+10) bit value */
+      {
+        unsigned int bits = 14 - e;
+        unsigned int half = (1 << (bits - 1)) - 1;
+        unsigned int even = (m >> bits) & 1;
+
+        /* if this overflows, we will end up with a normalised number */
+        m = (m + half + even) >> bits;
+      }
+
+      return s | m;
+    }
+
+  /* handle NaNs, preserve leftmost nan bits, but make sure we don't turn them into infinities */
+  m >>= 13;
+
+  return s | 0x7c00 | m | !m;
+}
+
 /*******************************************************************************/
 /* floating point stuff, can be disabled by defining ECB_NO_LIBM */
 
@@ -714,23 +806,6 @@ ecb_inline ecb_const ecb_bool ecb_little_endian (void) { return ecb_byteorder_he
     #define ecb_ldexpf(x,e) (float) ldexp ((double) (x), (e))
     #define ecb_frexpf(x,e) (float) frexp ((double) (x), (e))
   #endif
-
-  /* converts an ieee half/binary16 to a float */
-  ecb_function_ ecb_const float ecb_binary16_to_float (uint16_t x);
-  ecb_function_ ecb_const float
-  ecb_binary16_to_float (uint16_t x)
-  {
-    int e = (x >> 10) & 0x1f;
-    int m = x & 0x3ff;
-    float r;
-
-    if      (!e     ) r = ecb_ldexpf (m        ,    -24);
-    else if (e != 31) r = ecb_ldexpf (m + 0x400, e - 25);
-    else if (m      ) r = ECB_NAN;
-    else              r = ECB_INFINITY;
-
-    return x & 0x8000 ? -r : r;
-  }
 
   /* convert a float to ieee single/binary32 */
   ecb_function_ ecb_const uint32_t ecb_float_to_binary32 (float x);
@@ -870,6 +945,22 @@ ecb_inline ecb_const ecb_bool ecb_little_endian (void) { return ecb_byteorder_he
     #endif
 
     return r;
+  }
+
+  /* convert a float to ieee half/binary16 */
+  ecb_function_ ecb_const uint16_t ecb_float_to_binary16 (float x);
+  ecb_function_ ecb_const uint16_t
+  ecb_float_to_binary16 (float x)
+  {
+    return ecb_binary32_to_binary16 (ecb_float_to_binary32 (x));
+  }
+
+  /* convert an ieee half/binary16 to float */
+  ecb_function_ ecb_const float ecb_binary16_to_float (uint16_t x);
+  ecb_function_ ecb_const float
+  ecb_binary16_to_float (uint16_t x)
+  {
+    return ecb_binary32_to_float (ecb_binary16_to_binary32 (x));
   }
 
 #endif
