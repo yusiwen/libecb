@@ -430,7 +430,7 @@ typedef int ecb_bool;
   ecb_ctz32 (uint32_t x)
   {
 #if 1400 <= _MSC_VER && (_M_IX86 || _M_X64 || _M_IA64 || _M_ARM)
-    unsigned long r = 0;
+    unsigned long r;
     _BitScanForward (&r, x);
     return (int)r;
 #else
@@ -461,7 +461,7 @@ typedef int ecb_bool;
   ecb_ctz64 (uint64_t x)
   {
 #if 1400 <= _MSC_VER && (_M_X64 || _M_IA64 || _M_ARM)
-    unsigned long r = 0;
+    unsigned long r;
     _BitScanForward64 (&r, x);
     return (int)r;
 #else
@@ -486,7 +486,7 @@ typedef int ecb_bool;
   ecb_function_ ecb_const int ecb_ld32 (uint32_t x)
   {
 #if 1400 <= _MSC_VER && (_M_IX86 || _M_X64 || _M_IA64 || _M_ARM)
-    unsigned long r = 0;
+    unsigned long r;
     _BitScanReverse (&r, x);
     return (int)r;
 #else
@@ -506,7 +506,7 @@ typedef int ecb_bool;
   ecb_function_ ecb_const int ecb_ld64 (uint64_t x)
   {
 #if 1400 <= _MSC_VER && (_M_X64 || _M_IA64 || _M_ARM)
-    unsigned long r = 0;
+    unsigned long r;
     _BitScanReverse64 (&r, x);
     return (int)r;
 #else
