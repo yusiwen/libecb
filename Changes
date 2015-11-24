@@ -63,6 +63,8 @@ implement is_constant for c11: https://gustedt.wordpress.com/2013/08/22/testing-
 
 #endif
 
+	- apply ctz/ld patch for msc by Zsbán Ambrus.
+
 0x00010005
 	- improve ecb_binary16_to_float.
         - add ecb_float_to_binary16.

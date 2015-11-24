@@ -157,6 +157,10 @@
   #include <builtins.h>
 #endif
 
+#if 1400 <= _MSC_VER
+  #include <intrin.h> /* fence functions _ReadBarrier, also bit search functions _BitScanReverse */
+#endif
+
 #ifndef ECB_MEMORY_FENCE
   #if ECB_GCC_VERSION(2,5) || defined __INTEL_COMPILER || (__llvm__ && __GNUC__) || __SUNPRO_C >= 0x5110 || __SUNPRO_CC >= 0x5110
     #if __i386 || __i386__
@@ -425,6 +429,11 @@ typedef int ecb_bool;
   ecb_function_ ecb_const int
   ecb_ctz32 (uint32_t x)
   {
+#if 1400 <= _MSC_VER && (_M_IX86 || _M_X64 || _M_IA64 || _M_ARM)
+    unsigned long r = 0;
+    _BitScanForward (&r, x);
+    return (int)r;
+#else
     int r = 0;
 
     x &= ~x + 1; /* this isolates the lowest bit */
@@ -444,14 +453,21 @@ typedef int ecb_bool;
 #endif
 
     return r;
+#endif
   }
 
   ecb_function_ ecb_const int ecb_ctz64 (uint64_t x);
   ecb_function_ ecb_const int
   ecb_ctz64 (uint64_t x)
   {
+#if 1400 <= _MSC_VER && (_M_X64 || _M_IA64 || _M_ARM)
+    unsigned long r = 0;
+    _BitScanForward64 (&r, x);
+    return (int)r;
+#else
     int shift = x & 0xffffffff ? 0 : 32;
     return ecb_ctz32 (x >> shift) + shift;
+#endif
   }
 
   ecb_function_ ecb_const int ecb_popcount32 (uint32_t x);
@@ -469,6 +485,11 @@ typedef int ecb_bool;
   ecb_function_ ecb_const int ecb_ld32 (uint32_t x);
   ecb_function_ ecb_const int ecb_ld32 (uint32_t x)
   {
+#if 1400 <= _MSC_VER && (_M_IX86 || _M_X64 || _M_IA64 || _M_ARM)
+    unsigned long r = 0;
+    _BitScanReverse (&r, x);
+    return (int)r;
+#else
     int r = 0;
 
     if (x >> 16) { x >>= 16; r += 16; }
@@ -478,16 +499,23 @@ typedef int ecb_bool;
     if (x >>  1) {           r +=  1; }
 
     return r;
+#endif
   }
 
   ecb_function_ ecb_const int ecb_ld64 (uint64_t x);
   ecb_function_ ecb_const int ecb_ld64 (uint64_t x)
   {
+#if 1400 <= _MSC_VER && (_M_X64 || _M_IA64 || _M_ARM)
+    unsigned long r = 0;
+    _BitScanReverse64 (&r, x);
+    return (int)r;
+#else
     int r = 0;
 
     if (x >> 32) { x >>= 32; r += 32; }
 
     return r + ecb_ld32 (x);
+#endif
   }
 #endif
 
