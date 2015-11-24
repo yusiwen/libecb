@@ -69,7 +69,7 @@
   #endif
 #else
   #include <inttypes.h>
-  #if UINTMAX_MAX > 0xffffffffU
+  #if (defined INTPTR_MAX ? INTPTR_MAX : ULONG_MAX) > 0xffffffffU
     #define ECB_PTRSIZE 8
   #else
     #define ECB_PTRSIZE 4
