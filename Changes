@@ -13,6 +13,8 @@ TODO:
 TODO: #define ECB_IS_INTEGRAL(x) !((1 ? 1 : (x)) / 2)
       #define ECB_IS_INTEGRAL(x) (sizeof ((x) + 1.0f) != sizeof((x) + 1ULL))
 
+TODO: __builtin_powi
+
 TODO: https://gustedt.wordpress.com/2010/06/08/detect-empty-macro-arguments/
 
 implement is_constant for c11: https://gustedt.wordpress.com/2013/08/22/testing-compile-time-constness-and-null-pointers-with-c11s-_generic/
@@ -68,6 +70,7 @@ implement is_constant for c11: https://gustedt.wordpress.com/2013/08/22/testing-
           found by Zsbán Ambrus).
         - improved compiletime detection of endianness, also, allow
           runtime detection to indicate other-than-big/little endianness.
+        - no memory barrier neded on arm < 6.
 
 0x00010005
 	- improve ecb_binary16_to_float.

@@ -173,11 +173,19 @@
       #define ECB_MEMORY_FENCE_RELEASE __asm__ __volatile__ ("")
     #elif __powerpc__ || __ppc__ || __powerpc64__ || __ppc64__
       #define ECB_MEMORY_FENCE         __asm__ __volatile__ ("sync"     : : : "memory")
+    #elif defined __ARM_ARCH_2__ \
+      || defined __ARM_ARCH_3__  || defined __ARM_ARCH_3M__  \
+      || defined __ARM_ARCH_4__  || defined __ARM_ARCH_4T__  \
+      || defined __ARM_ARCH_5__  || defined __ARM_ARCH_5E__  \
+      || defined __ARM_ARCH_5T__ || defined __ARM_ARCH_5TE__ \
+      || defined __ARM_ARCH_5TEJ__
+      /* should not need any, unless running old code on newer cpu - arm doesn't support that */
     #elif defined __ARM_ARCH_6__  || defined __ARM_ARCH_6J__  \
-       || defined __ARM_ARCH_6K__ || defined __ARM_ARCH_6ZK__
+       || defined __ARM_ARCH_6K__ || defined __ARM_ARCH_6ZK__ \
+       || defined __ARM_ARCH_6T2__
       #define ECB_MEMORY_FENCE         __asm__ __volatile__ ("mcr p15,0,%0,c7,c10,5" : : "r" (0) : "memory")
     #elif defined __ARM_ARCH_7__  || defined __ARM_ARCH_7A__  \
-       || defined __ARM_ARCH_7M__ || defined __ARM_ARCH_7R__
+       || defined __ARM_ARCH_7R__ || defined __ARM_ARCH_7M__
       #define ECB_MEMORY_FENCE         __asm__ __volatile__ ("dmb"      : : : "memory")
     #elif __aarch64__
       #define ECB_MEMORY_FENCE         __asm__ __volatile__ ("dmb ish"  : : : "memory")
