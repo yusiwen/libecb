@@ -250,9 +250,9 @@ used.
 
 =item ecb_inline
 
-Expands either to C<static inline> or to just C<static>, if inline
-isn't supported. It should be used to declare functions that should be
-inlined, for code size or speed reasons.
+Expands either to (a compiler-specific equivalent of) C<static inline> or
+to just C<static>, if inline isn't supported. It should be used to declare
+functions that should be inlined, for code size or speed reasons.
 
 Example: inline this function, it surely will reduce codesize.
 
