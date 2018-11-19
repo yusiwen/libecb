@@ -117,6 +117,8 @@
 
 #define ECB_CPP   (__cplusplus+0)
 #define ECB_CPP11 (__cplusplus >= 201103L)
+#define ECB_CPP14 (__cplusplus >= 201402L)
+#define ECB_CPP17 (__cplusplus >= 201703L)
 
 #if ECB_CPP
   #define ECB_C            0
@@ -128,6 +130,7 @@
 
 #define ECB_C99   (ECB_STDC_VERSION >= 199901L)
 #define ECB_C11   (ECB_STDC_VERSION >= 201112L)
+#define ECB_C17   (ECB_STDC_VERSION >= 201710L)
 
 #if ECB_CPP
   #define ECB_EXTERN_C extern "C"
