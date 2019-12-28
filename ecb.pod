@@ -404,6 +404,12 @@ some C++ abstraction monster.
 
 =over 4
 
+=item ECB_OPTIMIZE_SIZE
+
+Is C<1> when the compiler optimizes for size, C<0> otherwise. This symbol
+can also be defined before including F<ecb.h>, in which case it will be
+unchanged.
+
 =item bool ecb_is_constant (expr)
 
 Returns true iff the expression can be deduced to be a compile-time

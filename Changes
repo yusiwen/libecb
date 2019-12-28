@@ -71,8 +71,11 @@ implement is_constant for c11: https://gustedt.wordpress.com/2013/08/22/testing-
 
 #endif
 
+0x00010007
+	- new ECB_OPTIMIZE_SIZE symbol.
+
 0x00010006
-	- new ECB_MEMORXY_FENCE_RELAXED memory fence.
+	- new ECB_MEMORY_FENCE_RELAXED memory fence.
 	- use acquire/eelease memory barriers on sun workshop pro, not read/write.
         - rely on c++ compiler barriers to do the right thing in gcc/clang.
 	- change release memory fence to memory barrier on ia32/ia64.
