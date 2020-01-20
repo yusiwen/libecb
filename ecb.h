@@ -636,15 +636,15 @@ inline uint8_t  ecb_bitrev (uint8_t  v) { return ecb_bitrev8  (v); }
 inline uint16_t ecb_bitrev (uint16_t v) { return ecb_bitrev16 (v); }
 inline uint32_t ecb_bitrev (uint32_t v) { return ecb_bitrev32 (v); }
 
-inline uint8_t  ecb_rotl (uint8_t  v) { return ecb_rotl8  (v); }
-inline uint16_t ecb_rotl (uint16_t v) { return ecb_rotl16 (v); }
-inline uint32_t ecb_rotl (uint32_t v) { return ecb_rotl32 (v); }
-inline uint64_t ecb_rotl (uint64_t v) { return ecb_rotl64 (v); }
+inline uint8_t  ecb_rotl (uint8_t  v, unsigned int count) { return ecb_rotl8  (v, count); }
+inline uint16_t ecb_rotl (uint16_t v, unsigned int count) { return ecb_rotl16 (v, count); }
+inline uint32_t ecb_rotl (uint32_t v, unsigned int count) { return ecb_rotl32 (v, count); }
+inline uint64_t ecb_rotl (uint64_t v, unsigned int count) { return ecb_rotl64 (v, count); }
 
-inline uint8_t  ecb_rotr (uint8_t  v) { return ecb_rotr8  (v); }
-inline uint16_t ecb_rotr (uint16_t v) { return ecb_rotr16 (v); }
-inline uint32_t ecb_rotr (uint32_t v) { return ecb_rotr32 (v); }
-inline uint64_t ecb_rotr (uint64_t v) { return ecb_rotr64 (v); }
+inline uint8_t  ecb_rotr (uint8_t  v, unsigned int count) { return ecb_rotr8  (v, count); }
+inline uint16_t ecb_rotr (uint16_t v, unsigned int count) { return ecb_rotr16 (v, count); }
+inline uint32_t ecb_rotr (uint32_t v, unsigned int count) { return ecb_rotr32 (v, count); }
+inline uint64_t ecb_rotr (uint64_t v, unsigned int count) { return ecb_rotr64 (v, count); }
 
 #endif
 
