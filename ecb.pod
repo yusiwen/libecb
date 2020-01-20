@@ -12,14 +12,14 @@ Its homepage can be found here:
 
     http://software.schmorp.de/pkg/libecb
 
-It mainly provides a number of wrappers around GCC built-ins, together
-with replacement functions for other compilers. In addition to this,
-it provides a number of other lowlevel C utilities, such as endianness
-detection, byte swapping or bit rotations.
+It mainly provides a number of wrappers around many compiler built-ins,
+together with replacement functions for other compilers. In addition
+to this, it provides a number of other lowlevel C utilities, such as
+endianness detection, byte swapping or bit rotations.
 
-Or in other words, things that should be built into any standard C system,
-but aren't, implemented as efficient as possible with GCC, and still
-correct with other compilers.
+Or in other words, things that should be built into any standard C
+system, but aren't, implemented as efficient as possible with GCC (clang,
+msvc...), and still correct with other compilers.
 
 More might come.
 
@@ -237,8 +237,8 @@ declarations must be put before the whole declaration:
 =item ecb_unused
 
 Marks a function or a variable as "unused", which simply suppresses a
-warning by GCC when it detects it as unused. This is useful when you e.g.
-declare a variable but do not always use it:
+warning by the compiler when it detects it as unused. This is useful when
+you e.g. declare a variable but do not always use it:
 
   {
     ecb_unused int var;
@@ -727,9 +727,9 @@ These two families of functions return the value of C<x> after rotating
 all the bits by C<count> positions to the right (C<ecb_rotr>) or left
 (C<ecb_rotl>).
 
-Current GCC versions understand these functions and usually compile them
-to "optimal" code (e.g. a single C<rol> or a combination of C<shld> on
-x86).
+Current GCC/clang versions understand these functions and usually compile
+them to "optimal" code (e.g. a single C<rol> or a combination of C<shld>
+on x86).
 
 =item T ecb_rotl (T x, unsigned int count) [C++]
 
@@ -1015,8 +1015,8 @@ negatable, that is, both C<m> and C<-m> must be representable in its
 type (this typically excludes the minimum signed integer value, the same
 limitation as for C</> and C<%> in C).
 
-Current GCC versions compile this into an efficient branchless sequence on
-almost all CPUs.
+Current GCC/clang versions compile this into an efficient branchless
+sequence on almost all CPUs.
 
 For example, when you want to rotate forward through the members of an
 array for increasing C<m> (which might be negative), then you should use
