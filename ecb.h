@@ -42,15 +42,21 @@
 #define ECB_H
 
 /* 16 bits major, 16 bits minor */
-#define ECB_VERSION 0x00010007
+#define ECB_VERSION 0x00010008
 
 #ifdef _WIN32
   typedef   signed char   int8_t;
   typedef unsigned char  uint8_t;
+  typedef   signed char   int_fast8_t;
+  typedef unsigned char  uint_fast8_t;
   typedef   signed short  int16_t;
   typedef unsigned short uint16_t;
+  typedef   signed int    int_fast16_t;
+  typedef unsigned int   uint_fast16_t;
   typedef   signed int    int32_t;
   typedef unsigned int   uint32_t;
+  typedef   signed int    int_fast32_t;
+  typedef unsigned int   uint_fast32_t;
   #if __GNUC__
     typedef   signed long long int64_t;
     typedef unsigned long long uint64_t;
@@ -58,6 +64,8 @@
     typedef   signed __int64   int64_t;
     typedef unsigned __int64   uint64_t;
   #endif
+  typedef  int64_t  int_fast64_t;
+  typedef uint64_t uint_fast64_t;
   #ifdef _WIN64
     #define ECB_PTRSIZE 8
     typedef uint64_t uintptr_t;
@@ -682,6 +690,78 @@ ecb_inline ecb_const ecb_bool ecb_big_endian    (void) { return ecb_byteorder_he
 ecb_inline ecb_const ecb_bool ecb_little_endian (void);
 ecb_inline ecb_const ecb_bool ecb_little_endian (void) { return ecb_byteorder_helper () == 0x44332211; }
 
+/*****************************************************************************/
+/* unaligned load/store */
+
+ecb_inline uint_fast16_t ecb_be_u16_to_host (uint_fast16_t v) { return ecb_little_endian () ? ecb_bswap16 (v) : v; }
+ecb_inline uint_fast32_t ecb_be_u32_to_host (uint_fast32_t v) { return ecb_little_endian () ? ecb_bswap32 (v) : v; }
+ecb_inline uint_fast64_t ecb_be_u64_to_host (uint_fast64_t v) { return ecb_little_endian () ? ecb_bswap64 (v) : v; }
+
+ecb_inline uint_fast16_t ecb_le_u16_to_host (uint_fast16_t v) { return ecb_big_endian    () ? ecb_bswap16 (v) : v; }
+ecb_inline uint_fast32_t ecb_le_u32_to_host (uint_fast32_t v) { return ecb_big_endian    () ? ecb_bswap32 (v) : v; }
+ecb_inline uint_fast64_t ecb_le_u64_to_host (uint_fast64_t v) { return ecb_big_endian    () ? ecb_bswap64 (v) : v; }
+
+ecb_inline uint_fast16_t ecb_peek_u16_u (const void *ptr) { uint16_t v; memcpy (&v, ptr, sizeof (v)); return v; }
+ecb_inline uint_fast32_t ecb_peek_u32_u (const void *ptr) { uint32_t v; memcpy (&v, ptr, sizeof (v)); return v; }
+ecb_inline uint_fast64_t ecb_peek_u64_u (const void *ptr) { uint64_t v; memcpy (&v, ptr, sizeof (v)); return v; }
+
+ecb_inline uint_fast16_t ecb_peek_be_u16_u (const void *ptr) { return ecb_be_u16_to_host (ecb_peek_u16_u (ptr)); }
+ecb_inline uint_fast32_t ecb_peek_be_u32_u (const void *ptr) { return ecb_be_u32_to_host (ecb_peek_u32_u (ptr)); }
+ecb_inline uint_fast64_t ecb_peek_be_u64_u (const void *ptr) { return ecb_be_u64_to_host (ecb_peek_u64_u (ptr)); }
+
+ecb_inline uint_fast16_t ecb_peek_le_u16_u (const void *ptr) { return ecb_le_u16_to_host (ecb_peek_u16_u (ptr)); }
+ecb_inline uint_fast32_t ecb_peek_le_u32_u (const void *ptr) { return ecb_le_u32_to_host (ecb_peek_u32_u (ptr)); }
+ecb_inline uint_fast64_t ecb_peek_le_u64_u (const void *ptr) { return ecb_le_u64_to_host (ecb_peek_u64_u (ptr)); }
+
+ecb_inline uint_fast16_t ecb_host_to_be_u16 (uint_fast16_t v) { return ecb_little_endian () ? ecb_bswap16 (v) : v; }
+ecb_inline uint_fast32_t ecb_host_to_be_u32 (uint_fast32_t v) { return ecb_little_endian () ? ecb_bswap32 (v) : v; }
+ecb_inline uint_fast64_t ecb_host_to_be_u64 (uint_fast64_t v) { return ecb_little_endian () ? ecb_bswap64 (v) : v; }
+
+ecb_inline uint_fast16_t ecb_host_to_le_u16 (uint_fast16_t v) { return ecb_big_endian    () ? ecb_bswap16 (v) : v; }
+ecb_inline uint_fast32_t ecb_host_to_le_u32 (uint_fast32_t v) { return ecb_big_endian    () ? ecb_bswap32 (v) : v; }
+ecb_inline uint_fast64_t ecb_host_to_le_u64 (uint_fast64_t v) { return ecb_big_endian    () ? ecb_bswap64 (v) : v; }
+
+ecb_inline void ecb_poke_u16_u (void *ptr, uint16_t v) { memcpy (ptr, &v, sizeof (v)); }
+ecb_inline void ecb_poke_u32_u (void *ptr, uint32_t v) { memcpy (ptr, &v, sizeof (v)); }
+ecb_inline void ecb_poke_u64_u (void *ptr, uint64_t v) { memcpy (ptr, &v, sizeof (v)); }
+
+ecb_inline void ecb_poke_be_u16_u (void *ptr, uint_fast16_t v) { ecb_poke_u16_u (ptr, ecb_host_to_be_u16 (v)); }
+ecb_inline void ecb_poke_be_u32_u (void *ptr, uint_fast32_t v) { ecb_poke_u32_u (ptr, ecb_host_to_be_u32 (v)); }
+ecb_inline void ecb_poke_be_u64_u (void *ptr, uint_fast64_t v) { ecb_poke_u64_u (ptr, ecb_host_to_be_u64 (v)); }
+                                                                                                
+ecb_inline void ecb_poke_le_u16_u (void *ptr, uint_fast16_t v) { ecb_poke_u16_u (ptr, ecb_host_to_le_u16 (v)); }
+ecb_inline void ecb_poke_le_u32_u (void *ptr, uint_fast32_t v) { ecb_poke_u32_u (ptr, ecb_host_to_le_u32 (v)); }
+ecb_inline void ecb_poke_le_u64_u (void *ptr, uint_fast64_t v) { ecb_poke_u64_u (ptr, ecb_host_to_le_u64 (v)); }
+
+#ifdef __cplusplus
+
+inline uint8_t  ecb_bswap (uint8_t  v) { return v; }
+inline uint16_t ecb_bswap (uint16_t v) { return ecb_bswap16 (v); }
+inline uint32_t ecb_bswap (uint32_t v) { return ecb_bswap32 (v); }
+inline uint64_t ecb_bswap (uint64_t v) { return ecb_bswap64 (v); }
+
+template<typename T> inline T ecb_be_to_host (T v) { return ecb_little_endian () ? ecb_bswap (v) : v; }
+template<typename T> inline T ecb_le_to_host (T v) { return ecb_big_endian    () ? ecb_bswap (v) : v; }
+template<typename T> inline T ecb_peek       (const void *ptr) { return *(const T *)ptr; }
+template<typename T> inline T ecb_peek_be    (const void *ptr) { return ecb_be_to_host (ecb_peek  <T> (ptr)); }
+template<typename T> inline T ecb_peek_le    (const void *ptr) { return ecb_le_to_host (ecb_peek  <T> (ptr)); }
+template<typename T> inline T ecb_peek_u     (const void *ptr) { T v; std::memcpy (&v, ptr, sizeof (v)); return v; }
+template<typename T> inline T ecb_peek_be_u  (const void *ptr) { return ecb_be_to_host (ecb_peek_u<T> (ptr)); }
+template<typename T> inline T ecb_peek_le_u  (const void *ptr) { return ecb_le_to_host (ecb_peek_u<T> (ptr)); }
+
+template<typename T> inline T ecb_host_to_be (T v) { return ecb_little_endian () ? ecb_bswap (v) : v; }
+template<typename T> inline T ecb_host_to_le (T v) { return ecb_big_endian    () ? ecb_bswap (v) : v; }
+template<typename T> inline void ecb_poke      (void *ptr, T v) { *(T *)ptr = v; }
+template<typename T> inline void ecb_poke_be   (void *ptr, T v) { return ecb_poke  <T> (ptr, ecb_host_to_be (v)); }
+template<typename T> inline void ecb_poke_le   (void *ptr, T v) { return ecb_poke  <T> (ptr, ecb_host_to_le (v)); }
+template<typename T> inline void ecb_poke_u    (void *ptr, T v) { std::memcpy (ptr, &v, sizeof (v)); }
+template<typename T> inline void ecb_poke_be_u (void *ptr, T v) { return ecb_poke_u<T> (ptr, ecb_host_to_be (v)); }
+template<typename T> inline void ecb_poke_le_u (void *ptr, T v) { return ecb_poke_u<T> (ptr, ecb_host_to_le (v)); }
+
+#endif
+
+/*****************************************************************************/
+
 #if ECB_GCC_VERSION(3,0) || ECB_C99
   #define ecb_mod(m,n) ((m) % (n) + ((m) % (n) < 0 ? (n) : 0))
 #else
@@ -714,6 +794,8 @@ ecb_inline ecb_const ecb_bool ecb_little_endian (void) { return ecb_byteorder_he
 #else
   #define ecb_array_length(name) (sizeof (name) / sizeof (name [0]))
 #endif
+
+/*****************************************************************************/
 
 ecb_function_ ecb_const uint32_t ecb_binary16_to_binary32 (uint32_t x);
 ecb_function_ ecb_const uint32_t
