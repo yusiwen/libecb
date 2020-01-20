@@ -123,9 +123,8 @@ unchanged.
 
 =item ECB_GCC_VERSION (major, minor)
 
-Expands to a true value (suitable for testing in by the preprocessor)
-if the compiler used is GNU C and the version is the given version, or
-higher.
+Expands to a true value (suitable for testing by the preprocessor) if the
+compiler used is GNU C and the version is the given version, or higher.
 
 This macro tries to return false on compilers that claim to be GCC
 compatible but aren't.
@@ -154,7 +153,7 @@ They are most useful in header files:
 
 =item ECB_STDFP
 
-If this evaluates to a true value (suitable for testing in by the
+If this evaluates to a true value (suitable for testing by the
 preprocessor), then C<float> and C<double> use IEEE 754 single/binary32
 and double/binary64 representations internally I<and> the endianness of
 both types match the endianness of C<uint32_t> and C<uint64_t>.
