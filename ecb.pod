@@ -696,6 +696,8 @@ C<T> must be one of C<uint8_t>, C<uint16_t> or C<uint32_t>.
 
 =item uint64_t ecb_bswap64 (uint64_t x)
 
+=item T ecb_bswap (T x)
+
 These functions return the value of the 16-bit (32-bit, 64-bit) value
 C<x> after reversing the order of bytes (0x11223344 becomes 0x44332211 in
 C<ecb_bswap32>).
