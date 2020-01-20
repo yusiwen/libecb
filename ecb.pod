@@ -856,23 +856,23 @@ In C++ the following additional template functions are supported:
 
 =over 4
 
-=item T ecb_peek       (const void *ptr)
+=item T ecb_peek<T>      (const void *ptr)
 
-=item T ecb_peek_be    (const void *ptr)
+=item T ecb_peek_be<T>   (const void *ptr)
 
-=item T ecb_peek_le    (const void *ptr)
+=item T ecb_peek_le<T>   (const void *ptr)
 
-=item T ecb_peek_u     (const void *ptr)
+=item T ecb_peek_u<T>    (const void *ptr)
 
-=item T ecb_peek_be_u  (const void *ptr)
+=item T ecb_peek_be_u<T> (const void *ptr)
 
-=item T ecb_peek_le_u  (const void *ptr)
+=item T ecb_peek_le_u<T> (const void *ptr)
 
 Similarly to their C counterparts, these functions load an unsigned 8, 16,
 32 or 64 bit value from memory, with optional conversion from big/little
 endian.
 
-Since the type cannot be deduced, it has top be specified explicitly, e.g.
+Since the type cannot be deduced, it has to be specified explicitly, e.g.
 
    uint_fast16_t v = ecb_peek<uint16_t> (ptr);
 
