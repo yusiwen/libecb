@@ -60,9 +60,15 @@ refers to any kind of boolean value, not a specific type.
 
 ecb.h makes sure that the following types are defined (in the expected way):
 
-   int8_t   uint8_t   int16_t  uint16_t
-   int32_t  uint32_t  int64_t  uint64_t
-   intptr_t uintptr_t
+   int8_t       uint8_
+   int16_t      uint16_t
+   int32_t      uint32_
+   int64_t      uint64_t
+   int_fast8_t  uint_fast8_t
+   int_fast16_t uint_fast16_t
+   int_fast32_t uint_fast32_t
+   int_fast64_t uint_fast64_t
+   intptr_t     uintptr_t
 
 The macro C<ECB_PTRSIZE> is defined to the size of a pointer on this
 platform (currently C<4> or C<8>) and can be used in preprocessor
@@ -664,6 +670,11 @@ These functions return the value of the 16-bit (32-bit, 64-bit) value
 C<x> after reversing the order of bytes (0x11223344 becomes 0x44332211 in
 C<ecb_bswap32>).
 
+=item T ecb_bswap (T x) [C++]
+
+For C++, an additional generic bswap function is provided. It supports
+C<uint8_t>, C<uint16_t>, C<uint32_t> and C<uint64_t>.
+
 =item uint8_t  ecb_rotl8  (uint8_t  x, unsigned int count)
 
 =item uint16_t ecb_rotl16 (uint16_t x, unsigned int count)
@@ -687,6 +698,173 @@ all the bits by C<count> positions to the right (C<ecb_rotr>) or left
 Current GCC versions understand these functions and usually compile them
 to "optimal" code (e.g. a single C<rol> or a combination of C<shld> on
 x86).
+
+=back
+
+=head2 HOST ENDIANNESS CONVERSION
+
+=over 4
+
+=item uint_fast16_t ecb_be_u16_to_host (uint_fast16_t v)
+
+=item uint_fast32_t ecb_be_u32_to_host (uint_fast32_t v)
+
+=item uint_fast64_t ecb_be_u64_to_host (uint_fast64_t v)
+
+=item uint_fast16_t ecb_le_u16_to_host (uint_fast16_t v)
+
+=item uint_fast32_t ecb_le_u32_to_host (uint_fast32_t v)
+
+=item uint_fast64_t ecb_le_u64_to_host (uint_fast64_t v)
+
+Convert an unsigned 16, 32 or 64 bit value from big or little endian to host byte order.
+
+The naming convention is C<ecb_>(C<be>|C<le>)C<_u>C<16|32|64>C<_to_host>,
+where be and le stand for big endian and little endian, respectively.
+
+=item uint_fast16_t ecb_host_to_be_u16 (uint_fast16_t v)
+
+=item uint_fast32_t ecb_host_to_be_u32 (uint_fast32_t v)
+
+=item uint_fast64_t ecb_host_to_be_u64 (uint_fast64_t v)
+
+=item uint_fast16_t ecb_host_to_le_u16 (uint_fast16_t v)
+
+=item uint_fast32_t ecb_host_to_le_u32 (uint_fast32_t v)
+
+=item uint_fast64_t ecb_host_to_le_u64 (uint_fast64_t v)
+
+Like above, but converts I<from> host byte order to the specified
+endianness.
+
+=back
+
+In C++ the following additional functions are supported:
+
+=over 4
+
+=item T ecb_be_to_host (T v)
+
+=item T ecb_le_to_host (T v)
+
+=item T ecb_host_to_be (T v)
+
+=item T ecb_host_to_le (T v)
+
+These work like their C counterparts, above, but use templates for the
+type, which make them useful in generic code.
+
+C<T> must be one of C<uint8_t>, C<uint16_t>, C<uint32_t> or C<uint64_t>
+(so unlike their C counterparts, there is a version for C<uint8_t>, which
+again can be useful in generic code).
+
+=head2 UNALIGNED LOAD/STORE
+
+These function load or store unaligned multi-byte values.
+
+=over 4
+
+=item uint_fast16_t ecb_peek_u16_u (const void *ptr)
+
+=item uint_fast32_t ecb_peek_u32_u (const void *ptr)
+
+=item uint_fast64_t ecb_peek_u64_u (const void *ptr)
+
+These functions load an unaligned, unsigned 16, 32 or 64 bit value from
+memory.
+
+=item uint_fast16_t ecb_peek_be_u16_u (const void *ptr)
+
+=item uint_fast32_t ecb_peek_be_u32_u (const void *ptr)
+
+=item uint_fast64_t ecb_peek_be_u64_u (const void *ptr)
+
+=item uint_fast16_t ecb_peek_le_u16_u (const void *ptr)
+
+=item uint_fast32_t ecb_peek_le_u32_u (const void *ptr)
+
+=item uint_fast64_t ecb_peek_le_u64_u (const void *ptr)
+
+Like above, but additionally convert from big endian (C<be>) or little
+endian (C<le>) byte order to host byte order while doing so.
+
+=item ecb_poke_u16_u (void *ptr, uint16_t v)
+
+=item ecb_poke_u32_u (void *ptr, uint32_t v)
+
+=item ecb_poke_u64_u (void *ptr, uint64_t v)
+
+These functions store an unaligned, unsigned 16, 32 or 64 bit value to
+memory.
+
+=item ecb_poke_be_u16_u (void *ptr, uint_fast16_t v)
+
+=item ecb_poke_be_u32_u (void *ptr, uint_fast32_t v)
+
+=item ecb_poke_be_u64_u (void *ptr, uint_fast64_t v)
+
+=item ecb_poke_le_u16_u (void *ptr, uint_fast16_t v)
+
+=item ecb_poke_le_u32_u (void *ptr, uint_fast32_t v)
+
+=item ecb_poke_le_u64_u (void *ptr, uint_fast64_t v)
+
+Like above, but additionally convert from host byte order to big endian
+(C<be>) or little endian (C<le>) byte order while doing so.
+
+=back
+
+In C++ the following additional functions are supported:
+
+=over 4
+
+=item T ecb_peek       (const void *ptr)
+
+=item T ecb_peek_be    (const void *ptr)
+
+=item T ecb_peek_le    (const void *ptr)
+
+=item T ecb_peek_u     (const void *ptr)
+
+=item T ecb_peek_be_u  (const void *ptr)
+
+=item T ecb_peek_le_u  (const void *ptr)
+
+Similarly to their C counterparts, these functions load an unsigned 8, 16,
+32 or 64 bit value from memory, with optional conversion from big/little
+endian.
+
+Since the type cannot be deduced, it has top be specified explicitly, e.g.
+
+   uint_fast16_t v = ecb_peek<uint16_t> (ptr);
+
+C<T> must be one of C<uint8_t>, C<uint16_t>, C<uint32_t> or C<uint64_t>.
+
+Unlike their C counterparts, these functions support 8 bit quantities
+(C<uint8_t>) and also have an aligned version (without the C<_u> prefix),
+all of which hopefully makes them more useful in generic code.
+
+=item ecb_poke      (void *ptr, T v)
+
+=item ecb_poke_be   (void *ptr, T v)
+
+=item ecb_poke_le   (void *ptr, T v)
+
+=item ecb_poke_u    (void *ptr, T v)
+
+=item ecb_poke_be_u (void *ptr, T v)
+
+=item ecb_poke_le_u (void *ptr, T v)
+
+Again, similarly to their C counterparts, these functions store an
+unsigned 8, 16, 32 or z64 bit value to memory, with optional conversion to
+big/little endian.
+
+C<T> must be one of C<uint8_t>, C<uint16_t>, C<uint32_t> or C<uint64_t>.
+
+Unlike their C counterparts, these functions support 8 bit quantities
+(C<uint8_t>) and also have an aligned version (without the C<_u> prefix),
+all of which hopefully makes them more useful in generic code.
 
 =back
 

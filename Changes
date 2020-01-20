@@ -17,8 +17,6 @@ TODO: ecb_minpot, either using bit tricks or ecb_ldXX
 
 TODO: __builtin_popcountll exists...
 
-TODO: unaligned access
-
 TODO: __builtin_powi
 
 TODO: https://gustedt.wordpress.com/2010/06/08/detect-empty-macro-arguments/
@@ -70,6 +68,10 @@ implement is_constant for c11: https://gustedt.wordpress.com/2013/08/22/testing-
 #include <byteswap.h>
 
 #endif
+
+0x00010008
+	- aligned/unaligned load/store, bswap, host order
+          conversion.
 
 0x00010007
 	- new ECB_OPTIMIZE_SIZE symbol.
