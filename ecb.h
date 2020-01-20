@@ -610,6 +610,44 @@ ecb_inline ecb_const uint32_t ecb_rotr32 (uint32_t x, unsigned int count) { retu
 ecb_inline ecb_const uint64_t ecb_rotl64 (uint64_t x, unsigned int count) { return (x >> (64 - count)) | (x << count); }
 ecb_inline ecb_const uint64_t ecb_rotr64 (uint64_t x, unsigned int count) { return (x << (64 - count)) | (x >> count); }
 
+#if ECB_CPP
+
+inline uint8_t  ecb_ctz (uint8_t  v) { return ecb_ctz32 (v); }
+inline uint16_t ecb_ctz (uint16_t v) { return ecb_ctz32 (v); }
+inline uint32_t ecb_ctz (uint32_t v) { return ecb_ctz32 (v); }
+inline uint64_t ecb_ctz (uint64_t v) { return ecb_ctz64 (v); }
+
+inline bool ecb_is_pot (uint8_t  v) { return ecb_is_pot32 (v); }
+inline bool ecb_is_pot (uint16_t v) { return ecb_is_pot32 (v); }
+inline bool ecb_is_pot (uint32_t v) { return ecb_is_pot32 (v); }
+inline bool ecb_is_pot (uint64_t v) { return ecb_is_pot64 (v); }
+
+inline int ecb_ld (uint8_t  v) { return ecb_ld32 (v); }
+inline int ecb_ld (uint16_t v) { return ecb_ld32 (v); }
+inline int ecb_ld (uint32_t v) { return ecb_ld32 (v); }
+inline int ecb_ld (uint64_t v) { return ecb_ld64 (v); }
+
+inline int ecb_popcount (uint8_t  v) { return ecb_popcount32 (v); }
+inline int ecb_popcount (uint16_t v) { return ecb_popcount32 (v); }
+inline int ecb_popcount (uint32_t v) { return ecb_popcount32 (v); }
+inline int ecb_popcount (uint64_t v) { return ecb_popcount64 (v); }
+
+inline uint8_t  ecb_bitrev (uint8_t  v) { return ecb_bitrev8  (v); }
+inline uint16_t ecb_bitrev (uint16_t v) { return ecb_bitrev16 (v); }
+inline uint32_t ecb_bitrev (uint32_t v) { return ecb_bitrev32 (v); }
+
+inline uint8_t  ecb_rotl (uint8_t  v) { return ecb_rotl8  (v); }
+inline uint16_t ecb_rotl (uint16_t v) { return ecb_rotl16 (v); }
+inline uint32_t ecb_rotl (uint32_t v) { return ecb_rotl32 (v); }
+inline uint64_t ecb_rotl (uint64_t v) { return ecb_rotl64 (v); }
+
+inline uint8_t  ecb_rotr (uint8_t  v) { return ecb_rotr8  (v); }
+inline uint16_t ecb_rotr (uint16_t v) { return ecb_rotr16 (v); }
+inline uint32_t ecb_rotr (uint32_t v) { return ecb_rotr32 (v); }
+inline uint64_t ecb_rotr (uint64_t v) { return ecb_rotr64 (v); }
+
+#endif
+
 #if ECB_GCC_VERSION(4,3) || (ECB_CLANG_BUILTIN(__builtin_bswap32) && ECB_CLANG_BUILTIN(__builtin_bswap64))
   #if ECB_GCC_VERSION(4,8) || ECB_CLANG_BUILTIN(__builtin_bswap16)
   #define ecb_bswap16(x)  __builtin_bswap16 (x)

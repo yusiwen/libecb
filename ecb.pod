@@ -597,11 +597,16 @@ On systems that are neither, their return values are unspecified.
 
 =item int ecb_ctz64 (uint64_t x)
 
+=item int ecb_ctz (T x) [C++]
+
 Returns the index of the least significant bit set in C<x> (or
 equivalently the number of bits set to 0 before the least significant bit
 set), starting from 0. If C<x> is 0 the result is undefined.
 
 For smaller types than C<uint32_t> you can safely use C<ecb_ctz32>.
+
+The overloaded C++ C<ecb_ctz> function supports C<uint8_t>, C<uint16_t>,
+C<uint32_t> and C<uint64_t> types.
 
 For example:
 
@@ -612,13 +617,20 @@ For example:
 
 =item bool ecb_is_pot64 (uint32_t x)
 
+=item bool ecb_is_pot (T x) [C++]
+
 Returns true iff C<x> is a power of two or C<x == 0>.
 
 For smaller types than C<uint32_t> you can safely use C<ecb_is_pot32>.
 
+The overloaded C++ C<ecb_is_pot> function supports C<uint8_t>, C<uint16_t>,
+C<uint32_t> and C<uint64_t> types.
+
 =item int ecb_ld32 (uint32_t x)
 
 =item int ecb_ld64 (uint64_t x)
+
+=item int ecb_ld64 (T x) [C++]
 
 Returns the index of the most significant bit set in C<x>, or the number
 of digits the number requires in binary (so that C<< 2**ld <= x <
@@ -633,13 +645,21 @@ itself requires.
 
 For smaller types than C<uint32_t> you can safely use C<ecb_ld32>.
 
+The overloaded C++ C<ecb_ld> function supports C<uint8_t>, C<uint16_t>,
+C<uint32_t> and C<uint64_t> types.
+
 =item int ecb_popcount32 (uint32_t x)
 
 =item int ecb_popcount64 (uint64_t x)
 
+=item int ecb_popcount (T x) [C++]
+
 Returns the number of bits set to 1 in C<x>.
 
 For smaller types than C<uint32_t> you can safely use C<ecb_popcount32>.
+
+The overloaded C++ C<ecb_popcount> function supports C<uint8_t>, C<uint16_t>,
+C<uint32_t> and C<uint64_t> types.
 
 For example:
 
@@ -652,13 +672,23 @@ For example:
 
 =item uint32_t ecb_bitrev32 (uint32_t x)
 
+=item T ecb_bitrev (T x) [C++]
+
 Reverses the bits in x, i.e. the MSB becomes the LSB, MSB-1 becomes LSB+1
 and so on.
+
+The overloaded C++ C<ecb_bitrev> function supports C<uint8_t>, C<uint16_t> and C<uint32_t> types.
 
 Example:
 
    ecb_bitrev8 (0xa7) = 0xea
    ecb_bitrev32 (0xffcc4411) = 0x882233ff
+
+=item T ecb_bitrev (T x) [C++]
+
+Overloaded C++ bitrev function.
+
+C<T> must be one of C<uint8_t>, C<uint16_t> or C<uint32_t>.
 
 =item uint32_t ecb_bswap16 (uint32_t x)
 
@@ -670,10 +700,8 @@ These functions return the value of the 16-bit (32-bit, 64-bit) value
 C<x> after reversing the order of bytes (0x11223344 becomes 0x44332211 in
 C<ecb_bswap32>).
 
-=item T ecb_bswap (T x) [C++]
-
-For C++, an additional generic bswap function is provided. It supports
-C<uint8_t>, C<uint16_t>, C<uint32_t> and C<uint64_t>.
+The overloaded C++ C<ecb_bswap> function supports C<uint8_t>, C<uint16_t>,
+C<uint32_t> and C<uint64_t> types.
 
 =item uint8_t  ecb_rotl8  (uint8_t  x, unsigned int count)
 
@@ -698,6 +726,14 @@ all the bits by C<count> positions to the right (C<ecb_rotr>) or left
 Current GCC versions understand these functions and usually compile them
 to "optimal" code (e.g. a single C<rol> or a combination of C<shld> on
 x86).
+
+=item T ecb_rotl (T x, unsigned int count) [C++]
+
+=item T ecb_rotr (T x, unsigned int count) [C++]
+
+Overloaded C++ rotl/rotr functions.
+
+C<T> must be one of C<uint8_t>, C<uint16_t>, C<uint32_t> or C<uint64_t>.
 
 =back
 
@@ -739,7 +775,7 @@ endianness.
 
 =back
 
-In C++ the following additional functions are supported:
+In C++ the following additional template functions are supported:
 
 =over 4
 
@@ -751,8 +787,8 @@ In C++ the following additional functions are supported:
 
 =item T ecb_host_to_le (T v)
 
-These work like their C counterparts, above, but use templates for the
-type, which make them useful in generic code.
+These functions work like their C counterparts, above, but use templates,
+which make them useful in generic code.
 
 C<T> must be one of C<uint8_t>, C<uint16_t>, C<uint32_t> or C<uint64_t>
 (so unlike their C counterparts, there is a version for C<uint8_t>, which
@@ -814,7 +850,7 @@ Like above, but additionally convert from host byte order to big endian
 
 =back
 
-In C++ the following additional functions are supported:
+In C++ the following additional template functions are supported:
 
 =over 4
 

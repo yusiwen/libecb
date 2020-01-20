@@ -69,10 +69,12 @@ implement is_constant for c11: https://gustedt.wordpress.com/2013/08/22/testing-
 
 #endif
 
-TODO: generic bitrev, rotlr, poprcount etc., also  fast_t for them?
+TODO: generic poprcount etc., also  fast_t for them?
 0x00010008
 	- aligned/unaligned load/store, bswap, host order
           conversion.
+        - generic C++ ecb_rot[lr], ecb_popcount, ecb_ctz,
+          ecb_is_pot32 and ecb_bitrev functions.
 
 0x00010007
 	- new ECB_OPTIMIZE_SIZE symbol.
