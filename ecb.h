@@ -44,6 +44,8 @@
 /* 16 bits major, 16 bits minor */
 #define ECB_VERSION 0x00010008
 
+#include <string.h> /* for memcpy */
+
 #ifdef _WIN32
   typedef   signed char   int8_t;
   typedef unsigned char  uint8_t;
@@ -783,7 +785,7 @@ template<typename T> inline T ecb_le_to_host (T v) { return ecb_big_endian    ()
 template<typename T> inline T ecb_peek       (const void *ptr) { return *(const T *)ptr; }
 template<typename T> inline T ecb_peek_be    (const void *ptr) { return ecb_be_to_host (ecb_peek  <T> (ptr)); }
 template<typename T> inline T ecb_peek_le    (const void *ptr) { return ecb_le_to_host (ecb_peek  <T> (ptr)); }
-template<typename T> inline T ecb_peek_u     (const void *ptr) { T v; std::memcpy (&v, ptr, sizeof (v)); return v; }
+template<typename T> inline T ecb_peek_u     (const void *ptr) { T v; memcpy (&v, ptr, sizeof (v)); return v; }
 template<typename T> inline T ecb_peek_be_u  (const void *ptr) { return ecb_be_to_host (ecb_peek_u<T> (ptr)); }
 template<typename T> inline T ecb_peek_le_u  (const void *ptr) { return ecb_le_to_host (ecb_peek_u<T> (ptr)); }
 
@@ -792,7 +794,7 @@ template<typename T> inline T ecb_host_to_le (T v) { return ecb_big_endian    ()
 template<typename T> inline void ecb_poke      (void *ptr, T v) { *(T *)ptr = v; }
 template<typename T> inline void ecb_poke_be   (void *ptr, T v) { return ecb_poke  <T> (ptr, ecb_host_to_be (v)); }
 template<typename T> inline void ecb_poke_le   (void *ptr, T v) { return ecb_poke  <T> (ptr, ecb_host_to_le (v)); }
-template<typename T> inline void ecb_poke_u    (void *ptr, T v) { std::memcpy (ptr, &v, sizeof (v)); }
+template<typename T> inline void ecb_poke_u    (void *ptr, T v) { memcpy (ptr, &v, sizeof (v)); }
 template<typename T> inline void ecb_poke_be_u (void *ptr, T v) { return ecb_poke_u<T> (ptr, ecb_host_to_be (v)); }
 template<typename T> inline void ecb_poke_le_u (void *ptr, T v) { return ecb_poke_u<T> (ptr, ecb_host_to_le (v)); }
 
@@ -952,7 +954,6 @@ ecb_binary32_to_binary16 (uint32_t x)
     || (defined __arm__ && (defined __ARM_EABI__ || defined __EABI__ || defined __VFP_FP__ || defined _WIN32_WCE || defined __ANDROID__)) \
     || defined __aarch64__
   #define ECB_STDFP 1
-  #include <string.h> /* for memcpy */
 #else
   #define ECB_STDFP 0
 #endif
