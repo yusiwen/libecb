@@ -87,7 +87,7 @@ ensure it's either C<0> or C<1> if you need that).
 =item ECB_C
 
 True if the implementation defines the C<__STDC__> macro to a true value,
-while not claiming to be C++.
+while not claiming to be C++, i..e C, but not C++.
 
 =item ECB_C99
 
