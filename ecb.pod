@@ -758,7 +758,7 @@ C<T> must be one of C<uint8_t>, C<uint16_t>, C<uint32_t> or C<uint64_t>.
 Convert an unsigned 16, 32 or 64 bit value from big or little endian to host byte order.
 
 The naming convention is C<ecb_>(C<be>|C<le>)C<_u>C<16|32|64>C<_to_host>,
-where be and le stand for big endian and little endian, respectively.
+where C<be> and C<le> stand for big endian and little endian, respectively.
 
 =item uint_fast16_t ecb_host_to_be_u16 (uint_fast16_t v)
 
