@@ -70,6 +70,9 @@ implement is_constant for c11: https://gustedt.wordpress.com/2013/08/22/testing-
 #endif
 
 TODO: generic poprcount etc., also  fast_t for them?
+
+	- try to use inttypes.h on mingw.
+
 0x00010008
 	- aligned/unaligned load/store, bswap, host order
           conversion.
