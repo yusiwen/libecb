@@ -791,6 +791,8 @@ In C++ the following additional template functions are supported:
 
 =item T ecb_host_to_le (T v)
 
+=back
+
 These functions work like their C counterparts, above, but use templates,
 which make them useful in generic code.
 
