@@ -1,3 +1,6 @@
+0x00010009
+	- added ECB_64BIT_NATIVE.
+
 TODO: 
 08:30:06 <b_jonas> I think it could be worth to add a macro that works like alignof or _Alignof on sane 
                    compilers, and like __alignof on MS compilers that support it, see 

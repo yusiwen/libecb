@@ -82,7 +82,7 @@ All the following symbols expand to an expression that can be tested in
 preprocessor instructions as well as treated as a boolean (use C<!!> to
 ensure it's either C<0> or C<1> if you need that).
 
-=over 4
+=over
 
 =item ECB_C
 
@@ -166,6 +166,14 @@ This is true for basically all modern platforms, although F<ecb.h> might
 not be able to deduce this correctly everywhere and might err on the safe
 side.
 
+=item ECB_64BIT_NATIVE
+
+Evaluates to a true value (suitable for both preprocessor and C code
+testing) if 64 bit integer types on this architecture are evaluated
+"natively", that is, with similar speeds as 32 bit integerss. While 64 bit
+integer support is very common (and in fatc required by libecb), 32 bit
+cpus have to emulate operations on them, so you might want to avoid them.
+
 =item ECB_AMD64, ECB_AMD64_X32
 
 These two macros are defined to C<1> on the x86_64/amd64 ABI and the X32
@@ -181,7 +189,7 @@ necessary.
 
 =head2 MACRO TRICKERY
 
-=over 4
+=over
 
 =item ECB_CONCAT (a, b)
 
@@ -232,7 +240,7 @@ declarations must be put before the whole declaration:
    ecb_const int mysqrt (int a);
    ecb_unused int i;
 
-=over 4
+=over
 
 =item ecb_unused
 
@@ -416,7 +424,7 @@ some C++ abstraction monster.
 
 =head2 OPTIMISATION HINTS
 
-=over 4
+=over
 
 =item bool ecb_is_constant (expr)
 
@@ -583,7 +591,7 @@ cache.
 
 =head2 BIT FIDDLING / BIT WIZARDRY
 
-=over 4
+=over
 
 =item bool ecb_big_endian ()
 
@@ -743,7 +751,7 @@ C<T> must be one of C<uint8_t>, C<uint16_t>, C<uint32_t> or C<uint64_t>.
 
 =head2 HOST ENDIANNESS CONVERSION
 
-=over 4
+=over
 
 =item uint_fast16_t ecb_be_u16_to_host (uint_fast16_t v)
 
@@ -781,7 +789,7 @@ endianness.
 
 In C++ the following additional template functions are supported:
 
-=over 4
+=over
 
 =item T ecb_be_to_host (T v)
 
@@ -804,7 +812,7 @@ again can be useful in generic code).
 
 These function load or store unaligned multi-byte values.
 
-=over 4
+=over
 
 =item uint_fast16_t ecb_peek_u16_u (const void *ptr)
 
@@ -858,7 +866,7 @@ Like above, but additionally convert from host byte order to big endian
 
 In C++ the following additional template functions are supported:
 
-=over 4
+=over
 
 =item T ecb_peek<T>      (const void *ptr)
 
@@ -912,7 +920,7 @@ all of which hopefully makes them more useful in generic code.
 
 =head2 FLOATING POINT FIDDLING
 
-=over 4
+=over
 
 =item ECB_INFINITY [-UECB_NO_LIBM]
 
@@ -1000,7 +1008,7 @@ usually what you want.
 
 =head2 ARITHMETIC
 
-=over 4
+=over
 
 =item x = ecb_mod (m, n)
 
@@ -1041,7 +1049,7 @@ and with function templates in C++.
 
 =head2 UTILITY
 
-=over 4
+=over
 
 =item element_count = ecb_array_length (name)
 
@@ -1059,7 +1067,7 @@ Returns the number of elements in the array C<name>. For example:
 
 These symbols need to be defined before including F<ecb.h> the first time.
 
-=over 4
+=over
 
 =item ECB_NO_THREADS
 
