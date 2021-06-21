@@ -166,6 +166,14 @@ This is true for basically all modern platforms, although F<ecb.h> might
 not be able to deduce this correctly everywhere and might err on the safe
 side.
 
+=item ECB_64BIT_NATIVE
+
+Evaluates to a true value (suitable for both preprocessor and C code
+testing) if 64 bit integer types on this architecture are evaluated
+"natively", that is, with similar speeds as 32 bit integerss. While 64 bit
+integer support is very common (and in fatc required by libecb), 32 bit
+cpus have to emulate operations on them, so you might want to avoid them.
+
 =item ECB_AMD64, ECB_AMD64_X32
 
 These two macros are defined to C<1> on the x86_64/amd64 ABI and the X32

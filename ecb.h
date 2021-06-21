@@ -1,7 +1,7 @@
 /*
  * libecb - http://software.schmorp.de/pkg/libecb
  *
- * Copyright (©) 2009-2015,2018-2020 Marc Alexander Lehmann <libecb@schmorp.de>
+ * Copyright (©) 2009-2015,2018-2021 Marc Alexander Lehmann <libecb@schmorp.de>
  * Copyright (©) 2011 Emanuele Giaquinta
  * All rights reserved.
  *
@@ -42,7 +42,7 @@
 #define ECB_H
 
 /* 16 bits major, 16 bits minor */
-#define ECB_VERSION 0x00010008
+#define ECB_VERSION 0x00010009
 
 #include <string.h> /* for memcpy */
 
@@ -104,6 +104,12 @@
   #else
     #define ECB_AMD64 1
   #endif
+#endif
+
+#if ECB_PTRSIZE >= 8 || ECB_AMD64_X32
+  #define ECB_64BIT_NATIVE 1
+#else
+  #define ECB_64BIT_NATIVE 0
 #endif
 
 /* many compilers define _GNUC_ to some versions but then only implement
