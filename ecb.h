@@ -1017,6 +1017,12 @@ ecb_i2a_def (07, ptr, v, uint64_t, 44,    1000000, 1)
 ecb_i2a_def (08, ptr, v, uint64_t, 50,   10000000, 1)
 ecb_i2a_def (09, ptr, v, uint64_t, 56,  100000000, 1)
 
+#define ECB_I2A_I32_DIGITS 11
+#define ECB_I2A_U32_DIGITS 10
+#define ECB_I2A_I64_DIGITS 20
+#define ECB_I2A_U32_DIGITS 21
+#define ECB_I2A_DIGITS     21
+
 ecb_inline char *
 ecb_i2a_u32 (char *ptr, uint32_t u)
 {
