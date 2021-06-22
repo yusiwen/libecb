@@ -998,24 +998,30 @@ ecb_i2a_def ( x5, ptr, v, uint32_t, 26,      10000, 0)
 ecb_i2a_def (x10, ptr, v, uint64_t, 60, 1000000000, 0)
 
 // non-leading zero versions, all digits, 4 and 9 are optimal for 32/64 bit
-ecb_i2a_def ( 2, ptr, v, uint32_t, 10,         10, 0)
-ecb_i2a_def ( 3, ptr, v, uint32_t, 12,        100, 0)
-ecb_i2a_def ( 4, ptr, v, uint32_t, 26,       1000, 0)
-ecb_i2a_def ( 5, ptr, v, uint64_t, 30,      10000, 0)
-ecb_i2a_def ( 6, ptr, v, uint64_t, 36,     100000, 0)
-ecb_i2a_def ( 7, ptr, v, uint64_t, 44,    1000000, 0)
-ecb_i2a_def ( 8, ptr, v, uint64_t, 50,   10000000, 0)
-ecb_i2a_def ( 9, ptr, v, uint64_t, 56,  100000000, 0)
+ecb_i2a_def ( 2, ptr, v, uint32_t, 10,          10, 0)
+ecb_i2a_def ( 3, ptr, v, uint32_t, 12,         100, 0)
+ecb_i2a_def ( 4, ptr, v, uint32_t, 26,        1000, 0)
+ecb_i2a_def ( 5, ptr, v, uint64_t, 30,       10000, 0)
+ecb_i2a_def ( 6, ptr, v, uint64_t, 36,      100000, 0)
+ecb_i2a_def ( 7, ptr, v, uint64_t, 44,     1000000, 0)
+ecb_i2a_def ( 8, ptr, v, uint64_t, 50,    10000000, 0)
+ecb_i2a_def ( 9, ptr, v, uint64_t, 56,   100000000, 0)
 
 // leading-zero versions, all digits, 04 and 09 are optimal for 32/64 bit
-ecb_i2a_def (02, ptr, v, uint32_t, 10,         10, 1)
-ecb_i2a_def (03, ptr, v, uint32_t, 12,        100, 1)
-ecb_i2a_def (04, ptr, v, uint32_t, 26,       1000, 1)
-ecb_i2a_def (05, ptr, v, uint64_t, 30,      10000, 1)
-ecb_i2a_def (06, ptr, v, uint64_t, 36,     100000, 1)
-ecb_i2a_def (07, ptr, v, uint64_t, 44,    1000000, 1)
-ecb_i2a_def (08, ptr, v, uint64_t, 50,   10000000, 1)
-ecb_i2a_def (09, ptr, v, uint64_t, 56,  100000000, 1)
+ecb_i2a_def (02, ptr, v, uint32_t, 10,          10, 1)
+ecb_i2a_def (03, ptr, v, uint32_t, 12,         100, 1)
+ecb_i2a_def (04, ptr, v, uint32_t, 26,        1000, 1)
+ecb_i2a_def (05, ptr, v, uint64_t, 30,       10000, 1)
+ecb_i2a_def (06, ptr, v, uint64_t, 36,      100000, 1)
+ecb_i2a_def (07, ptr, v, uint64_t, 44,     1000000, 1)
+ecb_i2a_def (08, ptr, v, uint64_t, 50,    10000000, 1)
+ecb_i2a_def (09, ptr, v, uint64_t, 56,   100000000, 1)
+
+#define ECB_I2A_I32_DIGITS 11
+#define ECB_I2A_U32_DIGITS 10
+#define ECB_I2A_I64_DIGITS 20
+#define ECB_I2A_U64_DIGITS 21
+#define ECB_I2A_MAX_DIGITS 21
 
 ecb_inline char *
 ecb_i2a_u32 (char *ptr, uint32_t u)

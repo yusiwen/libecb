@@ -170,8 +170,8 @@ side.
 
 Evaluates to a true value (suitable for both preprocessor and C code
 testing) if 64 bit integer types on this architecture are evaluated
-"natively", that is, with similar speeds as 32 bit integerss. While 64 bit
-integer support is very common (and in fatc required by libecb), 32 bit
+"natively", that is, with similar speeds as 32 bit integers. While 64 bit
+integer support is very common (and in fact required by libecb), 32 bit
 cpus have to emulate operations on them, so you might want to avoid them.
 
 =item ECB_AMD64, ECB_AMD64_X32
@@ -915,6 +915,159 @@ C<T> must be one of C<uint8_t>, C<uint16_t>, C<uint32_t> or C<uint64_t>.
 Unlike their C counterparts, these functions support 8 bit quantities
 (C<uint8_t>) and also have an aligned version (without the C<_u> prefix),
 all of which hopefully makes them more useful in generic code.
+
+=back
+
+=head2 FAST INTEGER TO STRING
+
+Libecb defines a set of very fast integer to decimal string (or integer
+to ascii, short C<i2a>) functions.  These work by converting the integer
+to a fixed point representation and then successively multiplying out
+the topmost digits. Unlike some other, also very fast, libraries, ecb's
+algorithm should be completely branchless per digit, and does not rely on
+the presence of special cpu functions (such as clz).
+
+There is a high level API that takes an C<int32_t>, C<uint32_t>,
+C<int64_t> or C<uint64_t> as argument, and a low-level API, which is
+harder to use but supports slightly more formatting options.
+
+=head3 HIGH LEVEL API
+
+The high level API consists of four functions, one each for C<int32_t>,
+C<uint32_t>, C<int64_t> and C<uint64_t>:
+
+Example:
+
+   char buf[ECB_I2A_MAX_DIGITS + 1];
+   char *end = ecb_i2a_i32 (buf, 17262);
+   *end = 0;
+   // buf now contains "17262"
+
+=over
+
+=item ECB_I2A_I32_DIGITS (=11)
+
+=item char *ecb_i2a_u32 (char *ptr, uint32_t value)
+
+Takes an C<uint32_t> I<value> and formats it as a decimal number starting
+at I<ptr>, using at most C<ECB_I2A_I32_DIGITS> characters. Returns a
+pointer to just after the generated string, where you would normally put
+the terminating C<0> character. This function outputs the minimum number
+of digits.
+
+=item ECB_I2A_U32_DIGITS (=10)
+
+=item char *ecb_i2a_i32 (char *ptr, int32_t value)
+
+Same as C<ecb_i2a_u32>, but formats a C<int32_t> value, including a minus
+sign if needed.
+
+=item ECB_I2A_I64_DIGITS (=20)
+
+=item char *ecb_i2a_u64 (char *ptr, uint64_t value)
+
+=item ECB_I2A_U64_DIGITS (=21)
+
+=item char *ecb_i2a_i64 (char *ptr, int64_t value)
+
+Similar to their 32 bit counterparts, these take a 64 bit argument.
+
+=item ECB_I2A_MAX_DIGITS (=21)
+
+Instead of using a type specific length macro, youi can just use
+C<ECB_I2A_MAX_DIGITS>, which is good enough for any C<ecb_i2a> function.
+
+=back
+
+=head3 LOW-LEVEL API
+
+The functions above use a number of low-level APIs which have some strict
+limitations, but can be used as building blocks (study of C<ecb_i2a_i32>
+and related functions is recommended).
+
+There are three families of functions: functions that convert a number
+to a fixed number of digits with leading zeroes (C<ecb_i2a_0N>, C<0>
+for "leading zeroes"), functions that generate up to N digits, skipping
+leading zeroes (C<_N>), and functions that can generate more digits, but
+the leading digit has limited range (C<_xN>).
+
+None of the functions deal with negative numbers.
+
+Example: convert an IP address in an u32 into dotted-quad:
+
+   uint32_t ip = 0x0a000164; // 10.0.1.100
+   char ips[3 * 4 + 3 + 1];
+   char *ptr = ips;
+   ptr = ecb_i2a_3 (ptr,  ip >> 24        ); *ptr++ = '.';
+   ptr = ecb_i2a_3 (ptr, (ip >> 16) & 0xff); *ptr++ = '.';
+   ptr = ecb_i2a_3 (ptr, (ip >>  8) & 0xff); *ptr++ = '.';
+   ptr = ecb_i2a_3 (ptr,  ip        & 0xff); *ptr++ = 0;
+   printf ("ip: %s\n", ips); // prints "ip: 10.0.1.100"
+
+=over
+
+=item char *ecb_i2a_02  (char *ptr, uint32_t value) // 32 bit
+
+=item char *ecb_i2a_03  (char *ptr, uint32_t value) // 32 bit
+
+=item char *ecb_i2a_04  (char *ptr, uint32_t value) // 32 bit
+
+=item char *ecb_i2a_05  (char *ptr, uint32_t value) // 64 bit
+
+=item char *ecb_i2a_06  (char *ptr, uint32_t value) // 64 bit
+
+=item char *ecb_i2a_07  (char *ptr, uint32_t value) // 64 bit
+
+=item char *ecb_i2a_08  (char *ptr, uint32_t value) // 64 bit
+
+=item char *ecb_i2a_09  (char *ptr, uint32_t value) // 64 bit
+
+The C<< ecb_i2a_0I<N> > functions take an unsigned I<value> and convert
+them to exactly I<N> digits, returning a pointer to the first character
+after the digits. The I<value> must be in range. The functions marked with
+I<32 bit> do their calculations internally in 32 bit, the ones marked with
+I<64 bit> internally use 64 bit integers, which might be slow on 32 bit
+architectures (the high level API decides on 32 vs. 64 bit versions using
+C<ECB_64BIT_NATIVE>).
+
+=item char *ecb_i2a_2   (char *ptr, uint32_t value) // 32 bit
+
+=item char *ecb_i2a_3   (char *ptr, uint32_t value) // 32 bit
+
+=item char *ecb_i2a_4   (char *ptr, uint32_t value) // 32 bit
+
+=item char *ecb_i2a_5   (char *ptr, uint32_t value) // 64 bit
+
+=item char *ecb_i2a_6   (char *ptr, uint32_t value) // 64 bit
+
+=item char *ecb_i2a_7   (char *ptr, uint32_t value) // 64 bit
+
+=item char *ecb_i2a_8   (char *ptr, uint32_t value) // 64 bit
+
+=item char *ecb_i2a_9   (char *ptr, uint32_t value) // 64 bit
+
+Similarly, the C<< ecb_i2a_I<N> > functions take an unsigned I<value>
+and convert them to at most I<N> digits, suppressing leading zeroes, and
+returning a pointer to the first character after the digits.
+
+=item ECB_I2A_MAX_X5 (=59074)
+
+=item char *ecb_i2a_x5  (char *ptr, uint32_t value) // 32 bit
+
+=item ECB_I2A_MAX_X10 (=2932500665)
+
+=item char *ecb_i2a_x10 (char *ptr, uint32_t value) // 64 bit
+
+The C<< ecb_i2a_xI<N> >> functions are similar to the C<< ecb_i2a_I<N> >
+functions, but they can generate one digit more, as long as the number
+is within range, which is given by the symbols C<ECB_I2A_MAX_X5> (almost
+16 bit range) and C<ECB_I2A_MAX_X10> (a bit more than 31 bit range),
+respectively.
+
+For example, the digit part of a 32 bit signed integer just fits into the
+C<ECB_I2A_MAX_X10> range, so while C<ecb_i2a_x10> cannot convert a 10
+digit number, it can convert all 32 bit signed numbers. Sadly, it's not
+good enough for 32 bit unsigned numbers.
 
 =back
 
