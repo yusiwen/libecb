@@ -170,8 +170,8 @@ side.
 
 Evaluates to a true value (suitable for both preprocessor and C code
 testing) if 64 bit integer types on this architecture are evaluated
-"natively", that is, with similar speeds as 32 bit integerss. While 64 bit
-integer support is very common (and in fatc required by libecb), 32 bit
+"natively", that is, with similar speeds as 32 bit integers. While 64 bit
+integer support is very common (and in fact required by libecb), 32 bit
 cpus have to emulate operations on them, so you might want to avoid them.
 
 =item ECB_AMD64, ECB_AMD64_X32
@@ -952,7 +952,7 @@ Example:
 Takes an C<uint32_t> I<value> and formats it as a decimal number starting
 at I<ptr>, using at most C<ECB_I2A_I32_DIGITS> characters. Returns a
 pointer to just after the generated string, where you would normally put
-the temrinating C<0> character. This function outputs the minimum number
+the terminating C<0> character. This function outputs the minimum number
 of digits.
 
 =item ECB_I2A_U32_DIGITS (=10)
@@ -982,8 +982,8 @@ C<ECB_I2A_MAX_DIGITS>, which is good enough for any C<ecb_i2a> function.
 =head3 LOW-LEVEL API
 
 The functions above use a number of low-level APIs which have some strict
-limitaitons, but cna be used as building blocks (study of C<ecb_i2a_i32>
-and related cunctions is recommended).
+limitations, but can be used as building blocks (study of C<ecb_i2a_i32>
+and related functions is recommended).
 
 There are three families of functions: functions that convert a number
 to a fixed number of digits with leading zeroes (C<ecb_i2a_0N>, C<0>
@@ -991,7 +991,7 @@ for "leading zeroes"), functions that generate up to N digits, skipping
 leading zeroes (C<_N>), and functions that can generate more digits, but
 the leading digit has limited range (C<_xN>).
 
-None of the functions deal with negative numbera.
+None of the functions deal with negative numbers.
 
 Example: convert an IP address in an u32 into dotted-quad:
 
@@ -1064,7 +1064,7 @@ is within range, which is given by the symbols C<ECB_I2A_MAX_X5> (almost
 16 bit range) and C<ECB_I2A_MAX_X10> (a bit more than 31 bit range),
 respectively.
 
-For example, the sigit part of a 32 bit signed integer just fits into the
+For example, the digit part of a 32 bit signed integer just fits into the
 C<ECB_I2A_MAX_X10> range, so while C<ecb_i2a_x10> cannot convert a 10
 digit number, it can convert all 32 bit signed numbers. Sadly, it's not
 good enough for 32 bit unsigned numbers.
