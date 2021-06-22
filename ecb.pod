@@ -936,6 +936,13 @@ harder to use but supports slightly more formatting options.
 The high level API consists of four functions, one each for C<int32_t>,
 C<uint32_t>, C<int64_t> and C<uint64_t>:
 
+Example:
+
+   char buf[ECB_I2A_MAX_DIGITS + 1];
+   char *end = ecb_i2a_i32 (buf, 17262);
+   *end = 0;
+   // buf now contains "17262"
+
 =over
 
 =item ECB_I2A_I32_DIGITS (=11)
@@ -985,6 +992,17 @@ leading zeroes (C<_N>), and functions that can generate more digits, but
 the leading digit has limited range (C<_xN>).
 
 None of the functions deal with negative numbera.
+
+Example: convert an IP address in an u32 into dotted-quad:
+
+   uint32_t ip = 0x0a000164; // 10.0.1.100
+   char ips[3 * 4 + 3 + 1];
+   char *ptr = ips;
+   ptr = ecb_i2a_3 (ptr,  ip >> 24        ); *ptr++ = '.';
+   ptr = ecb_i2a_3 (ptr, (ip >> 16) & 0xff); *ptr++ = '.';
+   ptr = ecb_i2a_3 (ptr, (ip >>  8) & 0xff); *ptr++ = '.';
+   ptr = ecb_i2a_3 (ptr,  ip        & 0xff); *ptr++ = 0;
+   printf ("ip: %s\n", ips); // prints "ip: 10.0.1.100"
 
 =over
 
