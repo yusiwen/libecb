@@ -75,6 +75,9 @@ implement is_constant for c11: https://gustedt.wordpress.com/2013/08/22/testing-
 
 TODO: generic poprcount etc., also  fast_t for them?
 
+	- allow any rotate count in rcb_rot*, at the expense
+          of bad optimisation results on some platforms or with
+          some word sizes.
 	- try to use inttypes.h on mingw.
 
 0x00010008
