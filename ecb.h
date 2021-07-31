@@ -611,14 +611,14 @@ ecb_inline ecb_const uint32_t ecb_rotr32 (uint32_t x, unsigned int count);
 ecb_inline ecb_const uint64_t ecb_rotl64 (uint64_t x, unsigned int count);
 ecb_inline ecb_const uint64_t ecb_rotr64 (uint64_t x, unsigned int count);
 
-ecb_inline ecb_const uint8_t  ecb_rotl8  (uint8_t  x, unsigned int count) { return (x >> ( 8 - count)) | (x << count); }
-ecb_inline ecb_const uint8_t  ecb_rotr8  (uint8_t  x, unsigned int count) { return (x << ( 8 - count)) | (x >> count); }
-ecb_inline ecb_const uint16_t ecb_rotl16 (uint16_t x, unsigned int count) { return (x >> (16 - count)) | (x << count); }
-ecb_inline ecb_const uint16_t ecb_rotr16 (uint16_t x, unsigned int count) { return (x << (16 - count)) | (x >> count); }
-ecb_inline ecb_const uint32_t ecb_rotl32 (uint32_t x, unsigned int count) { return (x >> (32 - count)) | (x << count); }
-ecb_inline ecb_const uint32_t ecb_rotr32 (uint32_t x, unsigned int count) { return (x << (32 - count)) | (x >> count); }
-ecb_inline ecb_const uint64_t ecb_rotl64 (uint64_t x, unsigned int count) { return (x >> (64 - count)) | (x << count); }
-ecb_inline ecb_const uint64_t ecb_rotr64 (uint64_t x, unsigned int count) { return (x << (64 - count)) | (x >> count); }
+ecb_inline ecb_const uint8_t  ecb_rotl8  (uint8_t  x, unsigned int count) { return (x >> (-count &  7)) | (x << (count &  7)); }
+ecb_inline ecb_const uint8_t  ecb_rotr8  (uint8_t  x, unsigned int count) { return (x << (-count &  7)) | (x >> (count &  7)); }
+ecb_inline ecb_const uint16_t ecb_rotl16 (uint16_t x, unsigned int count) { return (x >> (-count & 15)) | (x << (count & 15)); }
+ecb_inline ecb_const uint16_t ecb_rotr16 (uint16_t x, unsigned int count) { return (x << (-count & 15)) | (x >> (count & 15)); }
+ecb_inline ecb_const uint32_t ecb_rotl32 (uint32_t x, unsigned int count) { return (x >> (-count & 31)) | (x << (count & 31)); }
+ecb_inline ecb_const uint32_t ecb_rotr32 (uint32_t x, unsigned int count) { return (x << (-count & 31)) | (x >> (count & 31)); }
+ecb_inline ecb_const uint64_t ecb_rotl64 (uint64_t x, unsigned int count) { return (x >> (-count & 63)) | (x << (count & 63)); }
+ecb_inline ecb_const uint64_t ecb_rotr64 (uint64_t x, unsigned int count) { return (x << (-count & 63)) | (x >> (count & 63)); }
 
 #if ECB_CPP
 
@@ -953,7 +953,7 @@ ecb_binary32_to_binary16 (uint32_t x)
 /*
  * This code is pretty complicated because it is general. The idea behind it,
  * however, is pretty simple: first, the number is multiplied with a scaling
- * factor (2**bits / 10**(digits-1)) to convert nthe integer into a fixed-point
+ * factor (2**bits / 10**(digits-1)) to convert the integer into a fixed-point
  * number with the first digit in the upper bits.
  * Then this digit is converted to text and masked out. The resulting number
  * is then multiplied by 10, by multiplying the fixed point representation
