@@ -953,7 +953,7 @@ ecb_binary32_to_binary16 (uint32_t x)
 /*
  * This code is pretty complicated because it is general. The idea behind it,
  * however, is pretty simple: first, the number is multiplied with a scaling
- * factor (2**bits / 10**(digits-1)) to convert nthe integer into a fixed-point
+ * factor (2**bits / 10**(digits-1)) to convert the integer into a fixed-point
  * number with the first digit in the upper bits.
  * Then this digit is converted to text and masked out. The resulting number
  * is then multiplied by 10, by multiplying the fixed point representation

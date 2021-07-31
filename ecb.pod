@@ -735,6 +735,11 @@ These two families of functions return the value of C<x> after rotating
 all the bits by C<count> positions to the right (C<ecb_rotr>) or left
 (C<ecb_rotl>).
 
+The valid range for C<count> is C<1> to the number of bits in the
+underlying datatype minus one (7/15/31/63). If you need a rotate count
+of zero you need to add an extra check before calling these functions
+currently.
+
 Current GCC/clang versions understand these functions and usually compile
 them to "optimal" code (e.g. a single C<rol> or a combination of C<shld>
 on x86).
