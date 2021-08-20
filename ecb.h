@@ -1040,7 +1040,7 @@ ecb_binary32_to_binary16 (uint32_t x)
  * non-zero digit, so leading zeroes are overwritten.
  */
 
-/* simply return a mask with "bits" bits set *7
+/* simply return a mask with "bits" bits set */
 #define ecb_i2a_mask(type,bits) ((((type)1) << (bits)) - 1)
 
 /* oputput a single digit. maskvalue is 10**digitidx */
