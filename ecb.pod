@@ -1179,7 +1179,7 @@ also within reasonable limits (it tries to convert NaNs, infinities and
 denormals, but will likely convert negative zero to positive zero).
 
 On all modern platforms (where C<ECB_STDFP> is true), the compiler should
-be able to optimise away this function completely.
+be able to completely optimise away the 32 and 64 bit functions.
 
 These functions can be helpful when serialising floats to the network - you
 can serialise the return value like a normal uint16_t/uint32_t/uint64_t.
