@@ -1053,7 +1053,7 @@ C<ECB_I2A_MAX_DIGITS>, which is good enough for any C<ecb_i2a> function.
 =head3 LOW-LEVEL API
 
 The functions above use a number of low-level APIs which have some strict
-limitations, but can be used as building blocks (study of C<ecb_i2a_i32>
+limitations, but can be used as building blocks (studying C<ecb_i2a_i32>
 and related functions is recommended).
 
 There are three families of functions: functions that convert a number
