@@ -1325,7 +1325,7 @@ some of which we hide because we are not sure we will keep the interface
 stable.
 
 While you are welcome to rummage around and use whatever you find useful
-(we can't stop you), keep in mind that we will change undocumented
+(we don't want to stop you), keep in mind that we will change undocumented
 functionality in incompatible ways without thinking twice, while we are
 considerably more conservative with documented things.
 
@@ -1335,5 +1335,3 @@ C<libecb> is designed and maintained by:
 
    Emanuele Giaquinta <e.giaquinta@glauco.it>
    Marc Alexander Lehmann <schmorp@schmorp.de>
-
-
