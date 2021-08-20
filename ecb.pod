@@ -1045,7 +1045,7 @@ Similar to their 32 bit counterparts, these take a 64 bit argument.
 
 =item ECB_I2A_MAX_DIGITS (=21)
 
-Instead of using a type specific length macro, youi can just use
+Instead of using a type specific length macro, you can just use
 C<ECB_I2A_MAX_DIGITS>, which is good enough for any C<ecb_i2a> function.
 
 =back
