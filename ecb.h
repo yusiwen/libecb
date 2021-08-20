@@ -1040,10 +1040,10 @@ ecb_binary32_to_binary16 (uint32_t x)
  * non-zero digit, so leading zeroes are overwritten.
  */
 
-// simply return a mask with "bits" bits set
+/* simply return a mask with "bits" bits set *7
 #define ecb_i2a_mask(type,bits) ((((type)1) << (bits)) - 1)
 
-// oputput a single digit. maskvalue is 10**digitidx
+/* oputput a single digit. maskvalue is 10**digitidx */
 #define ecb_i2a_digit(type,bits,digitmask,maskvalue,digitidx) \
   if (digitmask >= maskvalue) /* constant, used to decide how many digits to generate */ \
     { \
@@ -1054,8 +1054,8 @@ ecb_binary32_to_binary16 (uint32_t x)
       x = (x & ecb_i2a_mask (type, bits - digitidx)) * 5; /* *10, but shift decimal point right */ \
     }
 
-// convert integer to fixed point format and multiply out digits, highest first
-// requires magic constants: max. digits and number of bits after the decimal point
+/* convert integer to fixed point format and multiply out digits, highest first */
+/* requires magic constants: max. digits and number of bits after the decimal point */
 #define ecb_i2a_def(suffix,ptr,v,type,bits,digitmask,lz) \
 ecb_inline char *ecb_i2a_ ## suffix (char *ptr, uint32_t u) \
 { \
@@ -1076,18 +1076,18 @@ ecb_inline char *ecb_i2a_ ## suffix (char *ptr, uint32_t u) \
   return ptr; \
 }
 
-// predefined versions of the above, for various digits
-// ecb_i2a_xN = almost N digits, limit defined by macro
-// ecb_i2a_N = up to N digits, leading zeroes suppressed
-// ecb_i2a_0N = exactly N digits, including leading zeroes
+/* predefined versions of the above, for various digits */
+/* ecb_i2a_xN = almost N digits, limit defined by macro */
+/* ecb_i2a_N = up to N digits, leading zeroes suppressed */
+/* ecb_i2a_0N = exactly N digits, including leading zeroes */
 
-// non-leading-zero versions, limited range
-#define ECB_I2A_MAX_X5       59074 // limit for ecb_i2a_x5
-#define ECB_I2A_MAX_X10 2932500665 // limit for ecb_i2a_x10
+/* non-leading-zero versions, limited range */
+#define ECB_I2A_MAX_X5       59074 /* limit for ecb_i2a_x5 */
+#define ECB_I2A_MAX_X10 2932500665 /* limit for ecb_i2a_x10 */
 ecb_i2a_def ( x5, ptr, v, uint32_t, 26,      10000, 0)
 ecb_i2a_def (x10, ptr, v, uint64_t, 60, 1000000000, 0)
 
-// non-leading zero versions, all digits, 4 and 9 are optimal for 32/64 bit
+/* non-leading zero versions, all digits, 4 and 9 are optimal for 32/64 bit */
 ecb_i2a_def ( 2, ptr, v, uint32_t, 10,          10, 0)
 ecb_i2a_def ( 3, ptr, v, uint32_t, 12,         100, 0)
 ecb_i2a_def ( 4, ptr, v, uint32_t, 26,        1000, 0)
@@ -1097,7 +1097,7 @@ ecb_i2a_def ( 7, ptr, v, uint64_t, 44,     1000000, 0)
 ecb_i2a_def ( 8, ptr, v, uint64_t, 50,    10000000, 0)
 ecb_i2a_def ( 9, ptr, v, uint64_t, 56,   100000000, 0)
 
-// leading-zero versions, all digits, 04 and 09 are optimal for 32/64 bit
+/* leading-zero versions, all digits, 04 and 09 are optimal for 32/64 bit */
 ecb_i2a_def (02, ptr, v, uint32_t, 10,          10, 1)
 ecb_i2a_def (03, ptr, v, uint32_t, 12,         100, 1)
 ecb_i2a_def (04, ptr, v, uint32_t, 26,        1000, 1)
@@ -1119,7 +1119,7 @@ ecb_i2a_u32 (char *ptr, uint32_t u)
   #if ECB_64BIT_NATIVE
     if (ecb_expect_true (u <= ECB_I2A_MAX_X10))
       ptr = ecb_i2a_x10 (ptr, u);
-    else // x10 almost, but not fully, covers 32 bit
+    else /* x10 almost, but not fully, covers 32 bit */
       {
         uint32_t u1 = u % 1000000000;
         uint32_t u2 = u / 1000000000;
@@ -1161,7 +1161,7 @@ ecb_i2a_i32 (char *ptr, int32_t v)
   uint32_t u = v < 0 ? -(uint32_t)v : v;
 
   #if ECB_64BIT_NATIVE
-    ptr = ecb_i2a_x10 (ptr, u); // x10 fully covers 31 bit
+    ptr = ecb_i2a_x10 (ptr, u); /* x10 fully covers 31 bit */
   #else
     ptr = ecb_i2a_u32 (ptr, u);
   #endif
@@ -1234,7 +1234,7 @@ ecb_i2a_i64 (char *ptr, int64_t v)
         uint64_t u2 = ua % 1000000000;
         uint64_t u3 = ua / 1000000000;
 
-        // 2**31 is 19 digits, so the top is exactly one digit
+        /* 2**31 is 19 digits, so the top is exactly one digit */
         *ptr++ = u3 + '0';
         ptr = ecb_i2a_09 (ptr, u2);
         ptr = ecb_i2a_09 (ptr, u1);
