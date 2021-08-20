@@ -42,7 +42,7 @@
 #define ECB_H
 
 /* 16 bits major, 16 bits minor */
-#define ECB_VERSION 0x00010009
+#define ECB_VERSION 0x0001000a
 
 #include <string.h> /* for memcpy */
 
@@ -805,6 +805,83 @@ template<typename T> inline void ecb_poke_le   (void *ptr, T v) { return ecb_pok
 template<typename T> inline void ecb_poke_u    (void *ptr, T v) { memcpy (ptr, &v, sizeof (v)); }
 template<typename T> inline void ecb_poke_be_u (void *ptr, T v) { return ecb_poke_u<T> (ptr, ecb_host_to_be (v)); }
 template<typename T> inline void ecb_poke_le_u (void *ptr, T v) { return ecb_poke_u<T> (ptr, ecb_host_to_le (v)); }
+
+#endif
+
+/*****************************************************************************/
+/* pointer/integer hashing */
+
+/* based on hash by Chris Wellons, https://nullprogram.com/blog/2018/07/31/ */
+ecb_function_ uint32_t ecb_mix32 (uint32_t v);
+ecb_function_ uint32_t ecb_mix32 (uint32_t v)
+{
+  v ^= v >> 16; v *= 0x7feb352dU;
+  v ^= v >> 15; v *= 0x846ca68bU;
+  v ^= v >> 16;
+  return v;
+}
+
+ecb_function_ uint32_t ecb_unmix32 (uint32_t v);
+ecb_function_ uint32_t ecb_unmix32 (uint32_t v)
+{
+  v ^= v >> 16          ; v *= 0x43021123U;
+  v ^= v >> 15 ^ v >> 30; v *= 0x1d69e2a5U;
+  v ^= v >> 16          ;
+  return v;
+}
+
+/* based on splitmix64, by Sebastiona Vigna, https://prng.di.unimi.it/splitmix64.c */
+ecb_function_ uint64_t ecb_mix64 (uint64_t v);
+ecb_function_ uint64_t ecb_mix64 (uint64_t v)
+{
+  v ^= v >> 30; v *= 0xbf58476d1ce4e5b9U;
+  v ^= v >> 27; v *= 0x94d049bb133111ebU;
+  v ^= v >> 31;
+  return v;
+}
+
+ecb_function_ uint64_t ecb_unmix64 (uint64_t v);
+ecb_function_ uint64_t ecb_unmix64 (uint64_t v)
+{
+  v ^= v >> 31 ^ v >> 62; v *= 0x319642b2d24d8ec3U;
+  v ^= v >> 27 ^ v >> 54; v *= 0x96de1b173f119089U;
+  v ^= v >> 30 ^ v >> 60;
+  return v;
+}
+
+ecb_function_ uintptr_t ecb_ptrmix (void *p);
+ecb_function_ uintptr_t ecb_ptrmix (void *p)
+{
+  #if ECB_PTRSIZE <= 4
+  return ecb_mix32 ((uint32_t)p);
+  #else
+  return ecb_mix64 ((uint64_t)p);
+  #endif
+}
+
+ecb_function_ void *ecb_ptrunmix (uintptr_t v);
+ecb_function_ void *ecb_ptrunmix (uintptr_t v)
+{
+  #if ECB_PTRSIZE <= 4
+  return (void *)ecb_unmix32 (v);
+  #else
+  return (void *)ecb_unmix64 (v);
+  #endif
+}
+
+#if ECB_CPP
+
+template<typename T>
+inline uintptr_t ecb_ptrmix (T *p)
+{
+  return ecb_ptrmix (static_cast<void *>(p));
+}
+
+template<typename T>
+inline T *ecb_ptrunmix (uintptr_t v)
+{
+  return static_cast<T *>(ecb_ptrunmix (v));
+}
 
 #endif
 

@@ -1,3 +1,6 @@
+0x0001000a
+	- added ecb_ptrmix.
+
 0x00010009
 	- added ecb_i2a family of functions.
 	- added ECB_64BIT_NATIVE.

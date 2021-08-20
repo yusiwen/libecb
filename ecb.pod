@@ -752,6 +752,74 @@ C<T> must be one of C<uint8_t>, C<uint16_t>, C<uint32_t> or C<uint64_t>.
 
 =back
 
+=head2 BIT MIXING, HASHING
+
+Sometimes you have an integer and want to distribute its bits well, for
+example, to use it as a hash in a hashtable. A common example is pointer
+values, which often only have a limited range (e.g. low and high bits are
+often zero).
+
+The following functions try to mix the bits to get a good bias-free
+distribution. They were mainly made for pointers, but the underlying
+integer functions are exposed as well.
+
+As an added benefit, the functions are reversible, so if you find it
+convenient to store only the hash value, you can recover the original
+pointer from the hash ("unmix"), as long as your pinters are 32 or 64 bit
+(if this isn't the case on your platform, drop us a note and we will add
+functions for other bit widths).
+
+The unmix functions are very slightly slower than the mix functions, so
+it is equally very slightly preferable to store the original values wehen
+convenient.
+
+The underlying algorithm if subject to change, so currently these
+functions are not suitable for persistent hash tables, as their result
+value can change between diferent versions of libecb.
+
+=over
+
+=item uintptr_t ecb_ptrmix (void *ptr)
+
+Mixes the bits of a pointer so the result is suitable for hash table
+lookups. In other words, this hashes the pointer value.
+
+=item uintptr_t ecb_ptrmix (T *ptr) [C++]
+
+Overload the C<ecb_ptrmix> function to work for any pointer in C++.
+
+=item void *ecb_ptrunmix (uintptr_t v)
+
+Unmix the hash value into the original pointer. This only works as long
+as the hash value is not truncated, i.e. you used C<uintptr_t> (or
+equivalent) throughout to store it.
+
+=item T *ecb_ptrunmix<T> (uintptr_t v) [C++]
+
+The somewhat less useful template version of C<ecb_ptrunmix> for
+C++. Example:
+
+   sometype *myptr;
+   uintptr_t hash = ecb_ptrmix (myptr);
+   sometype *orig = ecb_ptrunmix<sometype> (hash);
+
+=item uint32_t ecb_mix32 (uint32_t v)
+
+=item uint64_t ecb_mix64 (uint64_t v)
+
+Sometimes you don't have a pointer but an integer whose values are very
+badly distributed. In this case you cna sue these integer versions of the
+mixing function. No C++ template is provided currently.
+
+=item uint32_t ecb_unmix32 (uint32_t v)
+
+=item uint64_t ecb_unmix64 (uint64_t v)
+
+The reverse of the C<ecb_mix> functions - they take a mixed/hashed value
+and recover the original value.
+
+=back
+
 =head2 HOST ENDIANNESS CONVERSION
 
 =over
