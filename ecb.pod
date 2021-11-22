@@ -1093,7 +1093,7 @@ Example: convert an IP address in an u32 into dotted-quad:
 
 =item char *ecb_i2a_09  (char *ptr, uint32_t value) // 64 bit
 
-The C<< ecb_i2a_0I<N> > functions take an unsigned I<value> and convert
+The C<< ecb_i2a_0I<N> >> functions take an unsigned I<value> and convert
 them to exactly I<N> digits, returning a pointer to the first character
 after the digits. The I<value> must be in range. The functions marked with
 I<32 bit> do their calculations internally in 32 bit, the ones marked with
@@ -1117,7 +1117,7 @@ C<ECB_64BIT_NATIVE>).
 
 =item char *ecb_i2a_9   (char *ptr, uint32_t value) // 64 bit
 
-Similarly, the C<< ecb_i2a_I<N> > functions take an unsigned I<value>
+Similarly, the C<< ecb_i2a_I<N> >> functions take an unsigned I<value>
 and convert them to at most I<N> digits, suppressing leading zeroes, and
 returning a pointer to the first character after the digits.
 
@@ -1129,7 +1129,7 @@ returning a pointer to the first character after the digits.
 
 =item char *ecb_i2a_x10 (char *ptr, uint32_t value) // 64 bit
 
-The C<< ecb_i2a_xI<N> >> functions are similar to the C<< ecb_i2a_I<N> >
+The C<< ecb_i2a_xI<N> >> functions are similar to the C<< ecb_i2a_I<N> >>
 functions, but they can generate one digit more, as long as the number
 is within range, which is given by the symbols C<ECB_I2A_MAX_X5> (almost
 16 bit range) and C<ECB_I2A_MAX_X10> (a bit more than 31 bit range),
