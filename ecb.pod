@@ -761,7 +761,7 @@ C<T> must be one of C<uint8_t>, C<uint16_t>, C<uint32_t> or C<uint64_t>.
 Encode an unsigned into its corresponding (reflective) gray code - the
 kind of gray code meant when just talking about "gray code". These
 functions are very fast and all have identical implementation, so there is
-no need to use a smaller type, as long as your cpu can handle it natively.
+no need to use a smaller type, as long as your CPU can handle it natively.
 
 =item T ecb_gray_encode (T b) [C++]
 
@@ -775,9 +775,9 @@ Overloaded C++ version of the above, for C<uint{8,16,32,64}_t>.
 
 =item uint_fast64_t ecb_gray64_decode (uint_fast64_t b)
 
-Decode a gray code bakc into linear index form (the reverse of
-C<ecb_gray*_encode>. Unlike the enode functions, the decode functions
-have higher time complexity for larger types, so it cna pay off to use a
+Decode a gray code back into linear index form (the reverse of
+C<ecb_gray*_encode>. Unlike the encode functions, the decode functions
+have higher time complexity for larger types, so it can pay off to use a
 smaller type here.
 
 =item T ecb_gray_decode (T b) [C++]
