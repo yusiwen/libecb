@@ -1,3 +1,6 @@
+0x0001000b
+	- added ecb_gray*_{de,en}code functions.
+
 0x0001000a
 	- added ecb_ptrmix.
 
