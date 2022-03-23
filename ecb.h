@@ -42,7 +42,7 @@
 #define ECB_H
 
 /* 16 bits major, 16 bits minor */
-#define ECB_VERSION 0x0001000a
+#define ECB_VERSION 0x0001000b
 
 #include <string.h> /* for memcpy */
 
@@ -882,6 +882,66 @@ inline T *ecb_ptrunmix (uintptr_t v)
 {
   return static_cast<T *>(ecb_ptrunmix (v));
 }
+
+#endif
+
+/*****************************************************************************/
+/* gray code */
+
+ecb_function_ uint_fast8_t  ecb_gray8_encode  (uint_fast8_t  b) { return b ^ (b >> 1); }
+ecb_function_ uint_fast16_t ecb_gray16_encode (uint_fast16_t b) { return b ^ (b >> 1); }
+ecb_function_ uint_fast32_t ecb_gray32_encode (uint_fast32_t b) { return b ^ (b >> 1); }
+ecb_function_ uint_fast64_t ecb_gray64_encode (uint_fast64_t b) { return b ^ (b >> 1); }
+
+ecb_function_ uint8_t ecb_gray8_decode (uint8_t g)
+{
+  g = g ^ (g >>  1);
+  g = g ^ (g >>  2);
+  g = g ^ (g >>  4);
+  return g;
+}
+
+ecb_function_ uint16_t ecb_gray16_decode (uint16_t g)
+{
+  g = g ^ (g >>  1);
+  g = g ^ (g >>  2);
+  g = g ^ (g >>  4);
+  g = g ^ (g >>  8);
+  return g;
+}
+
+ecb_function_ uint32_t ecb_gray32_decode (uint32_t g)
+{
+  g = g ^ (g >>  1);
+  g = g ^ (g >>  2);
+  g = g ^ (g >>  4);
+  g = g ^ (g >>  8);
+  g = g ^ (g >> 16);
+  return g;
+}
+
+ecb_function_ uint64_t ecb_gray64_decode (uint64_t g)
+{
+  g = g ^ (g >>  1);
+  g = g ^ (g >>  2);
+  g = g ^ (g >>  4);
+  g = g ^ (g >>  8);
+  g = g ^ (g >> 16);
+  g = g ^ (g >> 32);
+  return g;
+}
+
+#if ECB_CPP
+
+ecb_function_ uint8_t  ecb_gray_encode  (uint8_t  b) { return ecb_gray8_encode  (b); }
+ecb_function_ uint16_t ecb_gray_encode  (uint16_t b) { return ecb_gray16_encode (b); }
+ecb_function_ uint32_t ecb_gray_encode  (uint32_t b) { return ecb_gray32_encode (b); }
+ecb_function_ uint64_t ecb_gray_encode  (uint64_t b) { return ecb_gray64_encode (b); }
+
+ecb_function_ uint8_t  ecb_gray_decode  (uint8_t  g) { return ecb_gray8_decode  (g); }
+ecb_function_ uint16_t ecb_gray_decode  (uint16_t g) { return ecb_gray16_decode (g); }
+ecb_function_ uint32_t ecb_gray_decode  (uint32_t g) { return ecb_gray32_decode (g); }
+ecb_function_ uint64_t ecb_gray_decode  (uint64_t g) { return ecb_gray64_decode (g); }
 
 #endif
 
