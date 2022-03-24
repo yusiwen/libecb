@@ -895,39 +895,43 @@ ecb_function_ uint_fast64_t ecb_gray64_encode (uint_fast64_t b) { return b ^ (b 
 
 ecb_function_ uint8_t ecb_gray8_decode (uint8_t g)
 {
-  g = g ^ (g >>  1);
-  g = g ^ (g >>  2);
-  g = g ^ (g >>  4);
+  g ^= g >>  1;
+  g ^= g >>  2;
+  g ^= g >>  4;
+
   return g;
 }
 
 ecb_function_ uint16_t ecb_gray16_decode (uint16_t g)
 {
-  g = g ^ (g >>  1);
-  g = g ^ (g >>  2);
-  g = g ^ (g >>  4);
-  g = g ^ (g >>  8);
+  g ^= g >>  1;
+  g ^= g >>  2;
+  g ^= g >>  4;
+  g ^= g >>  8;
+
   return g;
 }
 
 ecb_function_ uint32_t ecb_gray32_decode (uint32_t g)
 {
-  g = g ^ (g >>  1);
-  g = g ^ (g >>  2);
-  g = g ^ (g >>  4);
-  g = g ^ (g >>  8);
-  g = g ^ (g >> 16);
+  g ^= g >>  1;
+  g ^= g >>  2;
+  g ^= g >>  4;
+  g ^= g >>  8;
+  g ^= g >> 16;
+
   return g;
 }
 
 ecb_function_ uint64_t ecb_gray64_decode (uint64_t g)
 {
-  g = g ^ (g >>  1);
-  g = g ^ (g >>  2);
-  g = g ^ (g >>  4);
-  g = g ^ (g >>  8);
-  g = g ^ (g >> 16);
-  g = g ^ (g >> 32);
+  g ^= g >>  1;
+  g ^= g >>  2;
+  g ^= g >>  4;
+  g ^= g >>  8;
+  g ^= g >> 16;
+  g ^= g >> 32;
+
   return g;
 }
 
