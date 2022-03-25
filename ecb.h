@@ -42,7 +42,7 @@
 #define ECB_H
 
 /* 16 bits major, 16 bits minor */
-#define ECB_VERSION 0x0001000b
+#define ECB_VERSION 0x0001000c
 
 #include <string.h> /* for memcpy */
 
@@ -948,6 +948,154 @@ ecb_function_ uint32_t ecb_gray_decode  (uint32_t g) { return ecb_gray32_decode 
 ecb_function_ uint64_t ecb_gray_decode  (uint64_t g) { return ecb_gray64_decode (g); }
 
 #endif
+
+/*****************************************************************************/
+/* 2d hilbert curves */
+
+/* algorithm from the book Hacker's Delight, modified to not */
+/* run into undefined behaviour for n==16 */
+static uint32_t
+ecb_hilbert2d_index_to_coord32 (int n, uint32_t s)
+{
+  uint32_t comp, swap, cs, t, sr;
+
+  /* pad s on the left (unused) bits with 01 (no change groups) */
+  s |= 0x55555555U << n << n;
+  /* "s shift right" */
+  sr = (s >> 1) & 0x55555555U;
+  /* compute complement and swap info in two-bit groups */
+  cs = ((s & 0x55555555U) + sr) ^ 0x55555555U;
+
+  /* parallel prefix xor op to propagate both complement
+   * and swap info together from left to right (there is
+   * no step "cs ^= cs >> 1", so in effect it computes
+   * two independent parallel prefix operations on two
+   * interleaved sets of sixteen bits).
+   */
+  cs ^= cs >>  2;
+  cs ^= cs >>  4;
+  cs ^= cs >>  8;
+  cs ^= cs >> 16;
+
+  /* separate swap and complement bits */
+  swap =  cs       & 0x55555555U;
+  comp = (cs >> 1) & 0x55555555U;
+ 
+  /* calculate coordinates in odd and even bit positions */
+  t = (s & swap) ^ comp;
+  s = s ^ sr ^ t ^ (t << 1);
+
+  /* unpad/clear out any junk on the left */
+  s = s & ((1 << n << n) - 1);
+ 
+  /* Now "unshuffle" to separate the x and y bits. */
+  t = (s ^ (s >> 1)) & 0x22222222U; s ^= t ^ (t << 1);
+  t = (s ^ (s >> 2)) & 0x0c0c0c0cU; s ^= t ^ (t << 2);
+  t = (s ^ (s >> 4)) & 0x00f000f0U; s ^= t ^ (t << 4);
+  t = (s ^ (s >> 8)) & 0x0000ff00U; s ^= t ^ (t << 8);
+ 
+  /* now s contains two 16-bit coordinates */
+  return s;
+}
+
+/* 64 bit, a straightforward extension to the 32 bit case */
+static uint64_t
+ecb_hilbert2d_index_to_coord64 (int n, uint64_t s)
+{
+  uint64_t comp, swap, cs, t, sr;
+
+  /* pad s on the left (unused) bits with 01 (no change groups) */
+  s |= 0x5555555555555555U << n << n;
+  /* "s shift right" */
+  sr = (s >> 1) & 0x5555555555555555U;
+  /* compute complement and swap info in two-bit groups */
+  cs = ((s & 0x5555555555555555U) + sr) ^ 0x5555555555555555U;
+
+  /* parallel prefix xor op to propagate both complement
+   * and swap info together from left to right (there is
+   * no step "cs ^= cs >> 1", so in effect it computes
+   * two independent parallel prefix operations on two
+   * interleaved sets of thirty-two bits).
+   */
+  cs ^= cs >>  2;
+  cs ^= cs >>  4;
+  cs ^= cs >>  8;
+  cs ^= cs >> 16;
+  cs ^= cs >> 32;
+
+  /* separate swap and complement bits */
+  swap =  cs       & 0x5555555555555555U;
+  comp = (cs >> 1) & 0x5555555555555555U;
+ 
+  /* calculate coordinates in odd and even bit positions */
+  t = (s & swap) ^ comp;
+  s = s ^ sr ^ t ^ (t << 1);
+
+  /* unpad/clear out any junk on the left */
+  s = s & ((1 << n << n) - 1);
+ 
+  /* Now "unshuffle" to separate the x and y bits. */
+  t = (s ^ (s >>  1)) & 0x2222222222222222U; s ^= t ^ (t <<  1);
+  t = (s ^ (s >>  2)) & 0x0c0c0c0c0c0c0c0cU; s ^= t ^ (t <<  2);
+  t = (s ^ (s >>  4)) & 0x00f000f000f000f0U; s ^= t ^ (t <<  4);
+  t = (s ^ (s >>  8)) & 0x0000ff000000ff00U; s ^= t ^ (t <<  8);
+  t = (s ^ (s >> 16)) & 0x00000000ffff0000U; s ^= t ^ (t << 16);
+ 
+  /* now s contains two 32-bit coordinates */
+  return s;
+}
+
+/* algorithm from the book Hacker's Delight, but a similar algorithm*/
+/* is given in https://doi.org/10.1002/spe.4380160103 */
+/* this has been slightly improved over the original version */
+ecb_function_ uint32_t
+ecb_hilbert2d_coord_to_index32 (int n, uint32_t xy)
+{
+  uint32_t row;
+  uint32_t state = 0;
+  uint32_t s = 0;
+
+  do
+    {
+      --n;
+
+      row =  4 * state
+          | (2 & (xy >> n >> 15))
+          | (1 & (xy >> n      ));
+
+      /* these funky constants are lookup tables for two-bit values */
+      s = (s << 2) | (0x361e9cb4U >> 2 * row) & 3;
+      state = (0x8fe65831U >> 2 * row) & 3;
+    }
+  while (n > 0);
+
+  return s;
+}
+
+/* 64 bit, essentially the same as 32 bit */
+ecb_function_ uint64_t
+ecb_hilbert2d_coord_to_index64 (int n, uint64_t xy)
+{
+  uint32_t row;
+  uint32_t state = 0;
+  uint64_t s = 0;
+
+  do
+    {
+      --n;
+
+      row =  4 * state
+          | (2 & (xy >> n >> 31))
+          | (1 & (xy >> n      ));
+
+      /* these funky constants are lookup tables for two-bit values */
+      s = (s << 2) | (0x361e9cb4U >> 2 * row) & 3;
+      state = (0x8fe65831U >> 2 * row) & 3;
+    }
+  while (n > 0);
+
+  return s;
+}
 
 /*****************************************************************************/
 /* division */

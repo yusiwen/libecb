@@ -1,3 +1,9 @@
+TODO: naming of cutnions, index_to_coord, xy_to_s, xy_to_linear/seq, 32/64
+TODO: returning packed coordinates, really
+TODO: support order=0?
+0x0001000c
+	- added ecb_hilbert2d function family.
+
 0x0001000b
 	- added ecb_gray*_{de,en}code functions.
 
