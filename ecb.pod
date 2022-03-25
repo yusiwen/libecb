@@ -623,6 +623,26 @@ For example:
   ecb_ctz32 (3) = 0
   ecb_ctz32 (6) = 1
 
+=item int ecb_clz32 (uint32_t x)
+
+=item int ecb_clz64 (uint64_t x)
+
+=item int ecb_clz (T x) [C++]
+
+Counts the number of leading zero bits in C<x>. If C<x> is 0 the result is
+undefined.
+
+The overloaded C++ C<ecb_clz> function supports C<uint32_t> and
+C<uint64_t> types only.
+
+It is often simpler to use one of the C<ecb_ld*> functions instead, whoise
+result only depends on the value and not the size of the type.
+
+For example:
+
+  ecb_clz32 (3) = 30
+  ecb_clz32 (6) = 29
+
 =item bool ecb_is_pot32 (uint32_t x)
 
 =item bool ecb_is_pot64 (uint32_t x)

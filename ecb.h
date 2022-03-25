@@ -474,19 +474,36 @@ typedef int ecb_bool;
     _BitScanForward (&r, x);
     return (int)r;
 #else
-    int r = 0;
-
-    /* todo: use david seal's algorithm */
+    int r;
 
     x &= ~x + 1; /* this isolates the lowest bit */
 
-#if ECB_branchless_on_i386
+  #if 1
+    /* David Seal's algorithm, Message-ID: <32975@armltd.uucp> from 1994 */
+    /* This happens to return 32 for x == 0, but the API does not support this */
+
+    /* -0 marks unused entries */
+    static unsigned char table[64] =
+      {
+        32,  0,  1, 12,  2,  6, -0, 13,    3, -0,  7, -0, -0, -0, -0, 14,
+        10,  4, -0, -0,  8, -0, -0, 25,   -0, -0, -0, -0, -0, 21, 27, 15,
+        31, 11,  5, -0, -0, -0, -0, -0,    9, -0, -0, 24, -0, -0, 20, 26,
+        30, -0, -0, -0, -0, 23, -0, 19,   29, -0, 22, 18, 28, 17, 16, -0
+      };
+
+    /* magic constant results in 33 unique values in the upper 6 bits */
+    x *= 0x0450fbafU; /* == 17 * 65 * 65535 */
+
+    r = table [x >> 26];
+  #elif 0 /* branchless on i386, typically */
+    r = 0;
     r += !!(x & 0xaaaaaaaa) << 0;
     r += !!(x & 0xcccccccc) << 1;
     r += !!(x & 0xf0f0f0f0) << 2;
     r += !!(x & 0xff00ff00) << 3;
     r += !!(x & 0xffff0000) << 4;
-#else
+  #else /* branchless on modern compilers, typically */
+    r = 0;
     if (x & 0xaaaaaaaa) r +=  1;
     if (x & 0xcccccccc) r +=  2;
     if (x & 0xf0f0f0f0) r +=  4;
@@ -509,6 +526,57 @@ typedef int ecb_bool;
 #else
     int shift = x & 0xffffffff ? 0 : 32;
     return ecb_ctz32 (x >> shift) + shift;
+#endif
+  }
+
+  ecb_function_ ecb_const int ecb_clz32 (uint32_t x);
+  ecb_function_ ecb_const int
+  ecb_clz32 (uint32_t x)
+  {
+#if 1400 <= _MSC_VER && (_M_IX86 || _M_X64 || _M_IA64 || _M_ARM)
+    unsigned long r;
+    _BitScanReverse (&r, x);
+    return (int)r;
+#else
+
+    /* Robert Harley's algorithm from comp.arch 1996-12-07 */
+    /* This happens to return 32 for x == 0, but the API does not support this */
+
+    /* -0 marks unused table elements */
+    static unsigned char table[64] =
+      {
+        32, 31, -0, 16, -0, 30,  3, -0,   15, -0, -0, -0, 29, 10,  2, -0,
+        -0, -0, 12, 14, 21, -0, 19, -0,   -0, 28, -0, 25, -0,  9,  1, -0,
+        17, -0,  4, -0, -0, -0, 11, -0,   13, 22, 20, -0, 26, -0, -0, 18,
+         5, -0, -0, 23, -0, 27, -0,  6,   -0, 24,  7, -0,  8, -0,  0, -0
+      };
+
+    /* propagate leftmost 1 bit to the right */
+    x |= x >>  1;
+    x |= x >>  2;
+    x |= x >>  4;
+    x |= x >>  8;
+    x |= x >> 16;
+
+    /* magic constant results in 33 unique values in the upper 6 bits */
+    x *= 0x06EB14F9U; /* == 7 * 255 * 255 * 255 */
+
+    return table [x >> 26];
+#endif
+  }
+
+  ecb_function_ ecb_const int ecb_clz64 (uint64_t x);
+  ecb_function_ ecb_const int
+  ecb_clz64 (uint64_t x)
+  {
+#if 1400 <= _MSC_VER && (_M_X64 || _M_IA64 || _M_ARM)
+    unsigned long r;
+    _BitScanReverse64 (&r, x);
+    return (int)r;
+#else
+    uint32_t l = x >> 32;
+    int shift = l ? 0 : 32;
+    return ecb_clz32 (l ? l : x) + shift;
 #endif
   }
 
@@ -628,6 +696,9 @@ ecb_inline ecb_const uint64_t ecb_rotl64 (uint64_t x, unsigned int count) { retu
 ecb_inline ecb_const uint64_t ecb_rotr64 (uint64_t x, unsigned int count) { return (x << (-count & 63)) | (x >> (count & 63)); }
 
 #if ECB_CPP
+
+inline uint32_t ecb_clz (uint32_t v) { return ecb_clz32 (v); }
+inline uint64_t ecb_clz (uint64_t v) { return ecb_clz64 (v); }
 
 inline uint8_t  ecb_ctz (uint8_t  v) { return ecb_ctz32 (v); }
 inline uint16_t ecb_ctz (uint16_t v) { return ecb_ctz32 (v); }
