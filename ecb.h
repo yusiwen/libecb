@@ -360,7 +360,7 @@ typedef int ecb_bool;
 /* This marks larger functions that do not neccessarily need to be inlined */
 /* The idea is to possibly compile the header twice, */
 /* once exposing only the declarations, another time to define external functions */
-/* TODO: popssibly static would be best for these at the moment? */
+/* TODO: possibly static would be best for these at the moment? */
 #define ecb_function_ ecb_inline
 
 #if ECB_GCC_VERSION(3,1) || ECB_CLANG_VERSION(2,8)
@@ -470,8 +470,7 @@ typedef int ecb_bool;
   /* ecb_popcount64 is more difficult, see below */
 #else
   ecb_function_ ecb_const int ecb_ctz32 (uint32_t x);
-  ecb_function_ ecb_const int
-  ecb_ctz32 (uint32_t x)
+  ecb_function_ ecb_const int ecb_ctz32 (uint32_t x)
   {
 #if 1400 <= _MSC_VER && (_M_IX86 || _M_X64 || _M_IA64 || _M_ARM)
     unsigned long r;
@@ -520,8 +519,7 @@ typedef int ecb_bool;
   }
 
   ecb_function_ ecb_const int ecb_ctz64 (uint64_t x);
-  ecb_function_ ecb_const int
-  ecb_ctz64 (uint64_t x)
+  ecb_function_ ecb_const int ecb_ctz64 (uint64_t x)
   {
 #if 1400 <= _MSC_VER && (_M_X64 || _M_IA64 || _M_ARM)
     unsigned long r;
@@ -534,8 +532,7 @@ typedef int ecb_bool;
   }
 
   ecb_function_ ecb_const int ecb_clz32 (uint32_t x);
-  ecb_function_ ecb_const int
-  ecb_clz32 (uint32_t x)
+  ecb_function_ ecb_const int ecb_clz32 (uint32_t x)
   {
 #if 1400 <= _MSC_VER && (_M_IX86 || _M_X64 || _M_IA64 || _M_ARM)
     unsigned long r;
@@ -570,8 +567,7 @@ typedef int ecb_bool;
   }
 
   ecb_function_ ecb_const int ecb_clz64 (uint64_t x);
-  ecb_function_ ecb_const int
-  ecb_clz64 (uint64_t x)
+  ecb_function_ ecb_const int ecb_clz64 (uint64_t x)
   {
 #if 1400 <= _MSC_VER && (_M_X64 || _M_IA64 || _M_ARM)
     unsigned long r;
@@ -669,8 +665,7 @@ ecb_function_ ecb_const uint32_t ecb_bitrev32 (uint32_t x)
 }
 
 ecb_function_ ecb_const int ecb_popcount64 (uint64_t x);
-ecb_function_ ecb_const int
-ecb_popcount64 (uint64_t x)
+ecb_function_ ecb_const int ecb_popcount64 (uint64_t x)
 {
   /* popcount64 is only available on 64 bit cpus as gcc builtin. */
   /* also, gcc/clang make this surprisingly difficult to use */
@@ -752,22 +747,19 @@ inline uint64_t ecb_rotr (uint64_t v, unsigned int count) { return ecb_rotr64 (v
   #define ecb_bswap64(x) ((uint64_t)_byteswap_uint64 ((uint64_t)(x)))
 #else
   ecb_function_ ecb_const uint16_t ecb_bswap16 (uint16_t x);
-  ecb_function_ ecb_const uint16_t
-  ecb_bswap16 (uint16_t x)
+  ecb_function_ ecb_const uint16_t ecb_bswap16 (uint16_t x)
   {
     return ecb_rotl16 (x, 8);
   }
 
   ecb_function_ ecb_const uint32_t ecb_bswap32 (uint32_t x);
-  ecb_function_ ecb_const uint32_t
-  ecb_bswap32 (uint32_t x)
+  ecb_function_ ecb_const uint32_t ecb_bswap32 (uint32_t x)
   {
     return (((uint32_t)ecb_bswap16 (x)) << 16) | ecb_bswap16 (x >> 16);
   }
 
   ecb_function_ ecb_const uint64_t ecb_bswap64 (uint64_t x);
-  ecb_function_ ecb_const uint64_t
-  ecb_bswap64 (uint64_t x)
+  ecb_function_ ecb_const uint64_t ecb_bswap64 (uint64_t x)
   {
     return (((uint64_t)ecb_bswap32 (x)) << 32) | ecb_bswap32 (x >> 32);
   }
@@ -785,8 +777,7 @@ inline uint64_t ecb_rotr (uint64_t v, unsigned int count) { return ecb_rotr64 (v
 #define ecb_assume(cond) if (!(cond)) ecb_unreachable (); else 0
 
 ecb_inline ecb_const uint32_t ecb_byteorder_helper (void);
-ecb_inline ecb_const uint32_t
-ecb_byteorder_helper (void)
+ecb_inline ecb_const uint32_t ecb_byteorder_helper (void)
 {
   /* the union code still generates code under pressure in gcc, */
   /* but less than using pointers, and always seems to */
@@ -1037,8 +1028,8 @@ ecb_inline uint64_t ecb_gray_decode (uint64_t g) { return ecb_gray_decode64 (g);
 
 /* algorithm from the book Hacker's Delight, modified to not */
 /* run into undefined behaviour for n==16 */
-static uint32_t
-ecb_hilbert2d_index_to_coord32 (int n, uint32_t s)
+static uint32_t ecb_hilbert2d_index_to_coord32 (int n, uint32_t s);
+static uint32_t ecb_hilbert2d_index_to_coord32 (int n, uint32_t s)
 {
   uint32_t comp, swap, cs, t, sr;
 
@@ -1082,8 +1073,8 @@ ecb_hilbert2d_index_to_coord32 (int n, uint32_t s)
 }
 
 /* 64 bit, a straightforward extension to the 32 bit case */
-static uint64_t
-ecb_hilbert2d_index_to_coord64 (int n, uint64_t s)
+static uint64_t ecb_hilbert2d_index_to_coord64 (int n, uint64_t s);
+static uint64_t ecb_hilbert2d_index_to_coord64 (int n, uint64_t s)
 {
   uint64_t comp, swap, cs, t, sr;
 
@@ -1131,8 +1122,8 @@ ecb_hilbert2d_index_to_coord64 (int n, uint64_t s)
 /* algorithm from the book Hacker's Delight, but a similar algorithm*/
 /* is given in https://doi.org/10.1002/spe.4380160103 */
 /* this has been slightly improved over the original version */
-ecb_function_ uint32_t
-ecb_hilbert2d_coord_to_index32 (int n, uint32_t xy)
+ecb_function_ uint32_t ecb_hilbert2d_coord_to_index32 (int n, uint32_t xy);
+ecb_function_ uint32_t ecb_hilbert2d_coord_to_index32 (int n, uint32_t xy)
 {
   uint32_t row;
   uint32_t state = 0;
@@ -1156,8 +1147,8 @@ ecb_hilbert2d_coord_to_index32 (int n, uint32_t xy)
 }
 
 /* 64 bit, essentially the same as 32 bit */
-ecb_function_ uint64_t
-ecb_hilbert2d_coord_to_index64 (int n, uint64_t xy)
+ecb_function_ uint64_t ecb_hilbert2d_coord_to_index64 (int n, uint64_t xy);
+ecb_function_ uint64_t ecb_hilbert2d_coord_to_index64 (int n, uint64_t xy)
 {
   uint32_t row;
   uint32_t state = 0;
@@ -1224,8 +1215,7 @@ ecb_hilbert2d_coord_to_index64 (int n, uint64_t xy)
 /* IEEE 754-2008 half float conversions */
 
 ecb_function_ ecb_const uint32_t ecb_binary16_to_binary32 (uint32_t x);
-ecb_function_ ecb_const uint32_t
-ecb_binary16_to_binary32 (uint32_t x)
+ecb_function_ ecb_const uint32_t ecb_binary16_to_binary32 (uint32_t x)
 {
   unsigned int s = (x & 0x8000) << (31 - 15);
   int          e = (x >> 10) & 0x001f;
@@ -1256,8 +1246,7 @@ ecb_binary16_to_binary32 (uint32_t x)
 }
 
 ecb_function_ ecb_const uint16_t ecb_binary32_to_binary16 (uint32_t x);
-ecb_function_ ecb_const uint16_t
-ecb_binary32_to_binary16 (uint32_t x)
+ecb_function_ ecb_const uint16_t ecb_binary32_to_binary16 (uint32_t x)
 {
   unsigned int s =  (x >> 16) & 0x00008000; /* sign bit, the easy part */
   int          e = ((x >> 23) & 0x000000ff) - (127 - 15); /* the desired exponent */
@@ -1408,8 +1397,8 @@ ecb_i2a_def (09, ptr, v, uint64_t, 56,   100000000, 1)
 #define ECB_I2A_U64_DIGITS 21
 #define ECB_I2A_MAX_DIGITS 21
 
-ecb_inline char *
-ecb_i2a_u32 (char *ptr, uint32_t u)
+ecb_function_ char * ecb_i2a_u32 (char *ptr, uint32_t u)
+ecb_function_ char * ecb_i2a_u32 (char *ptr, uint32_t u)
 {
   #if ECB_64BIT_NATIVE
     if (ecb_expect_true (u <= ECB_I2A_MAX_X10))
@@ -1449,8 +1438,8 @@ ecb_i2a_u32 (char *ptr, uint32_t u)
   return ptr;
 }
 
-ecb_inline char *
-ecb_i2a_i32 (char *ptr, int32_t v)
+ecb_function_ char * ecb_i2a_i32 (char *ptr, int32_t v);
+ecb_function_ char * ecb_i2a_i32 (char *ptr, int32_t v)
 {
   *ptr = '-'; ptr += v < 0;
   uint32_t u = v < 0 ? -(uint32_t)v : v;
@@ -1464,8 +1453,8 @@ ecb_i2a_i32 (char *ptr, int32_t v)
   return ptr;
 }
 
-ecb_inline char *
-ecb_i2a_u64 (char *ptr, uint64_t u)
+ecb_function_ char * ecb_i2a_u64 (char *ptr, uint64_t u);
+ecb_function_ char * ecb_i2a_u64 (char *ptr, uint64_t u)
 {
   #if ECB_64BIT_NATIVE
     if (ecb_expect_true (u <= ECB_I2A_MAX_X10))
@@ -1505,8 +1494,8 @@ ecb_i2a_u64 (char *ptr, uint64_t u)
   return ptr;
 }
 
-ecb_inline char *
-ecb_i2a_i64 (char *ptr, int64_t v)
+ecb_function_ char * ecb_i2a_i64 (char *ptr, int64_t v)
+ecb_function_ char * ecb_i2a_i64 (char *ptr, int64_t v)
 {
   *ptr = '-'; ptr += v < 0;
   uint64_t u = v < 0 ? -(uint64_t)v : v;
@@ -1593,8 +1582,7 @@ ecb_i2a_i64 (char *ptr, int64_t v)
 
   /* convert a float to ieee single/binary32 */
   ecb_function_ ecb_const uint32_t ecb_float_to_binary32 (float x);
-  ecb_function_ ecb_const uint32_t
-  ecb_float_to_binary32 (float x)
+  ecb_function_ ecb_const uint32_t ecb_float_to_binary32 (float x)
   {
     uint32_t r;
 
@@ -1633,8 +1621,7 @@ ecb_i2a_i64 (char *ptr, int64_t v)
 
   /* converts an ieee single/binary32 to a float */
   ecb_function_ ecb_const float ecb_binary32_to_float (uint32_t x);
-  ecb_function_ ecb_const float
-  ecb_binary32_to_float (uint32_t x)
+  ecb_function_ ecb_const float ecb_binary32_to_float (uint32_t x)
   {
     float r;
 
@@ -1663,8 +1650,7 @@ ecb_i2a_i64 (char *ptr, int64_t v)
 
   /* convert a double to ieee double/binary64 */
   ecb_function_ ecb_const uint64_t ecb_double_to_binary64 (double x);
-  ecb_function_ ecb_const uint64_t
-  ecb_double_to_binary64 (double x)
+  ecb_function_ ecb_const uint64_t ecb_double_to_binary64 (double x)
   {
     uint64_t r;
 
@@ -1703,8 +1689,7 @@ ecb_i2a_i64 (char *ptr, int64_t v)
 
   /* converts an ieee double/binary64 to a double */
   ecb_function_ ecb_const double ecb_binary64_to_double (uint64_t x);
-  ecb_function_ ecb_const double
-  ecb_binary64_to_double (uint64_t x)
+  ecb_function_ ecb_const double ecb_binary64_to_double (uint64_t x)
   {
     double r;
 
@@ -1733,16 +1718,14 @@ ecb_i2a_i64 (char *ptr, int64_t v)
 
   /* convert a float to ieee half/binary16 */
   ecb_function_ ecb_const uint16_t ecb_float_to_binary16 (float x);
-  ecb_function_ ecb_const uint16_t
-  ecb_float_to_binary16 (float x)
+  ecb_function_ ecb_const uint16_t ecb_float_to_binary16 (float x)
   {
     return ecb_binary32_to_binary16 (ecb_float_to_binary32 (x));
   }
 
   /* convert an ieee half/binary16 to float */
   ecb_function_ ecb_const float ecb_binary16_to_float (uint16_t x);
-  ecb_function_ ecb_const float
-  ecb_binary16_to_float (uint16_t x)
+  ecb_function_ ecb_const float ecb_binary16_to_float (uint16_t x)
   {
     return ecb_binary32_to_float (ecb_binary16_to_binary32 (x));
   }
