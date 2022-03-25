@@ -360,7 +360,7 @@ typedef int ecb_bool;
 /* This marks larger functions that do not neccessarily need to be inlined */
 /* The idea is to possibly compile the header twice, */
 /* once exposing only the declarations, another time to define external functions */
-/* TODO: possibly static would be best for these at the moment? */
+/* TODO: popssibly static would be best for these at the moment? */
 #define ecb_function_ ecb_inline
 
 #if ECB_GCC_VERSION(3,1) || ECB_CLANG_VERSION(2,8)
@@ -1037,8 +1037,8 @@ ecb_inline uint64_t ecb_gray_decode (uint64_t g) { return ecb_gray_decode64 (g);
 
 /* algorithm from the book Hacker's Delight, modified to not */
 /* run into undefined behaviour for n==16 */
-static uint32_t ecb_hilbert2d_index_to_coord32 (int n, uint32_t s);
-static uint32_t ecb_hilbert2d_index_to_coord32 (int n, uint32_t s)
+static uint32_t
+ecb_hilbert2d_index_to_coord32 (int n, uint32_t s)
 {
   uint32_t comp, swap, cs, t, sr;
 
@@ -1082,8 +1082,8 @@ static uint32_t ecb_hilbert2d_index_to_coord32 (int n, uint32_t s)
 }
 
 /* 64 bit, a straightforward extension to the 32 bit case */
-static uint64_t ecb_hilbert2d_index_to_coord64 (int n, uint64_t s);
-static uint64_t ecb_hilbert2d_index_to_coord64 (int n, uint64_t s)
+static uint64_t
+ecb_hilbert2d_index_to_coord64 (int n, uint64_t s)
 {
   uint64_t comp, swap, cs, t, sr;
 
@@ -1131,8 +1131,8 @@ static uint64_t ecb_hilbert2d_index_to_coord64 (int n, uint64_t s)
 /* algorithm from the book Hacker's Delight, but a similar algorithm*/
 /* is given in https://doi.org/10.1002/spe.4380160103 */
 /* this has been slightly improved over the original version */
-ecb_function_ uint32_t ecb_hilbert2d_coord_to_index32 (int n, uint32_t xy);
-ecb_function_ uint32_t ecb_hilbert2d_coord_to_index32 (int n, uint32_t xy)
+ecb_function_ uint32_t
+ecb_hilbert2d_coord_to_index32 (int n, uint32_t xy)
 {
   uint32_t row;
   uint32_t state = 0;
@@ -1156,8 +1156,8 @@ ecb_function_ uint32_t ecb_hilbert2d_coord_to_index32 (int n, uint32_t xy)
 }
 
 /* 64 bit, essentially the same as 32 bit */
-ecb_function_ uint64_t ecb_hilbert2d_coord_to_index64 (int n, uint64_t xy);
-ecb_function_ uint64_t ecb_hilbert2d_coord_to_index64 (int n, uint64_t xy)
+ecb_function_ uint64_t
+ecb_hilbert2d_coord_to_index64 (int n, uint64_t xy)
 {
   uint32_t row;
   uint32_t state = 0;
