@@ -1397,7 +1397,7 @@ ecb_i2a_def (09, ptr, v, uint64_t, 56,   100000000, 1)
 #define ECB_I2A_U64_DIGITS 21
 #define ECB_I2A_MAX_DIGITS 21
 
-ecb_function_ char * ecb_i2a_u32 (char *ptr, uint32_t u)
+ecb_function_ char * ecb_i2a_u32 (char *ptr, uint32_t u);
 ecb_function_ char * ecb_i2a_u32 (char *ptr, uint32_t u)
 {
   #if ECB_64BIT_NATIVE
@@ -1494,7 +1494,7 @@ ecb_function_ char * ecb_i2a_u64 (char *ptr, uint64_t u)
   return ptr;
 }
 
-ecb_function_ char * ecb_i2a_i64 (char *ptr, int64_t v)
+ecb_function_ char * ecb_i2a_i64 (char *ptr, int64_t v);
 ecb_function_ char * ecb_i2a_i64 (char *ptr, int64_t v)
 {
   *ptr = '-'; ptr += v < 0;
