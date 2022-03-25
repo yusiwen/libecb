@@ -3,6 +3,7 @@ TODO: returning packed coordinates, really
 TODO: support order=0?
 0x0001000c
 	- added ecb_hilbert2d function family.
+        - use __builtin_popcountl on 64 bit clang and gcc.
 
 0x0001000b
 	- added ecb_gray*_{de,en}code functions.

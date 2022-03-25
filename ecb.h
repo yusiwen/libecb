@@ -475,6 +475,8 @@ typedef int ecb_bool;
 #else
     int r = 0;
 
+    /* todo: use david seal's algorithm */
+
     x &= ~x + 1; /* this isolates the lowest bit */
 
 #if ECB_branchless_on_i386
@@ -593,13 +595,17 @@ ecb_function_ ecb_const uint32_t ecb_bitrev32 (uint32_t x)
   return x;
 }
 
-/* popcount64 is only available on 64 bit cpus as gcc builtin */
-/* so for this version we are lazy */
 ecb_function_ ecb_const int ecb_popcount64 (uint64_t x);
 ecb_function_ ecb_const int
 ecb_popcount64 (uint64_t x)
 {
+  /* popcount64 is only available on 64 bit cpus as gcc builtin. */
+  /* also, gcc/clang make this surprisingly difficult to use */
+#if __LP64__ && (ECB_GCC_VERSION(3,4) || ECB_CLANG_BUILTIN (__builtin_popcountl))
+  return __builtin_popcountl (x);
+#else
   return ecb_popcount32 (x) + ecb_popcount32 (x >> 32);
+#endif
 }
 
 ecb_inline ecb_const uint8_t  ecb_rotl8  (uint8_t  x, unsigned int count);
