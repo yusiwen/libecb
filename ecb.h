@@ -581,8 +581,7 @@ typedef int ecb_bool;
   }
 
   ecb_function_ ecb_const int ecb_popcount32 (uint32_t x);
-  ecb_function_ ecb_const int
-  ecb_popcount32 (uint32_t x)
+  ecb_function_ ecb_const int ecb_popcount32 (uint32_t x)
   {
     x -=  (x >> 1) & 0x55555555;
     x  = ((x >> 2) & 0x33333333) + (x & 0x33333333);
@@ -676,23 +675,14 @@ ecb_function_ ecb_const int ecb_popcount64 (uint64_t x)
 #endif
 }
 
-ecb_inline ecb_const uint8_t  ecb_rotl8  (uint8_t  x, unsigned int count);
-ecb_inline ecb_const uint8_t  ecb_rotr8  (uint8_t  x, unsigned int count);
-ecb_inline ecb_const uint16_t ecb_rotl16 (uint16_t x, unsigned int count);
-ecb_inline ecb_const uint16_t ecb_rotr16 (uint16_t x, unsigned int count);
-ecb_inline ecb_const uint32_t ecb_rotl32 (uint32_t x, unsigned int count);
-ecb_inline ecb_const uint32_t ecb_rotr32 (uint32_t x, unsigned int count);
-ecb_inline ecb_const uint64_t ecb_rotl64 (uint64_t x, unsigned int count);
-ecb_inline ecb_const uint64_t ecb_rotr64 (uint64_t x, unsigned int count);
-
-ecb_inline ecb_const uint8_t  ecb_rotl8  (uint8_t  x, unsigned int count) { return (x >> (-count &  7)) | (x << (count &  7)); }
-ecb_inline ecb_const uint8_t  ecb_rotr8  (uint8_t  x, unsigned int count) { return (x << (-count &  7)) | (x >> (count &  7)); }
-ecb_inline ecb_const uint16_t ecb_rotl16 (uint16_t x, unsigned int count) { return (x >> (-count & 15)) | (x << (count & 15)); }
-ecb_inline ecb_const uint16_t ecb_rotr16 (uint16_t x, unsigned int count) { return (x << (-count & 15)) | (x >> (count & 15)); }
-ecb_inline ecb_const uint32_t ecb_rotl32 (uint32_t x, unsigned int count) { return (x >> (-count & 31)) | (x << (count & 31)); }
-ecb_inline ecb_const uint32_t ecb_rotr32 (uint32_t x, unsigned int count) { return (x << (-count & 31)) | (x >> (count & 31)); }
-ecb_inline ecb_const uint64_t ecb_rotl64 (uint64_t x, unsigned int count) { return (x >> (-count & 63)) | (x << (count & 63)); }
-ecb_inline ecb_const uint64_t ecb_rotr64 (uint64_t x, unsigned int count) { return (x << (-count & 63)) | (x >> (count & 63)); }
+ecb_inline uint8_t  ecb_rotl8  (uint8_t  x, unsigned int count) { return (x >> (-count &  7)) | (x << (count &  7)); }
+ecb_inline uint8_t  ecb_rotr8  (uint8_t  x, unsigned int count) { return (x << (-count &  7)) | (x >> (count &  7)); }
+ecb_inline uint16_t ecb_rotl16 (uint16_t x, unsigned int count) { return (x >> (-count & 15)) | (x << (count & 15)); }
+ecb_inline uint16_t ecb_rotr16 (uint16_t x, unsigned int count) { return (x << (-count & 15)) | (x >> (count & 15)); }
+ecb_inline uint32_t ecb_rotl32 (uint32_t x, unsigned int count) { return (x >> (-count & 31)) | (x << (count & 31)); }
+ecb_inline uint32_t ecb_rotr32 (uint32_t x, unsigned int count) { return (x << (-count & 31)) | (x >> (count & 31)); }
+ecb_inline uint64_t ecb_rotl64 (uint64_t x, unsigned int count) { return (x >> (-count & 63)) | (x << (count & 63)); }
+ecb_inline uint64_t ecb_rotr64 (uint64_t x, unsigned int count) { return (x << (-count & 63)) | (x >> (count & 63)); }
 
 #if ECB_CPP
 
@@ -776,8 +766,8 @@ inline uint64_t ecb_rotr (uint64_t v, unsigned int count) { return ecb_rotr64 (v
 /* try to tell the compiler that some condition is definitely true */
 #define ecb_assume(cond) if (!(cond)) ecb_unreachable (); else 0
 
-ecb_inline ecb_const uint32_t ecb_byteorder_helper (void);
-ecb_inline ecb_const uint32_t ecb_byteorder_helper (void)
+ecb_inline uint32_t ecb_byteorder_helper (void);
+ecb_inline uint32_t ecb_byteorder_helper (void)
 {
   /* the union code still generates code under pressure in gcc, */
   /* but less than using pointers, and always seems to */
@@ -803,9 +793,7 @@ ecb_inline ecb_const uint32_t ecb_byteorder_helper (void)
 #endif
 }
 
-ecb_inline ecb_const ecb_bool ecb_big_endian    (void);
 ecb_inline ecb_const ecb_bool ecb_big_endian    (void) { return ecb_byteorder_helper () == 0x11223344; }
-ecb_inline ecb_const ecb_bool ecb_little_endian (void);
 ecb_inline ecb_const ecb_bool ecb_little_endian (void) { return ecb_byteorder_helper () == 0x44332211; }
 
 /*****************************************************************************/
@@ -882,8 +870,8 @@ template<typename T> inline void ecb_poke_le_u (void *ptr, T v) { return ecb_pok
 /* pointer/integer hashing */
 
 /* based on hash by Chris Wellons, https://nullprogram.com/blog/2018/07/31/ */
-ecb_function_ uint32_t ecb_mix32 (uint32_t v);
-ecb_function_ uint32_t ecb_mix32 (uint32_t v)
+ecb_function_ ecb_const uint32_t ecb_mix32 (uint32_t v);
+ecb_function_ ecb_const uint32_t ecb_mix32 (uint32_t v)
 {
   v ^= v >> 16; v *= 0x7feb352dU;
   v ^= v >> 15; v *= 0x846ca68bU;
@@ -891,8 +879,8 @@ ecb_function_ uint32_t ecb_mix32 (uint32_t v)
   return v;
 }
 
-ecb_function_ uint32_t ecb_unmix32 (uint32_t v);
-ecb_function_ uint32_t ecb_unmix32 (uint32_t v)
+ecb_function_ ecb_const uint32_t ecb_unmix32 (uint32_t v);
+ecb_function_ ecb_const uint32_t ecb_unmix32 (uint32_t v)
 {
   v ^= v >> 16          ; v *= 0x43021123U;
   v ^= v >> 15 ^ v >> 30; v *= 0x1d69e2a5U;
@@ -901,8 +889,8 @@ ecb_function_ uint32_t ecb_unmix32 (uint32_t v)
 }
 
 /* based on splitmix64, by Sebastiona Vigna, https://prng.di.unimi.it/splitmix64.c */
-ecb_function_ uint64_t ecb_mix64 (uint64_t v);
-ecb_function_ uint64_t ecb_mix64 (uint64_t v)
+ecb_function_ ecb_const uint64_t ecb_mix64 (uint64_t v);
+ecb_function_ ecb_const uint64_t ecb_mix64 (uint64_t v)
 {
   v ^= v >> 30; v *= 0xbf58476d1ce4e5b9U;
   v ^= v >> 27; v *= 0x94d049bb133111ebU;
@@ -910,8 +898,8 @@ ecb_function_ uint64_t ecb_mix64 (uint64_t v)
   return v;
 }
 
-ecb_function_ uint64_t ecb_unmix64 (uint64_t v);
-ecb_function_ uint64_t ecb_unmix64 (uint64_t v)
+ecb_function_ ecb_const uint64_t ecb_unmix64 (uint64_t v);
+ecb_function_ ecb_const uint64_t ecb_unmix64 (uint64_t v)
 {
   v ^= v >> 31 ^ v >> 62; v *= 0x319642b2d24d8ec3U;
   v ^= v >> 27 ^ v >> 54; v *= 0x96de1b173f119089U;
@@ -919,8 +907,8 @@ ecb_function_ uint64_t ecb_unmix64 (uint64_t v)
   return v;
 }
 
-ecb_function_ uintptr_t ecb_ptrmix (void *p);
-ecb_function_ uintptr_t ecb_ptrmix (void *p)
+ecb_function_ ecb_const uintptr_t ecb_ptrmix (void *p);
+ecb_function_ ecb_const uintptr_t ecb_ptrmix (void *p)
 {
   #if ECB_PTRSIZE <= 4
   return ecb_mix32 ((uint32_t)p);
@@ -929,8 +917,8 @@ ecb_function_ uintptr_t ecb_ptrmix (void *p)
   #endif
 }
 
-ecb_function_ void *ecb_ptrunmix (uintptr_t v);
-ecb_function_ void *ecb_ptrunmix (uintptr_t v)
+ecb_function_ ecb_const void *ecb_ptrunmix (uintptr_t v);
+ecb_function_ ecb_const void *ecb_ptrunmix (uintptr_t v)
 {
   #if ECB_PTRSIZE <= 4
   return (void *)ecb_unmix32 (v);
@@ -963,8 +951,8 @@ ecb_inline uint_fast16_t ecb_gray_encode16 (uint_fast16_t b) { return b ^ (b >> 
 ecb_inline uint_fast32_t ecb_gray_encode32 (uint_fast32_t b) { return b ^ (b >> 1); }
 ecb_inline uint_fast64_t ecb_gray_encode64 (uint_fast64_t b) { return b ^ (b >> 1); }
 
-ecb_function_ uint8_t ecb_gray_decode8 (uint8_t g);
-ecb_function_ uint8_t ecb_gray_decode8 (uint8_t g)
+ecb_function_ ecb_const uint8_t ecb_gray_decode8 (uint8_t g);
+ecb_function_ ecb_const uint8_t ecb_gray_decode8 (uint8_t g)
 {
   g ^= g >>  1;
   g ^= g >>  2;
@@ -973,8 +961,8 @@ ecb_function_ uint8_t ecb_gray_decode8 (uint8_t g)
   return g;
 }
 
-ecb_function_ uint16_t ecb_gray_decode16 (uint16_t g);
-ecb_function_ uint16_t ecb_gray_decode16 (uint16_t g)
+ecb_function_ ecb_const uint16_t ecb_gray_decode16 (uint16_t g);
+ecb_function_ ecb_const uint16_t ecb_gray_decode16 (uint16_t g)
 {
   g ^= g >>  1;
   g ^= g >>  2;
@@ -984,8 +972,8 @@ ecb_function_ uint16_t ecb_gray_decode16 (uint16_t g)
   return g;
 }
 
-ecb_function_ uint32_t ecb_gray_decode32 (uint32_t g);
-ecb_function_ uint32_t ecb_gray_decode32 (uint32_t g)
+ecb_function_ ecb_const uint32_t ecb_gray_decode32 (uint32_t g);
+ecb_function_ ecb_const uint32_t ecb_gray_decode32 (uint32_t g)
 {
   g ^= g >>  1;
   g ^= g >>  2;
@@ -996,8 +984,8 @@ ecb_function_ uint32_t ecb_gray_decode32 (uint32_t g)
   return g;
 }
 
-ecb_function_ uint64_t ecb_gray_decode64 (uint64_t g);
-ecb_function_ uint64_t ecb_gray_decode64 (uint64_t g)
+ecb_function_ ecb_const uint64_t ecb_gray_decode64 (uint64_t g);
+ecb_function_ ecb_const uint64_t ecb_gray_decode64 (uint64_t g)
 {
   g ^= g >>  1;
   g ^= g >>  2;
@@ -1028,8 +1016,8 @@ ecb_inline uint64_t ecb_gray_decode (uint64_t g) { return ecb_gray_decode64 (g);
 
 /* algorithm from the book Hacker's Delight, modified to not */
 /* run into undefined behaviour for n==16 */
-static uint32_t ecb_hilbert2d_index_to_coord32 (int n, uint32_t s);
-static uint32_t ecb_hilbert2d_index_to_coord32 (int n, uint32_t s)
+ecb_function_ ecb_const uint32_t ecb_hilbert2d_index_to_coord32 (int n, uint32_t s);
+ecb_function_ ecb_const uint32_t ecb_hilbert2d_index_to_coord32 (int n, uint32_t s)
 {
   uint32_t comp, swap, cs, t, sr;
 
@@ -1073,8 +1061,8 @@ static uint32_t ecb_hilbert2d_index_to_coord32 (int n, uint32_t s)
 }
 
 /* 64 bit, a straightforward extension to the 32 bit case */
-static uint64_t ecb_hilbert2d_index_to_coord64 (int n, uint64_t s);
-static uint64_t ecb_hilbert2d_index_to_coord64 (int n, uint64_t s)
+ecb_function_ ecb_const uint64_t ecb_hilbert2d_index_to_coord64 (int n, uint64_t s);
+ecb_function_ ecb_const uint64_t ecb_hilbert2d_index_to_coord64 (int n, uint64_t s)
 {
   uint64_t comp, swap, cs, t, sr;
 
@@ -1122,8 +1110,8 @@ static uint64_t ecb_hilbert2d_index_to_coord64 (int n, uint64_t s)
 /* algorithm from the book Hacker's Delight, but a similar algorithm*/
 /* is given in https://doi.org/10.1002/spe.4380160103 */
 /* this has been slightly improved over the original version */
-ecb_function_ uint32_t ecb_hilbert2d_coord_to_index32 (int n, uint32_t xy);
-ecb_function_ uint32_t ecb_hilbert2d_coord_to_index32 (int n, uint32_t xy)
+ecb_function_ ecb_const uint32_t ecb_hilbert2d_coord_to_index32 (int n, uint32_t xy);
+ecb_function_ ecb_const uint32_t ecb_hilbert2d_coord_to_index32 (int n, uint32_t xy)
 {
   uint32_t row;
   uint32_t state = 0;
@@ -1147,8 +1135,8 @@ ecb_function_ uint32_t ecb_hilbert2d_coord_to_index32 (int n, uint32_t xy)
 }
 
 /* 64 bit, essentially the same as 32 bit */
-ecb_function_ uint64_t ecb_hilbert2d_coord_to_index64 (int n, uint64_t xy);
-ecb_function_ uint64_t ecb_hilbert2d_coord_to_index64 (int n, uint64_t xy)
+ecb_function_ ecb_const uint64_t ecb_hilbert2d_coord_to_index64 (int n, uint64_t xy);
+ecb_function_ ecb_const uint64_t ecb_hilbert2d_coord_to_index64 (int n, uint64_t xy)
 {
   uint32_t row;
   uint32_t state = 0;
