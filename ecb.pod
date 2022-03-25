@@ -623,6 +623,22 @@ For example:
   ecb_ctz32 (3) = 0
   ecb_ctz32 (6) = 1
 
+=item int ecb_clz32 (uint32_t x)
+
+=item int ecb_clz64 (uint64_t x)
+
+Counts the number of leading zero bits in C<x>. If C<x> is 0 the result is
+undefined.
+
+It is often simpler to use one of the C<ecb_ld*> functions instead, whose
+result only depends on the value and not the size of the type. This is
+also the reason why there is no C++ overload.
+
+For example:
+
+  ecb_clz32 (3) = 30
+  ecb_clz32 (6) = 29
+
 =item bool ecb_is_pot32 (uint32_t x)
 
 =item bool ecb_is_pot64 (uint32_t x)
@@ -750,13 +766,13 @@ Overloaded C++ rotl/rotr functions.
 
 C<T> must be one of C<uint8_t>, C<uint16_t>, C<uint32_t> or C<uint64_t>.
 
-=item uint_fast8_t  ecb_gray8_encode  (uint_fast8_t  b)
+=item uint_fast8_t  ecb_gray_encode8  (uint_fast8_t  b)
 
-=item uint_fast16_t ecb_gray16_encode (uint_fast16_t b)
+=item uint_fast16_t ecb_gray_encode16 (uint_fast16_t b)
 
-=item uint_fast32_t ecb_gray32_encode (uint_fast32_t b)
+=item uint_fast32_t ecb_gray_encode32 (uint_fast32_t b)
 
-=item uint_fast64_t ecb_gray64_encode (uint_fast64_t b)
+=item uint_fast64_t ecb_gray_encode64 (uint_fast64_t b)
 
 Encode an unsigned into its corresponding (reflective) gray code - the
 kind of gray code meant when just talking about "gray code". These
@@ -767,13 +783,13 @@ no need to use a smaller type, as long as your CPU can handle it natively.
 
 Overloaded C++ version of the above, for C<uint{8,16,32,64}_t>.
 
-=item uint_fast8_t  ecb_gray8_decode  (uint_fast8_t  b)
+=item uint_fast8_t  ecb_gray_decode8  (uint_fast8_t  b)
 
-=item uint_fast16_t ecb_gray16_decode (uint_fast16_t b)
+=item uint_fast16_t ecb_gray_decode16 (uint_fast16_t b)
 
-=item uint_fast32_t ecb_gray32_decode (uint_fast32_t b)
+=item uint_fast32_t ecb_gray_decode32 (uint_fast32_t b)
 
-=item uint_fast64_t ecb_gray64_decode (uint_fast64_t b)
+=item uint_fast64_t ecb_gray_decode64 (uint_fast64_t b)
 
 Decode a gray code back into linear index form (the reverse of
 C<ecb_gray*_encode>. Unlike the encode functions, the decode functions
