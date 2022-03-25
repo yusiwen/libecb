@@ -456,13 +456,14 @@ typedef int ecb_bool;
     || (ECB_CLANG_BUILTIN(__builtin_clz) && ECB_CLANG_BUILTIN(__builtin_clzll) \
         && ECB_CLANG_BUILTIN(__builtin_ctz) && ECB_CLANG_BUILTIN(__builtin_ctzll) \
         && ECB_CLANG_BUILTIN(__builtin_popcount))
-  /* we assume int == 32 bit, long == 32 or 64 bit and long long == 64 bit */
-  #define ecb_ld32(x)      (__builtin_clz      (x) ^ 31)
-  #define ecb_ld64(x)      (__builtin_clzll    (x) ^ 63)
-  #define ecb_ctz32(x)      __builtin_ctz      (x)
-  #define ecb_ctz64(x)      __builtin_ctzll    (x)
+  #define ecb_ctz32(x)      __builtin_ctz (x)
+  #define ecb_ctz64(x)      (__SIZEOF_LONG__ == 64 ? __builtin_ctzl (x) : __builtin_ctzll (x))
+  #define ecb_clz32(x)      __builtin_clz (x)
+  #define ecb_clz64(x)      (__SIZEOF_LONG__ == 64 ? __builtin_clzl (x) : __builtin_clzll (x))
+  #define ecb_ld32(x)       (ecb_clz32 (x) ^ 31)
+  #define ecb_ld64(x)       (ecb_clz64 (x) ^ 63)
   #define ecb_popcount32(x) __builtin_popcount (x)
-  /* no popcountll */
+  /* ecb_popcount64 is more difficult, see below */
 #else
   ecb_function_ ecb_const int ecb_ctz32 (uint32_t x);
   ecb_function_ ecb_const int
