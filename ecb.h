@@ -697,9 +697,6 @@ ecb_inline ecb_const uint64_t ecb_rotr64 (uint64_t x, unsigned int count) { retu
 
 #if ECB_CPP
 
-inline uint32_t ecb_clz (uint32_t v) { return ecb_clz32 (v); }
-inline uint64_t ecb_clz (uint64_t v) { return ecb_clz64 (v); }
-
 inline uint8_t  ecb_ctz (uint8_t  v) { return ecb_ctz32 (v); }
 inline uint16_t ecb_ctz (uint16_t v) { return ecb_ctz32 (v); }
 inline uint32_t ecb_ctz (uint32_t v) { return ecb_ctz32 (v); }

@@ -627,16 +627,12 @@ For example:
 
 =item int ecb_clz64 (uint64_t x)
 
-=item int ecb_clz (T x) [C++]
-
 Counts the number of leading zero bits in C<x>. If C<x> is 0 the result is
 undefined.
 
-The overloaded C++ C<ecb_clz> function supports C<uint32_t> and
-C<uint64_t> types only.
-
-It is often simpler to use one of the C<ecb_ld*> functions instead, whoise
-result only depends on the value and not the size of the type.
+It is often simpler to use one of the C<ecb_ld*> functions instead, whose
+result only depends on the value and not the size of the type. This is
+also the reason why there is no C++ overload.
 
 For example:
 
