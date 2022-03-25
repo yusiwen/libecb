@@ -602,7 +602,7 @@ ecb_popcount64 (uint64_t x)
 {
   /* popcount64 is only available on 64 bit cpus as gcc builtin. */
   /* also, gcc/clang make this surprisingly difficult to use */
-#if __LP64__ && (ECB_GCC_VERSION(3,4) || ECB_CLANG_BUILTIN (__builtin_popcountl))
+#if (__SIZEOF_LONG__ == 8) && (ECB_GCC_VERSION(3,4) || ECB_CLANG_BUILTIN (__builtin_popcountl))
   return __builtin_popcountl (x);
 #else
   return ecb_popcount32 (x) + ecb_popcount32 (x >> 32);
