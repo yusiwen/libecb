@@ -357,6 +357,8 @@ typedef int ecb_bool;
 #define ECB_STRINGIFY(a) ECB_STRINGIFY_(a)
 #define ECB_STRINGIFY_EXPR(expr) ((expr), ECB_STRINGIFY_ (expr))
 
+/* This marks larger functions that do not neccessarily need to be inlined */
+/* TODO: popssibly static would be best for these at the moment? */
 #define ecb_function_ ecb_inline
 
 #if ECB_GCC_VERSION(3,1) || ECB_CLANG_VERSION(2,8)
@@ -963,12 +965,13 @@ inline T *ecb_ptrunmix (uintptr_t v)
 /*****************************************************************************/
 /* gray code */
 
-ecb_function_ uint_fast8_t  ecb_gray8_encode  (uint_fast8_t  b) { return b ^ (b >> 1); }
-ecb_function_ uint_fast16_t ecb_gray16_encode (uint_fast16_t b) { return b ^ (b >> 1); }
-ecb_function_ uint_fast32_t ecb_gray32_encode (uint_fast32_t b) { return b ^ (b >> 1); }
-ecb_function_ uint_fast64_t ecb_gray64_encode (uint_fast64_t b) { return b ^ (b >> 1); }
+ecb_inline uint_fast8_t  ecb_gray_encode8  (uint_fast8_t  b) { return b ^ (b >> 1); }
+ecb_inline uint_fast16_t ecb_gray_encode16 (uint_fast16_t b) { return b ^ (b >> 1); }
+ecb_inline uint_fast32_t ecb_gray_encode32 (uint_fast32_t b) { return b ^ (b >> 1); }
+ecb_inline uint_fast64_t ecb_gray_encode64 (uint_fast64_t b) { return b ^ (b >> 1); }
 
-ecb_function_ uint8_t ecb_gray8_decode (uint8_t g)
+ecb_function_ uint8_t ecb_gray_decode8 (uint8_t g);
+ecb_function_ uint8_t ecb_gray_decode8 (uint8_t g)
 {
   g ^= g >>  1;
   g ^= g >>  2;
@@ -977,7 +980,8 @@ ecb_function_ uint8_t ecb_gray8_decode (uint8_t g)
   return g;
 }
 
-ecb_function_ uint16_t ecb_gray16_decode (uint16_t g)
+ecb_function_ uint16_t ecb_gray_decode16 (uint16_t g);
+ecb_function_ uint16_t ecb_gray_decode16 (uint16_t g)
 {
   g ^= g >>  1;
   g ^= g >>  2;
@@ -987,7 +991,8 @@ ecb_function_ uint16_t ecb_gray16_decode (uint16_t g)
   return g;
 }
 
-ecb_function_ uint32_t ecb_gray32_decode (uint32_t g)
+ecb_function_ uint32_t ecb_gray_decode32 (uint32_t g);
+ecb_function_ uint32_t ecb_gray_decode32 (uint32_t g)
 {
   g ^= g >>  1;
   g ^= g >>  2;
@@ -998,7 +1003,8 @@ ecb_function_ uint32_t ecb_gray32_decode (uint32_t g)
   return g;
 }
 
-ecb_function_ uint64_t ecb_gray64_decode (uint64_t g)
+ecb_function_ uint64_t ecb_gray_decode64 (uint64_t g);
+ecb_function_ uint64_t ecb_gray_decode64 (uint64_t g)
 {
   g ^= g >>  1;
   g ^= g >>  2;
@@ -1012,15 +1018,15 @@ ecb_function_ uint64_t ecb_gray64_decode (uint64_t g)
 
 #if ECB_CPP
 
-ecb_function_ uint8_t  ecb_gray_encode  (uint8_t  b) { return ecb_gray8_encode  (b); }
-ecb_function_ uint16_t ecb_gray_encode  (uint16_t b) { return ecb_gray16_encode (b); }
-ecb_function_ uint32_t ecb_gray_encode  (uint32_t b) { return ecb_gray32_encode (b); }
-ecb_function_ uint64_t ecb_gray_encode  (uint64_t b) { return ecb_gray64_encode (b); }
+ecb_inline uint8_t  ecb_gray_encode (uint8_t  b) { return ecb_gray_encode8  (b); }
+ecb_inline uint16_t ecb_gray_encode (uint16_t b) { return ecb_gray_encode16 (b); }
+ecb_inline uint32_t ecb_gray_encode (uint32_t b) { return ecb_gray_encode32 (b); }
+ecb_inline uint64_t ecb_gray_encode (uint64_t b) { return ecb_gray_encode64 (b); }
 
-ecb_function_ uint8_t  ecb_gray_decode  (uint8_t  g) { return ecb_gray8_decode  (g); }
-ecb_function_ uint16_t ecb_gray_decode  (uint16_t g) { return ecb_gray16_decode (g); }
-ecb_function_ uint32_t ecb_gray_decode  (uint32_t g) { return ecb_gray32_decode (g); }
-ecb_function_ uint64_t ecb_gray_decode  (uint64_t g) { return ecb_gray64_decode (g); }
+ecb_inline uint8_t  ecb_gray_decode (uint8_t  g) { return ecb_gray_decode8  (g); }
+ecb_inline uint16_t ecb_gray_decode (uint16_t g) { return ecb_gray_decode16 (g); }
+ecb_inline uint32_t ecb_gray_decode (uint32_t g) { return ecb_gray_decode32 (g); }
+ecb_inline uint64_t ecb_gray_decode (uint64_t g) { return ecb_gray_decode64 (g); }
 
 #endif
 
