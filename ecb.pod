@@ -14,12 +14,12 @@ Its homepage can be found here:
 
 It mainly provides a number of wrappers around many compiler built-ins,
 together with replacement functions for other compilers. In addition
-to this, it provides a number of other lowlevel C utilities, such as
+to this, it provides a number of other low-level C utilities, such as
 endianness detection, byte swapping or bit rotations.
 
 Or in other words, things that should be built into any standard C
 system, but aren't, implemented as efficient as possible with GCC (clang,
-msvc...), and still correct with other compilers.
+MSVC...), and still correct with other compilers.
 
 More might come.
 
@@ -58,7 +58,7 @@ refers to any kind of boolean value, not a specific type.
 
 =head2 TYPES / TYPE SUPPORT
 
-ecb.h makes sure that the following types are defined (in the expected way):
+F<ecb.h> makes sure that the following types are defined (in the expected way):
 
    int8_t       uint8_
    int16_t      uint16_t
@@ -172,7 +172,7 @@ Evaluates to a true value (suitable for both preprocessor and C code
 testing) if 64 bit integer types on this architecture are evaluated
 "natively", that is, with similar speeds as 32 bit integers. While 64 bit
 integer support is very common (and in fact required by libecb), 32 bit
-cpus have to emulate operations on them, so you might want to avoid them.
+CPUs have to emulate operations on them, so you might want to avoid them.
 
 =item ECB_AMD64, ECB_AMD64_X32
 
@@ -276,7 +276,7 @@ Expands either to (a compiler-specific equivalent of) C<static inline> or
 to just C<static>, if inline isn't supported. It should be used to declare
 functions that should be inlined, for code size or speed reasons.
 
-Example: inline this function, it surely will reduce codesize.
+Example: inline this function, it surely will reduce code size.
 
    ecb_inline int
    negmul (int a, int b)
@@ -386,7 +386,7 @@ cache.
 
 In addition to placing cold functions together (or at least away from hot
 functions), this knowledge can be used in other ways, for example, the
-function will be optimised for size, as opposed to speed, and codepaths
+function will be optimised for size, as opposed to speed, and code paths
 leading to calls to those functions can automatically be marked as if
 C<ecb_expect_false> had been used to reach them.
 
@@ -550,8 +550,8 @@ function can be used to implement C<ecb_assume> or similar functionality.
 
 =item ecb_prefetch (addr, rw, locality)
 
-Tells the compiler to try to prefetch memory at the given C<addr>ess
-for either reading (C<rw> = 0) or writing (C<rw> = 1). A C<locality> of
+Tells the compiler to try to prefetch memory at the given I<addr>ess
+for either reading (I<rw> = 0) or writing (I<rw> = 1). A I<locality> of
 C<0> means that there will only be one access later, C<3> means that
 the data will likely be accessed very often, and values in between mean
 something... in between. The memory pointed to by the address does not
@@ -786,10 +786,102 @@ Overloaded C++ version of the above, for C<uint{8,16,32,64}_t>.
 
 =back
 
+=head2 HILBERT CURVES
+
+These functions deal with (square, pseudo) Hilbert curves. The parameter
+I<order> indicates the size of the square and is specified in bits, that
+means for order C<8>, the coordinates range from C<0>..C<255>, and the
+curve index ranges from C<0>..C<65535>.
+
+The 32 bit variants of these functions map a 32 bit index to two 16 bit
+coordinates, stored in a 32 bit variable, where the high order bits are
+the x-coordinate, and the low order bits are the y-coordinate, thus,
+these functions map 32 bit linear index on the curve to a 32 bit packed
+coordinate pair, and vice versa.
+
+The 64 bit variants work similarly.
+
+The I<order> can go from C<1> to C<16> for the 32 bit curve, and C<1> to
+C<32> for the 64 bit curve.
+
+When going from one order to the next higher order, these functions
+replace the curve segments by smaller versions of the generating shape,
+while doubling the size (since they use integer coordinates), which is
+what you would expect mathematically. This means that the curve will be
+mirrored at the diagonal. If your goal is to simply cover more area while
+retaining existing point coordinates you should increase or decrease the
+I<order> by C<2> or, in the case of C<ecb_hilbert2d_index_to_coord>,
+simply specify the maximum I<order> of C<16> or C<32>, respectively, as
+these are constant-time.
+
+=over
+
+=item uint32_t ecb_hilbert2d_index_to_coord32 (int order, uint32_t index)
+
+=item uint64_t ecb_hilbert2d_index_to_coord64 (int order, uint64_t index)
+
+Map a point on a pseudo Hilbert curve from its linear distance from the
+origin on the curve to a x|y coordinate pair. The result is a packed
+coordinate pair, to get the actual x and < coordinates, you could do
+something like this:
+
+   uint32_t xy = ecb_hilbert2d_index_to_coord32 (16, 255);
+   uint16_t x = xy >> 16;
+   uint16_t y = xy & 0xffffU;
+
+   uint64_t xy = ecb_hilbert2d_index_to_coord64 (32, 255);
+   uint32_t x = xy >> 32;
+   uint32_t y = xy & 0xffffffffU;
+
+These functions work in constant time, so for many applications it is
+preferable to simply hard-code the order to the maximum (C<16> or C<32>).
+
+This (production-ready, i.e. never run) example generates an SVG image of
+an order 8 pseudo Hilbert curve:
+
+   printf ("<svg xmlns='http://www.w3.org/2000/svg' width='%d' height='%d'>\n", 64 * 8, 64 * 8);
+   printf ("<g transform='translate(4) scale(8)' stroke-width='0.25' stroke='black'>\n");
+   for (uint32_t i = 0; i < 64*64 - 1; ++i)
+     {
+       uint32_t p1 = ecb_hilbert2d_index_to_coord32 (6, i    );
+       uint32_t p2 = ecb_hilbert2d_index_to_coord32 (6, i + 1);
+       printf ("<line x1='%d' y1='%d' x2='%d' y2='%d'/>\n",
+         p1 >> 16, p1 & 0xffff,
+         p2 >> 16, p2 & 0xffff);
+     }
+   printf ("</g>\n");
+   printf ("</svg>\n");
+
+=item uint32_t ecb_hilbert2d_coord_to_index32 (int order, uint32_t xy)
+
+=item uint64_t ecb_hilbert2d_coord_to_index64 (int order, uint64_t xy)
+
+The reverse of C<ecb_hilbert2d_index_to_coord> - map a packed pair of
+coordinates to their linear index on the pseudo Hilbert curve of order
+I<order>.
+
+They are an exact inverse of the C<ecb_hilbert2d_coord_to_index> functions
+for the same I<order>:
+
+   assert (
+      u == ecb_hilbert2d_coord_to_index (32,
+             ecb_hilbert2d_index_to_coord32 (32,
+               u)));
+
+Packing coordinates is done the same way, as well, from I<x> and I<y>:
+
+   uint32_t xy = ((uint32_t)x << 16) | y; // for ecb_hilbert2d_coord_to_index32
+   uint64_t xy = ((uint64_t)x << 32) | y; // for ecb_hilbert2d_coord_to_index64
+
+Unlike C<ecb_hilbert2d_coord_to_index>, these functions are O(I<order>),
+so it is preferable to use the lowest possible order.
+
+=back
+
 =head2 BIT MIXING, HASHING
 
 Sometimes you have an integer and want to distribute its bits well, for
-example, to use it as a hash in a hashtable. A common example is pointer
+example, to use it as a hash in a hash table. A common example is pointer
 values, which often only have a limited range (e.g. low and high bits are
 often zero).
 
@@ -799,7 +891,7 @@ integer functions are exposed as well.
 
 As an added benefit, the functions are reversible, so if you find it
 convenient to store only the hash value, you can recover the original
-pointer from the hash ("unmix"), as long as your pinters are 32 or 64 bit
+pointer from the hash ("unmix"), as long as your pointers are 32 or 64 bit
 (if this isn't the case on your platform, drop us a note and we will add
 functions for other bit widths).
 
@@ -809,7 +901,7 @@ convenient.
 
 The underlying algorithm if subject to change, so currently these
 functions are not suitable for persistent hash tables, as their result
-value can change between diferent versions of libecb.
+value can change between different versions of libecb.
 
 =over
 
@@ -842,7 +934,7 @@ C++. Example:
 =item uint64_t ecb_mix64 (uint64_t v)
 
 Sometimes you don't have a pointer but an integer whose values are very
-badly distributed. In this case you cna sue these integer versions of the
+badly distributed. In this case you can use these integer versions of the
 mixing function. No C++ template is provided currently.
 
 =item uint32_t ecb_unmix32 (uint32_t v)
@@ -1012,7 +1104,7 @@ all of which hopefully makes them more useful in generic code.
 =item ecb_poke_le_u (void *ptr, T v)
 
 Again, similarly to their C counterparts, these functions store an
-unsigned 8, 16, 32 or z64 bit value to memory, with optional conversion to
+unsigned 8, 16, 32 or 64 bit value to memory, with optional conversion to
 big/little endian.
 
 C<T> must be one of C<uint8_t>, C<uint16_t>, C<uint32_t> or C<uint64_t>.
@@ -1026,11 +1118,11 @@ all of which hopefully makes them more useful in generic code.
 =head2 FAST INTEGER TO STRING
 
 Libecb defines a set of very fast integer to decimal string (or integer
-to ascii, short C<i2a>) functions.  These work by converting the integer
+to ASCII, short C<i2a>) functions.  These work by converting the integer
 to a fixed point representation and then successively multiplying out
 the topmost digits. Unlike some other, also very fast, libraries, ecb's
 algorithm should be completely branchless per digit, and does not rely on
-the presence of special cpu functions (such as clz).
+the presence of special CPU functions (such as C<clz>).
 
 There is a high level API that takes an C<int32_t>, C<uint32_t>,
 C<int64_t> or C<uint64_t> as argument, and a low-level API, which is
@@ -1098,7 +1190,7 @@ the leading digit has limited range (C<_xN>).
 
 None of the functions deal with negative numbers.
 
-Example: convert an IP address in an u32 into dotted-quad:
+Example: convert an IP address in an C<uint32_t> into dotted-quad:
 
    uint32_t ip = 0x0a000164; // 10.0.1.100
    char ips[3 * 4 + 3 + 1];
@@ -1339,7 +1431,7 @@ Setting this symbol to a true value implies C<ECB_NO_SMP>.
 
 The weaker version of C<ECB_NO_THREADS> - if F<ecb.h> is used from
 multiple threads, but never concurrently (e.g. if the system the program
-runs on has only a single CPU with a single core, no hyperthreading and so
+runs on has only a single CPU with a single core, no hyper-threading and so
 on), then this symbol can be defined, leading to more efficient code and
 fewer dependencies.
 
