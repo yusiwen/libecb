@@ -537,7 +537,7 @@ typedef int ecb_bool;
 #if 1400 <= _MSC_VER && (_M_IX86 || _M_X64 || _M_IA64 || _M_ARM)
     unsigned long r;
     _BitScanReverse (&r, x);
-    return (int)r;
+    return 31 - (int)r;
 #else
 
     /* Robert Harley's algorithm from comp.arch 1996-12-07 */
@@ -572,7 +572,7 @@ typedef int ecb_bool;
 #if 1400 <= _MSC_VER && (_M_X64 || _M_IA64 || _M_ARM)
     unsigned long r;
     _BitScanReverse64 (&r, x);
-    return (int)r;
+    return 63 - (int)r;
 #else
     uint32_t l = x >> 32;
     int shift = l ? 0 : 32;

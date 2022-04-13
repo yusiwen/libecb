@@ -11,6 +11,7 @@ TODO: support order=0?
         - say goodbye to gnu-style function definitions - they were not
           used consistently anyway, and imho make the code harder to read,
           and didn't even work for indented definitions.
+        - windows/ms versions of clz returned the wrongt value (reported by b_honas).
 
 0x0001000b
 	- added ecb_gray*_{de,en}code functions.
